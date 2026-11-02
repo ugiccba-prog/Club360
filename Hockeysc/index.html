@@ -439,72 +439,67 @@
                             </div>
                         </div>
 
-                        <!-- LOS 4 CRITERIOS DE EVALUACIÓN OFICIALES CCBA (Diapositiva 2) -->
-                        <div class="space-y-4 mt-4">
+                        <!-- LOS 4 ÍTEMS DE EVALUACIÓN DINÁMICOS SEGÚN ESTACIÓN (CORTOS Y ÁGILES) -->
+                        <div class="space-y-2.5 mt-4">
                             <div class="flex items-center justify-between">
-                                <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Puntaje por Criterio (1 a 10) — Impacta en el Gráfico Redondo</h3>
+                                <h3 id="evalCriteriaHeaderTitle" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Ítems de la Estación (1 a 10)</h3>
                                 <span class="text-xs font-bold text-ccba-blue bg-sky-100 px-2.5 py-0.5 rounded-full">Promedio: <span id="evalAvgScore">8.0</span></span>
                             </div>
 
-                            <!-- 1. Habilidades Técnicas -->
-                            <div class="bg-emerald-50/50 border border-emerald-200/70 rounded-xl p-3">
-                                <div class="flex justify-between items-center mb-1">
+                            <!-- Ítem 1 -->
+                            <div class="bg-emerald-50/50 border border-emerald-200/70 rounded-xl px-3 py-2">
+                                <div class="flex justify-between items-center">
                                     <div>
-                                        <span class="text-xs font-extrabold text-emerald-900">1. Habilidades Técnicas (Control, Pase, Recepción y Definición)</span>
-                                        <p class="text-[11px] text-emerald-700">Recepción lateral/frontal, pegada, barrida y gestos largos d/r</p>
+                                        <span id="labelTitle1" class="text-xs font-extrabold text-emerald-900">1. Recepción y Perfilado</span>
+                                        <p id="labelDesc1" class="text-[11px] text-emerald-700 leading-tight">Control orientado (derecho y revés)</p>
                                     </div>
-                                    <span id="valTecnica" class="text-lg font-black text-emerald-700 bg-white px-2.5 py-0.5 rounded-lg border border-emerald-200 shadow-sm">8</span>
+                                    <span id="valTecnica" class="text-base font-black text-emerald-700 bg-white px-2.5 py-0.5 rounded-lg border border-emerald-200 shadow-sm">8</span>
                                 </div>
                                 <input type="range" id="sliderTecnica" min="1" max="10" step="0.5" oninput="updateCriteriaScore('tecnica', this.value)" class="mt-1">
                             </div>
 
-                            <!-- 2. Habilidades Tácticas -->
-                            <div class="bg-sky-50/60 border border-sky-200/70 rounded-xl p-3">
-                                <div class="flex justify-between items-center mb-1">
+                            <!-- Ítem 2 -->
+                            <div class="bg-sky-50/60 border border-sky-200/70 rounded-xl px-3 py-2">
+                                <div class="flex justify-between items-center">
                                     <div>
-                                        <span class="text-xs font-extrabold text-sky-900">2. Habilidades Tácticas (Posicionamiento y Toma de Decisiones)</span>
-                                        <p class="text-[11px] text-sky-700">Lectura de juego en 2x2, recepción detrás del arco y 11 vs 11</p>
+                                        <span id="labelTitle2" class="text-xs font-extrabold text-sky-900">2. Contrabola y Ataque al Área</span>
+                                        <p id="labelDesc2" class="text-[11px] text-sky-700 leading-tight">Anticipo y búsqueda del espacio libre</p>
                                     </div>
-                                    <span id="valTactica" class="text-lg font-black text-sky-700 bg-white px-2.5 py-0.5 rounded-lg border border-sky-200 shadow-sm">8</span>
+                                    <span id="valTactica" class="text-base font-black text-sky-700 bg-white px-2.5 py-0.5 rounded-lg border border-sky-200 shadow-sm">8</span>
                                 </div>
                                 <input type="range" id="sliderTactica" min="1" max="10" step="0.5" oninput="updateCriteriaScore('tactica', this.value)" class="mt-1">
                             </div>
 
-                            <!-- 3. Capacidades Físicas -->
-                            <div class="bg-orange-50/60 border border-orange-200/70 rounded-xl p-3">
-                                <div class="flex justify-between items-center mb-1">
+                            <!-- Ítem 3 -->
+                            <div class="bg-orange-50/60 border border-orange-200/70 rounded-xl px-3 py-2">
+                                <div class="flex justify-between items-center">
                                     <div>
-                                        <span class="text-xs font-extrabold text-orange-900">3. Capacidades Físicas (Velocidad, Agilidad, Fuerza y Resistencia)</span>
-                                        <p class="text-[11px] text-orange-700">Desempeño en Estación 4 Física e intensidad en partidos</p>
+                                        <span id="labelTitle3" class="text-xs font-extrabold text-orange-900">3. Definición al Arco (D / R)</span>
+                                        <p id="labelDesc3" class="text-[11px] text-orange-700 leading-tight">Potencia y puntería en velocidad</p>
                                     </div>
-                                    <span id="valFisica" class="text-lg font-black text-orange-700 bg-white px-2.5 py-0.5 rounded-lg border border-orange-200 shadow-sm">8</span>
+                                    <span id="valFisica" class="text-base font-black text-orange-700 bg-white px-2.5 py-0.5 rounded-lg border border-orange-200 shadow-sm">8</span>
                                 </div>
                                 <input type="range" id="sliderFisica" min="1" max="10" step="0.5" oninput="updateCriteriaScore('fisica', this.value)" class="mt-1">
                             </div>
 
-                            <!-- 4. Aspectos Psicológicos -->
-                            <div class="bg-purple-50/60 border border-purple-200/70 rounded-xl p-3">
-                                <div class="flex justify-between items-center mb-1">
+                            <!-- Ítem 4 -->
+                            <div class="bg-purple-50/60 border border-purple-200/70 rounded-xl px-3 py-2">
+                                <div class="flex justify-between items-center">
                                     <div>
-                                        <span class="text-xs font-extrabold text-purple-900">4. Aspectos Psicológicos (Equipo, Compromiso y Comunicación)</span>
-                                        <p class="text-[11px] text-purple-700">Actitud ante el error, escucha activa y apoyo entre pares</p>
+                                        <span id="labelTitle4" class="text-xs font-extrabold text-purple-900">4. Determinación en el Área</span>
+                                        <p id="labelDesc4" class="text-[11px] text-purple-700 leading-tight">Agresividad ofensiva y foco en el gol</p>
                                     </div>
-                                    <span id="valPsico" class="text-lg font-black text-purple-700 bg-white px-2.5 py-0.5 rounded-lg border border-purple-200 shadow-sm">8</span>
+                                    <span id="valPsico" class="text-base font-black text-purple-700 bg-white px-2.5 py-0.5 rounded-lg border border-purple-200 shadow-sm">8</span>
                                 </div>
                                 <input type="range" id="sliderPsico" min="1" max="10" step="0.5" oninput="updateCriteriaScore('psico', this.value)" class="mt-1">
                             </div>
                         </div>
 
-                        <!-- Etiquetas Rápidas de Observación en Cancha -->
+                        <!-- Etiquetas Rápidas de Observación en Cancha (Dinámicas por estación) -->
                         <div class="mt-4 pt-3 border-t border-slate-200">
-                            <label class="block text-xs font-bold uppercase text-slate-500 mb-2">Etiquetas rápidas de cancha y Observaciones:</label>
-                            <div class="flex flex-wrap gap-1.5 mb-2.5">
-                                <button onclick="addQuickTag('+ Excelente recepción revés')" class="text-[11px] bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 px-2.5 py-1 rounded-lg font-medium transition">+ Recepción revés</button>
-                                <button onclick="addQuickTag('+ Fuerte pegada / barrida')" class="text-[11px] bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 px-2.5 py-1 rounded-lg font-medium transition">+ Fuerte pegada/barrida</button>
-                                <button onclick="addQuickTag('+ Gana duelos 2v2')" class="text-[11px] bg-slate-100 hover:bg-sky-100 text-slate-700 hover:text-sky-800 px-2.5 py-1 rounded-lg font-medium transition">+ Gana 2v2</button>
-                                <button onclick="addQuickTag('+ Liderazgo y comunicación positiva')" class="text-[11px] bg-slate-100 hover:bg-emerald-100 text-slate-700 hover:text-emerald-800 px-2.5 py-1 rounded-lg font-medium transition">+ Liderazgo positivo</button>
-                                <button onclick="addQuickTag('- Reforzar control en velocidad')" class="text-[11px] bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-800 px-2.5 py-1 rounded-lg font-medium transition">- Control en velocidad</button>
-                                <button onclick="addQuickTag('- Mejorar toma de decisión bajo presión')" class="text-[11px] bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-800 px-2.5 py-1 rounded-lg font-medium transition">- Decisión bajo presión</button>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-2">Etiquetas rápidas de la estación y Observaciones:</label>
+                            <div id="quickTagsContainer" class="flex flex-wrap gap-1.5 mb-2.5">
+                                <!-- Se cargan automáticamente según la estación seleccionada -->
                             </div>
                             <textarea id="evalNotes" rows="2" onchange="saveCurrentNotes(this.value)" placeholder="Observaciones puntuales del entrenador para la reunión del Comité..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-2.5 text-xs sm:text-sm focus:ring-2 focus:ring-sky-500 focus:outline-none"></textarea>
                         </div>
@@ -2375,6 +2370,115 @@ function json(obj, callback) {
             refreshAllViews();
         }
 
+        // Configuración corta y directa de los 4 ítems + etiquetas rápidas por cada Estación
+        const STATION_CRITERIA_CONFIG = {
+            EST1: {
+                header: 'Estación 1: Definición y Recepción (1 a 10)',
+                items: [
+                    { title: '1. Recepción y Perfilado', desc: 'Control orientado (derecho y revés)', short: '1. Recepción' },
+                    { title: '2. Contrabola y Ataque al Área', desc: 'Anticipo y búsqueda del espacio libre', short: '2. Contrabola' },
+                    { title: '3. Definición al Arco (D / R)', desc: 'Potencia y puntería en velocidad', short: '3. Definición' },
+                    { title: '4. Determinación en el Área', desc: 'Agresividad ofensiva y foco en el gol', short: '4. Determinac.' }
+                ],
+                tags: [
+                    { label: '+ Recepción perfilada', text: '+ Buena recepción perfilada', tone: 'pos' },
+                    { label: '+ Buena definición D/R', text: '+ Buena definición D/R', tone: 'pos' },
+                    { label: '+ Gana contrabola', text: '+ Rápida en contrabola', tone: 'pos' },
+                    { label: '- Mirar antes de tirar', text: '- Levantar cabeza antes de definir', tone: 'neg' },
+                    { label: '- Control de revés', text: '- Reforzar recepción de revés', tone: 'neg' }
+                ]
+            },
+            EST2: {
+                header: 'Estación 2: Mini Partido 2x2 (1 a 10)',
+                items: [
+                    { title: '1. Control y Duelo 1v1 / 2v2', desc: 'Recepción detrás del arco y protección', short: '1. Duelo 1v1' },
+                    { title: '2. Toma de Decisión (2x2)', desc: 'Cuándo pasar, conducir o apoyar', short: '2. Decisión' },
+                    { title: '3. Transición Ataque / Defensa', desc: 'Reacción tras pérdida y presión', short: '3. Transición' },
+                    { title: '4. Comunicación y Sociedad', desc: 'Pedir bocha y ordenar a la compañera', short: '4. Comunicac.' }
+                ],
+                tags: [
+                    { label: '+ Gana duelos 2v2', text: '+ Gana duelos 2v2', tone: 'pos' },
+                    { label: '+ Decide rápido', text: '+ Buena decisión bajo presión en 2x2', tone: 'pos' },
+                    { label: '+ Intensa en transición', text: '+ Rápida transición ataque-defensa', tone: 'pos' },
+                    { label: '- Soltar bocha antes', text: '- Soltar la bocha un tiempo antes', tone: 'neg' },
+                    { label: '- Más comunicación', text: '- Hablar más con la compañera en 2x2', tone: 'neg' }
+                ]
+            },
+            EST3: {
+                header: 'Estación 3: Pases y Recepción (1 a 10)',
+                items: [
+                    { title: '1. Pegada y Barrida', desc: 'Firmeza, dirección y postura de manos', short: '1. Pegada/Barr.' },
+                    { title: '2. Recepción Frontal y Lateral', desc: 'Control limpio sin rebote en movimiento', short: '2. Recepción' },
+                    { title: '3. Dinámica de Pies y Ritmo', desc: 'Ajuste de pasos y fluidez en el circuito', short: '3. Pies/Ritmo' },
+                    { title: '4. Precisión y Concentración', desc: 'Sostener la calidad sin apurarse', short: '4. Precisión' }
+                ],
+                tags: [
+                    { label: '+ Fuerte pegada/barrida', text: '+ Fuerte pegada y barrida', tone: 'pos' },
+                    { label: '+ Control limpio', text: '+ Recepción limpia en movimiento', tone: 'pos' },
+                    { label: '+ Buen ajuste de pies', text: '+ Buen trabajo de pies previo al pase', tone: 'pos' },
+                    { label: '- Amortiguar recepción', text: '- Amortiguar más al recibir', tone: 'neg' },
+                    { label: '- Firmeza en barrida', text: '- Ganar firmeza en el pase barrido', tone: 'neg' }
+                ]
+            },
+            EST4: {
+                header: 'Estación 4: Estación Física (1 a 10)',
+                items: [
+                    { title: '1. Coordinación de Apoyos', desc: 'Técnica de carrera y postura baja', short: '1. Coordinac.' },
+                    { title: '2. Agilidad y Giros', desc: 'Frenos, cambios de dirección y reacción', short: '2. Agilidad' },
+                    { title: '3. Velocidad y Potencia', desc: 'Arranque explosivo y fuerza de piernas', short: '3. Velocidad' },
+                    { title: '4. Esfuerzo y Entrega', desc: 'Sostener intensidad hasta el final', short: '4. Entrega' }
+                ],
+                tags: [
+                    { label: '+ Arranque explosivo', text: '+ Explosiva en los primeros metros', tone: 'pos' },
+                    { label: '+ Muy buena agilidad', text: '+ Ágil en frenos y cambios de dirección', tone: 'pos' },
+                    { label: '+ Entrega al 100%', text: '+ Sostiene intensidad física al 100%', tone: 'pos' },
+                    { label: '- Bajar cadera en giros', text: '- Bajar centro de gravedad en giros', tone: 'neg' },
+                    { label: '- Ritmo en pasadas finales', text: '- Sostener ritmo en las últimas pasadas', tone: 'neg' }
+                ]
+            },
+            PARTIDO: {
+                header: 'Sábado: Partido 11 vs 11 (1 a 10)',
+                items: [
+                    { title: '1. Técnica en Juego Real', desc: 'Conducción, pase y control con marca', short: '1. Técnica 11v11' },
+                    { title: '2. Ubicación y Lectura', desc: 'Ocupación de espacios con y sin bocha', short: '2. Táctica 11v11' },
+                    { title: '3. Ritmo y Recorrido', desc: 'Despliegue e intensidad en el partido', short: '3. Físico 11v11' },
+                    { title: '4. Equipo y Comunicación', desc: 'Compromiso colectivo y actitud', short: '4. Actitud/Eq.' }
+                ],
+                tags: [
+                    { label: '+ Destaca en 11v11', text: '+ Muy buen partido 11v11', tone: 'pos' },
+                    { label: '+ Buena ubicación', text: '+ Ocupa bien los espacios en cancha', tone: 'pos' },
+                    { label: '+ Liderazgo positivo', text: '+ Liderazgo y comunicación positiva', tone: 'pos' },
+                    { label: '- Pedir más la bocha', text: '- Participar más en el circuito de juego', tone: 'neg' },
+                    { label: '- Orden en repliegue', text: '- Ajustar relevo y vuelta defensiva', tone: 'neg' }
+                ]
+            }
+        };
+
+        function applyStationCriteriaUI(stationCode) {
+            const cfg = STATION_CRITERIA_CONFIG[stationCode] || STATION_CRITERIA_CONFIG.EST1;
+            const headerEl = document.getElementById('evalCriteriaHeaderTitle');
+            if (headerEl) headerEl.textContent = cfg.header;
+
+            cfg.items.forEach((it, idx) => {
+                const n = idx + 1;
+                const tEl = document.getElementById('labelTitle' + n);
+                const dEl = document.getElementById('labelDesc' + n);
+                if (tEl) tEl.textContent = it.title;
+                if (dEl) dEl.textContent = it.desc;
+            });
+
+            const tagsContainer = document.getElementById('quickTagsContainer');
+            if (tagsContainer) {
+                tagsContainer.innerHTML = cfg.tags.map(t => {
+                    const cls = t.tone === 'neg'
+                        ? 'bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-800'
+                        : 'bg-slate-100 hover:bg-emerald-100 text-slate-700 hover:text-emerald-800';
+                    const safeText = t.text.replace(/'/g, "\'");
+                    return `<button type="button" onclick="addQuickTag('${safeText}')" class="text-[11px] ${cls} px-2.5 py-1 rounded-lg font-medium transition">${t.label}</button>`;
+                }).join('');
+            }
+        }
+
         function updateStationInfo() {
             renderPlayerEvaluationCard();
         }
@@ -2477,7 +2581,9 @@ function json(obj, callback) {
             }
 
             const stationSelect = document.getElementById('currentStation');
+            const stationCode = stationSelect.value || 'EST1';
             const stationText = stationSelect.options[stationSelect.selectedIndex].text;
+            applyStationCriteriaUI(stationCode);
             const dateKey = document.getElementById('currentDate').value;
 
             const initials = (p.apellido[0] || 'J') + (p.nombre[0] || 'C');
@@ -2537,9 +2643,13 @@ function json(obj, callback) {
             const ctx = document.getElementById('miniCanchaRadar');
             if (!ctx) return;
 
+            const stationCode = document.getElementById('currentStation')?.value || 'EST1';
+            const cfg = STATION_CRITERIA_CONFIG[stationCode] || STATION_CRITERIA_CONFIG.EST1;
+            const radarLabels = cfg.items.map(it => it.short);
             const dataVals = [p.tecnica, p.tactica, p.fisica, p.psico];
 
             if (miniRadarChartInstance) {
+                miniRadarChartInstance.data.labels = radarLabels;
                 miniRadarChartInstance.data.datasets[0].data = dataVals;
                 miniRadarChartInstance.update();
                 return;
@@ -2548,7 +2658,7 @@ function json(obj, callback) {
             miniRadarChartInstance = new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: ['1. Técnica', '2. Táctica', '3. Física', '4. Psicol.'],
+                    labels: radarLabels,
                     datasets: [{
                         label: 'Perfil',
                         data: dataVals,
