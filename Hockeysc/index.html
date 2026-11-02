@@ -439,59 +439,83 @@
                             </div>
                         </div>
 
-                        <!-- LOS 4 ÍTEMS DE EVALUACIÓN DINÁMICOS SEGÚN ESTACIÓN (CORTOS Y ÁGILES) -->
+                        <!-- LOS 4 ÍTEMS DE LA ESTACIÓN EN LA FECHA ELEGIDA (CON CAMPO NUMÉRICO DIRECTO) -->
                         <div class="space-y-2.5 mt-4">
-                            <div class="flex items-center justify-between">
-                                <h3 id="evalCriteriaHeaderTitle" class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Ítems de la Estación (1 a 10)</h3>
-                                <span class="text-xs font-bold text-ccba-blue bg-sky-100 px-2.5 py-0.5 rounded-full">Promedio: <span id="evalAvgScore">8.0</span></span>
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <div>
+                                    <h3 id="evalCriteriaHeaderTitle" class="text-xs font-extrabold uppercase tracking-wider text-slate-600">Ítems de la Estación (1 a 10)</h3>
+                                    <p id="evalSessionContextBadge" class="text-[11px] text-slate-500">Se guarda en esta estación y fecha sin pisar otras estaciones ni otros días.</p>
+                                </div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[11px] font-bold text-emerald-800 bg-emerald-100 border border-emerald-200 px-2.5 py-0.5 rounded-full">Prom. Estación Hoy: <strong id="evalStationTodayAvg">8.0</strong></span>
+                                    <span class="text-[11px] font-bold text-ccba-blue bg-sky-100 border border-sky-200 px-2.5 py-0.5 rounded-full">Prom. Final: <strong id="evalAvgScore">8.0</strong></span>
+                                </div>
                             </div>
 
                             <!-- Ítem 1 -->
-                            <div class="bg-emerald-50/50 border border-emerald-200/70 rounded-xl px-3 py-2">
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <span id="labelTitle1" class="text-xs font-extrabold text-emerald-900">1. Recepción y Perfilado</span>
-                                        <p id="labelDesc1" class="text-[11px] text-emerald-700 leading-tight">Control orientado (derecho y revés)</p>
-                                    </div>
-                                    <span id="valTecnica" class="text-base font-black text-emerald-700 bg-white px-2.5 py-0.5 rounded-lg border border-emerald-200 shadow-sm">8</span>
+                            <div class="bg-emerald-50/60 border border-emerald-200/80 rounded-xl px-3 py-2.5 flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <span id="labelTitle1" class="text-xs sm:text-sm font-extrabold text-emerald-950 block">1. Recepción y Perfilado</span>
+                                    <p id="labelDesc1" class="text-[11px] text-emerald-700 leading-tight">Control orientado (derecho y revés)</p>
                                 </div>
-                                <input type="range" id="sliderTecnica" min="1" max="10" step="0.5" oninput="updateCriteriaScore('tecnica', this.value)" class="mt-1">
+                                <div class="flex items-center gap-1 shrink-0">
+                                    <button type="button" onclick="stepCriteriaScore('tecnica', -0.5)" class="w-8 h-9 rounded-lg bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-800 font-black text-sm shadow-sm">-</button>
+                                    <input type="number" id="sliderTecnica" min="1" max="10" step="0.5" inputmode="decimal" onchange="updateCriteriaScore('tecnica', this.value)" onfocus="this.select()" class="w-16 h-9 text-center text-base font-black text-emerald-900 bg-white border-2 border-emerald-400 rounded-lg shadow-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                                    <button type="button" onclick="stepCriteriaScore('tecnica', 0.5)" class="w-8 h-9 rounded-lg bg-white hover:bg-emerald-100 border border-emerald-300 text-emerald-800 font-black text-sm shadow-sm">+</button>
+                                    <span id="valTecnica" class="hidden">8</span>
+                                </div>
                             </div>
 
                             <!-- Ítem 2 -->
-                            <div class="bg-sky-50/60 border border-sky-200/70 rounded-xl px-3 py-2">
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <span id="labelTitle2" class="text-xs font-extrabold text-sky-900">2. Contrabola y Ataque al Área</span>
-                                        <p id="labelDesc2" class="text-[11px] text-sky-700 leading-tight">Anticipo y búsqueda del espacio libre</p>
-                                    </div>
-                                    <span id="valTactica" class="text-base font-black text-sky-700 bg-white px-2.5 py-0.5 rounded-lg border border-sky-200 shadow-sm">8</span>
+                            <div class="bg-sky-50/70 border border-sky-200/80 rounded-xl px-3 py-2.5 flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <span id="labelTitle2" class="text-xs sm:text-sm font-extrabold text-sky-950 block">2. Contrabola y Ataque al Área</span>
+                                    <p id="labelDesc2" class="text-[11px] text-sky-700 leading-tight">Anticipo y búsqueda del espacio libre</p>
                                 </div>
-                                <input type="range" id="sliderTactica" min="1" max="10" step="0.5" oninput="updateCriteriaScore('tactica', this.value)" class="mt-1">
+                                <div class="flex items-center gap-1 shrink-0">
+                                    <button type="button" onclick="stepCriteriaScore('tactica', -0.5)" class="w-8 h-9 rounded-lg bg-white hover:bg-sky-100 border border-sky-300 text-sky-800 font-black text-sm shadow-sm">-</button>
+                                    <input type="number" id="sliderTactica" min="1" max="10" step="0.5" inputmode="decimal" onchange="updateCriteriaScore('tactica', this.value)" onfocus="this.select()" class="w-16 h-9 text-center text-base font-black text-sky-900 bg-white border-2 border-sky-400 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                                    <button type="button" onclick="stepCriteriaScore('tactica', 0.5)" class="w-8 h-9 rounded-lg bg-white hover:bg-sky-100 border border-sky-300 text-sky-800 font-black text-sm shadow-sm">+</button>
+                                    <span id="valTactica" class="hidden">8</span>
+                                </div>
                             </div>
 
                             <!-- Ítem 3 -->
-                            <div class="bg-orange-50/60 border border-orange-200/70 rounded-xl px-3 py-2">
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <span id="labelTitle3" class="text-xs font-extrabold text-orange-900">3. Definición al Arco (D / R)</span>
-                                        <p id="labelDesc3" class="text-[11px] text-orange-700 leading-tight">Potencia y puntería en velocidad</p>
-                                    </div>
-                                    <span id="valFisica" class="text-base font-black text-orange-700 bg-white px-2.5 py-0.5 rounded-lg border border-orange-200 shadow-sm">8</span>
+                            <div class="bg-orange-50/70 border border-orange-200/80 rounded-xl px-3 py-2.5 flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <span id="labelTitle3" class="text-xs sm:text-sm font-extrabold text-orange-950 block">3. Definición al Arco (D / R)</span>
+                                    <p id="labelDesc3" class="text-[11px] text-orange-700 leading-tight">Potencia y puntería en velocidad</p>
                                 </div>
-                                <input type="range" id="sliderFisica" min="1" max="10" step="0.5" oninput="updateCriteriaScore('fisica', this.value)" class="mt-1">
+                                <div class="flex items-center gap-1 shrink-0">
+                                    <button type="button" onclick="stepCriteriaScore('fisica', -0.5)" class="w-8 h-9 rounded-lg bg-white hover:bg-orange-100 border border-orange-300 text-orange-800 font-black text-sm shadow-sm">-</button>
+                                    <input type="number" id="sliderFisica" min="1" max="10" step="0.5" inputmode="decimal" onchange="updateCriteriaScore('fisica', this.value)" onfocus="this.select()" class="w-16 h-9 text-center text-base font-black text-orange-900 bg-white border-2 border-orange-400 rounded-lg shadow-sm focus:ring-2 focus:ring-orange-500 focus:outline-none">
+                                    <button type="button" onclick="stepCriteriaScore('fisica', 0.5)" class="w-8 h-9 rounded-lg bg-white hover:bg-orange-100 border border-orange-300 text-orange-800 font-black text-sm shadow-sm">+</button>
+                                    <span id="valFisica" class="hidden">8</span>
+                                </div>
                             </div>
 
                             <!-- Ítem 4 -->
-                            <div class="bg-purple-50/60 border border-purple-200/70 rounded-xl px-3 py-2">
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <span id="labelTitle4" class="text-xs font-extrabold text-purple-900">4. Determinación en el Área</span>
-                                        <p id="labelDesc4" class="text-[11px] text-purple-700 leading-tight">Agresividad ofensiva y foco en el gol</p>
-                                    </div>
-                                    <span id="valPsico" class="text-base font-black text-purple-700 bg-white px-2.5 py-0.5 rounded-lg border border-purple-200 shadow-sm">8</span>
+                            <div class="bg-purple-50/70 border border-purple-200/80 rounded-xl px-3 py-2.5 flex items-center justify-between gap-3">
+                                <div class="min-w-0">
+                                    <span id="labelTitle4" class="text-xs sm:text-sm font-extrabold text-purple-950 block">4. Determinación en el Área</span>
+                                    <p id="labelDesc4" class="text-[11px] text-purple-700 leading-tight">Agresividad ofensiva y foco en el gol</p>
                                 </div>
-                                <input type="range" id="sliderPsico" min="1" max="10" step="0.5" oninput="updateCriteriaScore('psico', this.value)" class="mt-1">
+                                <div class="flex items-center gap-1 shrink-0">
+                                    <button type="button" onclick="stepCriteriaScore('psico', -0.5)" class="w-8 h-9 rounded-lg bg-white hover:bg-purple-100 border border-purple-300 text-purple-800 font-black text-sm shadow-sm">-</button>
+                                    <input type="number" id="sliderPsico" min="1" max="10" step="0.5" inputmode="decimal" onchange="updateCriteriaScore('psico', this.value)" onfocus="this.select()" class="w-16 h-9 text-center text-base font-black text-purple-900 bg-white border-2 border-purple-400 rounded-lg shadow-sm focus:ring-2 focus:ring-purple-500 focus:outline-none">
+                                    <button type="button" onclick="stepCriteriaScore('psico', 0.5)" class="w-8 h-9 rounded-lg bg-white hover:bg-purple-100 border border-purple-300 text-purple-800 font-black text-sm shadow-sm">+</button>
+                                    <span id="valPsico" class="hidden">8</span>
+                                </div>
+                            </div>
+
+                            <!-- RESUMEN ACUMULADO DE LA JUGADORA: POR ESTACIÓN Y POR SEMANA -->
+                            <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+                                <div class="flex items-center justify-between text-[11px] font-extrabold uppercase text-slate-500">
+                                    <span><i class="fa-solid fa-layer-group text-sky-600 mr-1"></i>Historial Acumulado de la Jugadora (No se pisa entre estaciones ni días)</span>
+                                    <span id="playerTotalEvalsBadge" class="text-sky-700">0 cargas</span>
+                                </div>
+                                <div id="playerStationSummaryPills" class="grid grid-cols-5 gap-1.5 text-center text-[11px]"></div>
+                                <div id="playerWeeklySummaryPills" class="grid grid-cols-5 gap-1.5 text-center text-[11px] pt-1 border-t border-slate-200/80"></div>
                             </div>
                         </div>
 
@@ -816,6 +840,13 @@
                             </div>
                         </div>
 
+                        <!-- Resumen por Semana y por Estación en Modo Comité -->
+                        <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs mb-3 space-y-2">
+                            <span class="font-extrabold text-slate-600 uppercase text-[10px] block"><i class="fa-solid fa-calendar-week text-sky-600 mr-1"></i>Evolución por Semana y Promedio por Estación:</span>
+                            <div id="comiteWeeklyBreakdown" class="grid grid-cols-5 gap-1.5 text-center text-[11px]"></div>
+                            <div id="comiteStationBreakdown" class="grid grid-cols-5 gap-1.5 text-center text-[11px] pt-1.5 border-t border-slate-200"></div>
+                        </div>
+
                         <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs mb-4">
                             <span class="font-bold text-slate-600 block mb-1"><i class="fa-solid fa-comment-dots text-sky-600 mr-1"></i>Síntesis de Observaciones de Cancha:</span>
                             <p id="comiteCardNotes" class="text-slate-600 italic">"Muy buena recepción perfilada y actitud en el 2v2."</p>
@@ -900,11 +931,15 @@
                                 <th class="py-3 px-2 text-center">Cat.</th>
                                 <th class="py-3 px-2 text-center">Año</th>
                                 <th class="py-3 px-2 text-center">Eq 2026</th>
-                                <th class="py-3 px-2 text-center bg-emerald-900/40">1. Técn.</th>
-                                <th class="py-3 px-2 text-center bg-sky-900/40">2. Táct.</th>
-                                <th class="py-3 px-2 text-center bg-orange-900/40">3. Fís.</th>
-                                <th class="py-3 px-2 text-center bg-purple-900/40">4. Psic.</th>
-                                <th class="py-3 px-2 text-center font-extrabold">Prom.</th>
+                                <th class="py-3 px-1.5 text-center bg-slate-700/60" title="Inicio (2/11 al 7/11)">Inic.</th>
+                                <th class="py-3 px-1.5 text-center bg-slate-700/60" title="Semana 1 (10/11 al 14/11)">Sem 1</th>
+                                <th class="py-3 px-1.5 text-center bg-slate-700/60" title="Semana 2 (16/11 al 21/11)">Sem 2</th>
+                                <th class="py-3 px-1.5 text-center bg-slate-700/60" title="Semana 3/4 (23/11 al 30/11)">Sem 3/4</th>
+                                <th class="py-3 px-1.5 text-center bg-emerald-900/40">1. Técn.</th>
+                                <th class="py-3 px-1.5 text-center bg-sky-900/40">2. Táct.</th>
+                                <th class="py-3 px-1.5 text-center bg-orange-900/40">3. Fís.</th>
+                                <th class="py-3 px-1.5 text-center bg-purple-900/40">4. Psic.</th>
+                                <th class="py-3 px-2 text-center font-extrabold bg-sky-950">Final</th>
                                 <th class="py-3 px-3 text-center">Semáforo CCBA</th>
                                 <th class="py-3 px-2 text-center">% Asist.</th>
                                 <th class="py-3 px-3 text-center">Grupo 2027</th>
@@ -1221,6 +1256,13 @@
                     </div>
                 </div>
 
+                <!-- Resumen Semanal y por Estación en el Informe Individual -->
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                    <span class="text-[10px] font-extrabold uppercase text-slate-500 block">Resumen Evolutivo por Semana y por Estación + Promedio Final Completo</span>
+                    <div id="modalWeeklySummaryRow" class="grid grid-cols-5 gap-2 text-center text-xs"></div>
+                    <div id="modalStationSummaryRow" class="grid grid-cols-5 gap-2 text-center text-xs pt-2 border-t border-slate-200"></div>
+                </div>
+
                 <div class="p-4 rounded-2xl bg-sky-50/60 border border-sky-200 space-y-2">
                     <h4 class="font-extrabold text-sky-950 text-xs uppercase"><i class="fa-solid fa-bullseye mr-1"></i> Fortalezas Observadas y Plan de Desarrollo Individual:</h4>
                     <p id="modalFeedbackText" class="text-slate-700 leading-relaxed"></p>
@@ -1313,7 +1355,7 @@ var COLUMNAS = [
   'id', 'cat', 'sec', 'apellido', 'nombre', 'year', 'eq2026',
   'tecnica', 'tactica', 'fisica', 'psico', 'promedio', 'semaforo',
   'target2027', 'asistencia_pct', 'notes',
-  'recepcion', 'definicion', 'attendance', 'updatedAt'
+  'recepcion', 'definicion', 'attendance', 'evaluations', 'updatedAt'
 ];
 
 /* Columnas calculadas solo para que la planilla sea legible: no se leen. */
@@ -1422,7 +1464,7 @@ function leerJugadoras() {
     cab.forEach(function (col, i) {
       if (!col || CALCULADAS[col]) return;
       var v = fila[i];
-      if (col === 'attendance') {
+      if (col === 'attendance' || col === 'evaluations') {
         try { v = v ? JSON.parse(v) : {}; } catch (x) { v = {}; }
       } else if (NUMERICAS[col]) {
         v = (v === '' || v === null || isNaN(Number(v))) ? (col === 'updatedAt' ? 0 : v) : Number(v);
@@ -1450,6 +1492,7 @@ function escribirJugadoras(lista) {
       if (col === 'promedio') return promedio(j);
       if (col === 'asistencia_pct') return asistencia(j);
       if (col === 'attendance') return JSON.stringify(j.attendance || {});
+      if (col === 'evaluations') return JSON.stringify(j.evaluations || {});
       var v = j[col];
       if (v === undefined || v === null) return '';
       if (NUMERICAS[col]) return isNaN(Number(v)) ? '' : Number(v);
@@ -1839,6 +1882,7 @@ function json(obj, callback) {
                 id: String(p.id),
                 notes: p.notes == null ? '' : String(p.notes),
                 attendance: (p.attendance && typeof p.attendance === 'object') ? p.attendance : {},
+                evaluations: (p.evaluations && typeof p.evaluations === 'object') ? p.evaluations : {},
                 updatedAt: Number(p.updatedAt) || 0
             };
         }
@@ -1875,15 +1919,35 @@ function json(obj, callback) {
             return err && err.message ? err.message : String(err);
         }
 
+        function mergeEvaluationsMap(evalA = {}, evalB = {}) {
+            const out = { ...evalA };
+            Object.keys(evalB || {}).forEach(dateKey => {
+                out[dateKey] = { ...(evalA[dateKey] || {}), ...(evalB[dateKey] || {}) };
+                Object.keys(evalB[dateKey] || {}).forEach(stKey => {
+                    const aEntry = evalA[dateKey]?.[stKey];
+                    const bEntry = evalB[dateKey]?.[stKey];
+                    if (aEntry && bEntry) {
+                        out[dateKey][stKey] = (Number(aEntry.ts) || 0) > (Number(bEntry.ts) || 0) ? aEntry : bEntry;
+                    }
+                });
+            });
+            return out;
+        }
+
         function mergeRemotePlayers(remoteList) {
             const localById = new Map(players.map(p => [String(p.id), p]));
             const merged = remoteList.map(normalizePlayer).map(remote => {
                 const local = localById.get(remote.id);
-                // Si acá hay un cambio sin enviar o más nuevo, se respeta el local
-                if (local && (pendingIds.has(remote.id) || (Number(local.updatedAt) || 0) > remote.updatedAt)) {
-                    return local;
+                if (!local) return remote;
+                const combinedEvals = mergeEvaluationsMap(remote.evaluations, local.evaluations);
+                if (pendingIds.has(remote.id) || (Number(local.updatedAt) || 0) > remote.updatedAt) {
+                    const winner = { ...local, evaluations: combinedEvals };
+                    recomputePlayerAggregates(winner);
+                    return winner;
                 }
-                return remote;
+                const winner = { ...remote, evaluations: combinedEvals };
+                recomputePlayerAggregates(winner);
+                return winner;
             });
             // Jugadoras cargadas en este dispositivo que todavía no llegaron a la planilla
             const remoteIds = new Set(merged.map(p => p.id));
@@ -2479,7 +2543,111 @@ function json(obj, callback) {
             }
         }
 
+        // Agrupación de las sesiones por Semana para el resumen semanal y final completo
+        const WEEKS_CONFIG = [
+            { code: 'SEM0', label: 'Inicio', fullLabel: 'Sem. Inicial (2 al 7/11)', dates: ['L2', 'M3', 'J5', 'S7'] },
+            { code: 'SEM1', label: 'Sem 1', fullLabel: 'Semana 1 (10 al 14/11)', dates: ['L10', 'M12', 'J14'] },
+            { code: 'SEM2', label: 'Sem 2', fullLabel: 'Semana 2 (16 al 21/11)', dates: ['S16', 'L17', 'M19', 'J21'] },
+            { code: 'SEM3', label: 'Sem 3/4', fullLabel: 'Semana 3 y Cierre (23 al 30/11)', dates: ['S23', 'L24', 'M26', 'L30'] }
+        ];
+
+        const STATION_SHORT_LABELS = {
+            EST1: 'Est. 1',
+            EST2: 'Est. 2',
+            EST3: 'Est. 3',
+            EST4: 'Est. 4',
+            PARTIDO: '11v11'
+        };
+
+        // Devuelve los 4 puntajes de la jugadora para una Fecha y Estación concretas (sin pisar otras estaciones ni otros días)
+        function getStationDayEntry(p, dateKey, stationCode) {
+            if (p && p.evaluations && p.evaluations[dateKey] && p.evaluations[dateKey][stationCode]) {
+                return p.evaluations[dateKey][stationCode];
+            }
+            return null;
+        }
+
+        // Recalcula el promedio general de cada eje (tecnica, tactica, fisica, psico) a partir de TODAS las estaciones y días cargados
+        function recomputePlayerAggregates(p) {
+            if (!p) return;
+            const entries = [];
+            if (p.evaluations && typeof p.evaluations === 'object') {
+                Object.keys(p.evaluations).forEach(dKey => {
+                    const dayObj = p.evaluations[dKey] || {};
+                    Object.keys(dayObj).forEach(stKey => {
+                        const e = dayObj[stKey];
+                        if (e && e.tecnica != null) entries.push(e);
+                    });
+                });
+            }
+            if (entries.length === 0) return;
+
+            const avgKey = (k) => Number((entries.reduce((acc, it) => acc + (parseFloat(it[k]) || 0), 0) / entries.length).toFixed(1));
+            p.tecnica = avgKey('tecnica');
+            p.tactica = avgKey('tactica');
+            p.fisica = avgKey('fisica');
+            p.psico = avgKey('psico');
+            p.recepcion = p.tecnica;
+            p.definicion = Math.max(1, Math.min(10, Number((p.tecnica - 0.3).toFixed(1))));
+
+            const avg = parseFloat(calcPlayerAverage(p));
+            if (avg >= 7.8) p.semaforo = 'VERDE';
+            else if (avg >= 6.5) p.semaforo = 'AMARILLO';
+            else p.semaforo = 'ROJO';
+        }
+
+        // Calcula el resumen por Estación (promedio de todos los días en esa estación) y por Semana (promedio de todas las estaciones de esa semana)
+        function getPlayerSummaryBreakdown(p) {
+            const byStation = {};
+            Object.keys(STATION_SHORT_LABELS).forEach(st => { byStation[st] = []; });
+
+            const byWeek = {};
+            WEEKS_CONFIG.forEach(w => { byWeek[w.code] = []; });
+
+            let totalEntries = 0;
+
+            if (p && p.evaluations && typeof p.evaluations === 'object') {
+                Object.keys(p.evaluations).forEach(dKey => {
+                    const dayObj = p.evaluations[dKey] || {};
+                    const weekFound = WEEKS_CONFIG.find(w => w.dates.includes(dKey));
+                    Object.keys(dayObj).forEach(stKey => {
+                        const e = dayObj[stKey];
+                        if (!e || e.tecnica == null) return;
+                        const entryAvg = (parseFloat(e.tecnica) + parseFloat(e.tactica) + parseFloat(e.fisica) + parseFloat(e.psico)) / 4;
+                        if (!isNaN(entryAvg)) {
+                            totalEntries++;
+                            if (byStation[stKey]) byStation[stKey].push(entryAvg);
+                            if (weekFound) byWeek[weekFound.code].push(entryAvg);
+                        }
+                    });
+                });
+            }
+
+            const stationAvgs = {};
+            Object.keys(byStation).forEach(st => {
+                const arr = byStation[st];
+                stationAvgs[st] = arr.length ? (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1) : null;
+            });
+
+            const weekAvgs = {};
+            WEEKS_CONFIG.forEach(w => {
+                const arr = byWeek[w.code];
+                weekAvgs[w.code] = arr.length ? (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(1) : null;
+            });
+
+            return {
+                totalEntries,
+                stationAvgs,
+                weekAvgs,
+                finalAvg: calcPlayerAverage(p)
+            };
+        }
+
         function updateStationInfo() {
+            const stVal = document.getElementById('currentStation')?.value;
+            if (stVal) {
+                try { localStorage.setItem('ccba_selected_station', stVal); } catch (e) {}
+            }
             renderPlayerEvaluationCard();
         }
 
@@ -2614,20 +2782,77 @@ function json(obj, callback) {
             btnA.className = baseSem + (p.semaforo === 'AMARILLO' ? 'bg-amber-50 border-amber-400 text-amber-900 shadow-sm scale-[1.02]' : 'bg-white border-slate-200 text-slate-500 opacity-75');
             btnR.className = baseSem + (p.semaforo === 'ROJO' ? 'bg-rose-50 border-rose-500 text-rose-900 shadow-sm scale-[1.02]' : 'bg-white border-slate-200 text-slate-500 opacity-75');
 
-            // Sliders y valores
-            document.getElementById('sliderTecnica').value = p.tecnica;
-            document.getElementById('valTecnica').textContent = p.tecnica;
+            // Puntajes específicos de esta Estación + esta Fecha (si aún no tiene carga hoy en esta estación, muestra su base)
+            const entryHoy = getStationDayEntry(p, dateKey, stationCode);
+            const curTec = entryHoy ? entryHoy.tecnica : p.tecnica;
+            const curTac = entryHoy ? entryHoy.tactica : p.tactica;
+            const curFis = entryHoy ? entryHoy.fisica : p.fisica;
+            const curPsi = entryHoy ? entryHoy.psico : p.psico;
+            const avgHoyEstacion = ((parseFloat(curTec) + parseFloat(curTac) + parseFloat(curFis) + parseFloat(curPsi)) / 4).toFixed(1);
 
-            document.getElementById('sliderTactica').value = p.tactica;
-            document.getElementById('valTactica').textContent = p.tactica;
+            document.getElementById('sliderTecnica').value = curTec;
+            document.getElementById('valTecnica').textContent = curTec;
 
-            document.getElementById('sliderFisica').value = p.fisica;
-            document.getElementById('valFisica').textContent = p.fisica;
+            document.getElementById('sliderTactica').value = curTac;
+            document.getElementById('valTactica').textContent = curTac;
 
-            document.getElementById('sliderPsico').value = p.psico;
-            document.getElementById('valPsico').textContent = p.psico;
+            document.getElementById('sliderFisica').value = curFis;
+            document.getElementById('valFisica').textContent = curFis;
+
+            document.getElementById('sliderPsico').value = curPsi;
+            document.getElementById('valPsico').textContent = curPsi;
+
+            const todayAvgEl = document.getElementById('evalStationTodayAvg');
+            if (todayAvgEl) todayAvgEl.textContent = entryHoy ? avgHoyEstacion : `${avgHoyEstacion} (base)`;
+
+            const ctxBadge = document.getElementById('evalSessionContextBadge');
+            if (ctxBadge) {
+                ctxBadge.innerHTML = entryHoy
+                    ? `<span class="text-emerald-700 font-bold">✓ Cargado en ${STATION_SHORT_LABELS[stationCode]} (${dateKey})</span> • No reemplaza otras estaciones ni otros días.`
+                    : `Sin nota cargada aún en <strong>${STATION_SHORT_LABELS[stationCode]} (${dateKey})</strong> • Escribí un número del 1 al 10 o tocá + / -.`;
+            }
 
             document.getElementById('evalAvgScore').textContent = calcPlayerAverage(p);
+
+            // Renderizar pastillas de resumen por Estación y por Semana de la jugadora
+            const summary = getPlayerSummaryBreakdown(p);
+            const totalBadge = document.getElementById('playerTotalEvalsBadge');
+            if (totalBadge) {
+                totalBadge.textContent = `${summary.totalEntries} ${summary.totalEntries === 1 ? 'evaluación registrada' : 'evaluaciones registradas'}`;
+            }
+
+            const stPillsEl = document.getElementById('playerStationSummaryPills');
+            if (stPillsEl) {
+                stPillsEl.innerHTML = Object.keys(STATION_SHORT_LABELS).map(stKey => {
+                    const val = summary.stationAvgs[stKey];
+                    const active = stKey === stationCode;
+                    return `
+                        <div class="p-1.5 rounded-lg border ${active ? 'bg-sky-100 border-sky-400 text-sky-950 font-extrabold' : 'bg-white border-slate-200 text-slate-600'}">
+                            <span class="block text-[10px] uppercase">${STATION_SHORT_LABELS[stKey]}</span>
+                            <span class="text-xs font-black ${val ? 'text-ccba-blue' : 'text-slate-300'}">${val || '—'}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            const wkPillsEl = document.getElementById('playerWeeklySummaryPills');
+            if (wkPillsEl) {
+                wkPillsEl.innerHTML = WEEKS_CONFIG.map(w => {
+                    const val = summary.weekAvgs[w.code];
+                    return `
+                        <div class="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600">
+                            <span class="block text-[10px] uppercase">${w.label}</span>
+                            <span class="text-xs font-black ${val ? 'text-emerald-700' : 'text-slate-300'}">${val || '—'}</span>
+                        </div>
+                    `;
+                }).join('') + `
+                    <div class="p-1.5 rounded-lg bg-ccba-blue text-white font-extrabold">
+                        <span class="block text-[10px] uppercase opacity-80">Final</span>
+                        <span class="text-xs font-black">${summary.finalAvg}</span>
+                    </div>
+                `;
+            }
+
             // No pisar lo que el entrenador está escribiendo cuando llega un refresco automático
             const notesEl = document.getElementById('evalNotes');
             const isTypingSamePlayer = document.activeElement === notesEl && notesEl.dataset.playerId === String(p.id);
@@ -2636,17 +2861,17 @@ function json(obj, callback) {
                 notesEl.dataset.playerId = String(p.id);
             }
 
-            renderMiniCanchaRadar(p);
+            renderMiniCanchaRadar(p, [curTec, curTac, curFis, curPsi]);
         }
 
-        function renderMiniCanchaRadar(p) {
+        function renderMiniCanchaRadar(p, customVals) {
             const ctx = document.getElementById('miniCanchaRadar');
             if (!ctx) return;
 
             const stationCode = document.getElementById('currentStation')?.value || 'EST1';
             const cfg = STATION_CRITERIA_CONFIG[stationCode] || STATION_CRITERIA_CONFIG.EST1;
             const radarLabels = cfg.items.map(it => it.short);
-            const dataVals = [p.tecnica, p.tactica, p.fisica, p.psico];
+            const dataVals = customVals || [p.tecnica, p.tactica, p.fisica, p.psico];
 
             if (miniRadarChartInstance) {
                 miniRadarChartInstance.data.labels = radarLabels;
@@ -2691,21 +2916,50 @@ function json(obj, callback) {
         function updateCriteriaScore(field, value) {
             const p = getSelectedPlayer();
             if (!p) return;
-            p[field] = parseFloat(value);
+            let num = parseFloat(String(value).replace(',', '.'));
+            if (isNaN(num)) return;
+            num = Math.max(1, Math.min(10, Math.round(num * 2) / 2));
 
-            if (field === 'tecnica') {
-                p.recepcion = parseFloat(value);
-                p.definicion = Math.max(1, Math.min(10, Number((parseFloat(value) - 0.3).toFixed(1))));
-            }
+            const dateKey = document.getElementById('currentDate')?.value || 'L10';
+            const stationCode = document.getElementById('currentStation')?.value || 'EST1';
 
-            const avg = parseFloat(calcPlayerAverage(p));
-            if (avg >= 7.8) p.semaforo = 'VERDE';
-            else if (avg >= 6.5) p.semaforo = 'AMARILLO';
-            else p.semaforo = 'ROJO';
+            if (!p.evaluations || typeof p.evaluations !== 'object') p.evaluations = {};
+            if (!p.evaluations[dateKey]) p.evaluations[dateKey] = {};
 
+            const prevEntry = p.evaluations[dateKey][stationCode] || {
+                tecnica: p.tecnica,
+                tactica: p.tactica,
+                fisica: p.fisica,
+                psico: p.psico
+            };
+
+            p.evaluations[dateKey][stationCode] = {
+                ...prevEntry,
+                [field]: num,
+                ts: Date.now()
+            };
+
+            // Si evalúa en cancha hoy, marcamos presente automáticamente en esa fecha
+            if (!p.attendance) p.attendance = {};
+            p.attendance[dateKey] = true;
+
+            recomputePlayerAggregates(p);
             renderPlayerEvaluationCard();
             renderCanchaPlayerList();
             persistPlayerToCloud(p);
+        }
+
+        function stepCriteriaScore(field, delta) {
+            const inputIds = {
+                tecnica: 'sliderTecnica',
+                tactica: 'sliderTactica',
+                fisica: 'sliderFisica',
+                psico: 'sliderPsico'
+            };
+            const el = document.getElementById(inputIds[field]);
+            const cur = parseFloat(el?.value || 7.5);
+            const next = Math.max(1, Math.min(10, Math.round((cur + delta) * 2) / 2));
+            updateCriteriaScore(field, next);
         }
 
         function setPlayerSemaforo(color) {
@@ -2914,6 +3168,38 @@ function json(obj, callback) {
             document.getElementById('barValPsi').textContent = `${p.psico} / 10`;
             document.getElementById('barFillPsi').style.width = `${p.psico * 10}%`;
 
+            const summary = getPlayerSummaryBreakdown(p);
+            const wkComiteEl = document.getElementById('comiteWeeklyBreakdown');
+            if (wkComiteEl) {
+                wkComiteEl.innerHTML = WEEKS_CONFIG.map(w => {
+                    const val = summary.weekAvgs[w.code];
+                    return `
+                        <div class="p-1.5 rounded-lg bg-white border border-slate-200">
+                            <span class="block text-[10px] text-slate-400 font-bold uppercase">${w.label}</span>
+                            <span class="text-xs font-black ${val ? 'text-emerald-700' : 'text-slate-300'}">${val || '—'}</span>
+                        </div>
+                    `;
+                }).join('') + `
+                    <div class="p-1.5 rounded-lg bg-ccba-blue text-white">
+                        <span class="block text-[10px] uppercase opacity-80 font-bold">Final</span>
+                        <span class="text-xs font-black">${summary.finalAvg}</span>
+                    </div>
+                `;
+            }
+
+            const stComiteEl = document.getElementById('comiteStationBreakdown');
+            if (stComiteEl) {
+                stComiteEl.innerHTML = Object.keys(STATION_SHORT_LABELS).map(stKey => {
+                    const val = summary.stationAvgs[stKey];
+                    return `
+                        <div class="p-1.5 rounded-lg bg-white border border-slate-200">
+                            <span class="block text-[10px] text-slate-400 font-bold uppercase">${STATION_SHORT_LABELS[stKey]}</span>
+                            <span class="text-xs font-black ${val ? 'text-sky-700' : 'text-slate-300'}">${val || '—'}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
             document.getElementById('comiteCardNotes').textContent = p.notes ? `"${p.notes}"` : '"Sin observaciones puntuales registradas aún."';
             document.getElementById('comiteSuggestedLine').value = p.target2027 || 'C';
 
@@ -3105,6 +3391,7 @@ function json(obj, callback) {
             tbody.innerHTML = filtered.map(p => {
                 const isSelected = String(p.id) === String(selectedPlayerId);
                 const avg = calcPlayerAverage(p);
+                const summary = getPlayerSummaryBreakdown(p);
                 const asist = calcAttendancePercent(p);
 
                 let semBadge = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">VERDE</span>`;
@@ -3127,11 +3414,15 @@ function json(obj, callback) {
                         </td>
                         <td class="py-2.5 px-2 text-center text-slate-600">${p.year}</td>
                         <td class="py-2.5 px-2 text-center font-bold text-slate-700">${blindMode ? 'Oculto' : p.eq2026}</td>
-                        <td class="py-2.5 px-2 text-center font-bold text-emerald-700 bg-emerald-50/40">${p.tecnica}</td>
-                        <td class="py-2.5 px-2 text-center font-bold text-sky-700 bg-sky-50/40">${p.tactica}</td>
-                        <td class="py-2.5 px-2 text-center font-bold text-orange-700 bg-orange-50/40">${p.fisica}</td>
-                        <td class="py-2.5 px-2 text-center font-bold text-purple-700 bg-purple-50/40">${p.psico}</td>
-                        <td class="py-2.5 px-2 text-center font-black text-ccba-blue">${avg}</td>
+                        <td class="py-2.5 px-1.5 text-center font-bold text-slate-600 bg-slate-50">${summary.weekAvgs.SEM0 || '—'}</td>
+                        <td class="py-2.5 px-1.5 text-center font-bold text-slate-600 bg-slate-50">${summary.weekAvgs.SEM1 || '—'}</td>
+                        <td class="py-2.5 px-1.5 text-center font-bold text-slate-600 bg-slate-50">${summary.weekAvgs.SEM2 || '—'}</td>
+                        <td class="py-2.5 px-1.5 text-center font-bold text-slate-600 bg-slate-50">${summary.weekAvgs.SEM3 || '—'}</td>
+                        <td class="py-2.5 px-1.5 text-center font-bold text-emerald-700 bg-emerald-50/40">${p.tecnica}</td>
+                        <td class="py-2.5 px-1.5 text-center font-bold text-sky-700 bg-sky-50/40">${p.tactica}</td>
+                        <td class="py-2.5 px-1.5 text-center font-bold text-orange-700 bg-orange-50/40">${p.fisica}</td>
+                        <td class="py-2.5 px-1.5 text-center font-bold text-purple-700 bg-purple-50/40">${p.psico}</td>
+                        <td class="py-2.5 px-2 text-center font-black text-ccba-blue bg-sky-50/70">${avg}</td>
                         <td class="py-2.5 px-3 text-center">${semBadge}</td>
                         <td class="py-2.5 px-2 text-center font-bold ${asist >= 50 ? 'text-emerald-600' : 'text-amber-600'}">${asist}%</td>
                         <td class="py-2.5 px-3 text-center" onclick="event.stopPropagation()">
@@ -3200,6 +3491,32 @@ function json(obj, callback) {
             document.getElementById('modalScoreFis').textContent = p.fisica;
             document.getElementById('modalScorePsi').textContent = p.psico;
 
+            const summary = getPlayerSummaryBreakdown(p);
+            const modalWkEl = document.getElementById('modalWeeklySummaryRow');
+            if (modalWkEl) {
+                modalWkEl.innerHTML = WEEKS_CONFIG.map(w => `
+                    <div class="p-2 rounded-xl bg-white border border-slate-200">
+                        <span class="text-[10px] font-bold uppercase text-slate-400 block">${w.label}</span>
+                        <span class="text-sm font-black text-emerald-700">${summary.weekAvgs[w.code] || '—'}</span>
+                    </div>
+                `).join('') + `
+                    <div class="p-2 rounded-xl bg-ccba-blue text-white">
+                        <span class="text-[10px] font-bold uppercase opacity-80 block">Prom. Final</span>
+                        <span class="text-sm font-black">${summary.finalAvg}</span>
+                    </div>
+                `;
+            }
+
+            const modalStEl = document.getElementById('modalStationSummaryRow');
+            if (modalStEl) {
+                modalStEl.innerHTML = Object.keys(STATION_SHORT_LABELS).map(stKey => `
+                    <div class="p-2 rounded-xl bg-white border border-slate-200">
+                        <span class="text-[10px] font-bold uppercase text-slate-400 block">${STATION_SHORT_LABELS[stKey]}</span>
+                        <span class="text-sm font-black text-sky-700">${summary.stationAvgs[stKey] || '—'}</span>
+                    </div>
+                `).join('');
+            }
+
             const avg = calcPlayerAverage(p);
             const notesPart = p.notes ? `Observaciones de cancha: "${p.notes}". ` : '';
             document.getElementById('modalFeedbackText').textContent =
@@ -3214,24 +3531,36 @@ function json(obj, callback) {
 
         function exportCSV() {
             const catPlayers = getCategoryPlayers();
-            const headers = ['Sec', 'Categoria', 'Anio', 'Eq2026', 'Apellido', 'Nombre', 'Tecnica', 'Tactica', 'Fisica', 'Psicologica', 'Promedio', 'Semaforo', 'Asistencia_%', 'Grupo2027', 'Observaciones'];
-            const rows = catPlayers.map(p => [
-                p.sec,
-                p.cat,
-                p.year,
-                p.eq2026,
-                `"${(p.apellido || '').replace(/"/g, '""')}"`,
-                `"${(p.nombre || '').replace(/"/g, '""')}"`,
-                p.tecnica,
-                p.tactica,
-                p.fisica,
-                p.psico,
-                calcPlayerAverage(p),
-                p.semaforo,
-                calcAttendancePercent(p),
-                p.target2027 || 'C',
-                `"${(p.notes || '').replace(/"/g, '""')}"`
-            ]);
+            const headers = ['Sec', 'Categoria', 'Anio', 'Eq2026', 'Apellido', 'Nombre', 'Sem_Inicial', 'Semana_1', 'Semana_2', 'Semana_3_4', 'Estacion_1', 'Estacion_2', 'Estacion_3', 'Estacion_4', 'Partido_11v11', 'Tecnica_Gral', 'Tactica_Gral', 'Fisica_Gral', 'Psico_Gral', 'Promedio_Final_Completo', 'Semaforo', 'Asistencia_%', 'Grupo2027', 'Observaciones'];
+            const rows = catPlayers.map(p => {
+                const s = getPlayerSummaryBreakdown(p);
+                return [
+                    p.sec,
+                    p.cat,
+                    p.year,
+                    p.eq2026,
+                    `"${(p.apellido || '').replace(/"/g, '""')}"`,
+                    `"${(p.nombre || '').replace(/"/g, '""')}"`,
+                    s.weekAvgs.SEM0 || '',
+                    s.weekAvgs.SEM1 || '',
+                    s.weekAvgs.SEM2 || '',
+                    s.weekAvgs.SEM3 || '',
+                    s.stationAvgs.EST1 || '',
+                    s.stationAvgs.EST2 || '',
+                    s.stationAvgs.EST3 || '',
+                    s.stationAvgs.EST4 || '',
+                    s.stationAvgs.PARTIDO || '',
+                    p.tecnica,
+                    p.tactica,
+                    p.fisica,
+                    p.psico,
+                    s.finalAvg,
+                    p.semaforo,
+                    calcAttendancePercent(p),
+                    p.target2027 || 'C',
+                    `"${(p.notes || '').replace(/"/g, '""')}"`
+                ];
+            });
 
             const csvContent = '\uFEFF' + [headers.join(';'), ...rows.map(r => r.join(';'))].join('\r\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -3607,6 +3936,7 @@ Asistencia Promedio: =AVERAGE('7MAS 2013-2014'!P:P)
             navigatePlayer,
             renderPlayerEvaluationCard,
             updateCriteriaScore,
+            stepCriteriaScore,
             setPlayerSemaforo,
             toggleCurrentPlayerAttendance,
             addQuickTag,
@@ -3637,6 +3967,11 @@ Asistencia Promedio: =AVERAGE('7MAS 2013-2014'!P:P)
         // Inicialización al cargar la página
         window.onload = function() {
             initAppAuth();
+            try {
+                const savedStation = localStorage.getItem('ccba_selected_station');
+                const stSelect = document.getElementById('currentStation');
+                if (savedStation && stSelect) stSelect.value = savedStation;
+            } catch (e) {}
             updatePadronCounterBadge();
             renderCanchaPlayerList();
             renderPlayerEvaluationCard();
