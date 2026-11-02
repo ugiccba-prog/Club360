@@ -131,12 +131,16 @@
                         </div>
                     </div>
 
-                    <!-- Indicador de Guardado -->
+                    <!-- Indicador de Guardado + Compartir -->
                     <div class="flex items-center gap-2">
                         <button onclick="forceCloudPull()" id="syncStatusBadge" title="Tocar para forzar actualización ahora" class="bg-slate-800/80 hover:bg-slate-800 border border-slate-600 text-slate-200 text-[11px] font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm transition cursor-pointer">
                             <span id="syncDot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
                             <span id="syncText">Conectando...</span>
                             <i class="fa-solid fa-rotate text-[10px] ml-1 opacity-75"></i>
+                        </button>
+                        <button onclick="shareAppLink()" title="Compartir el link de la app con los entrenadores" class="bg-white/15 hover:bg-white/25 border border-white/25 text-white text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm transition">
+                            <i class="fa-solid fa-share-nodes text-[11px]"></i>
+                            <span id="shareBtnLabel">Compartir</span>
                         </button>
                         <div id="saveToast" class="opacity-0 transition-opacity duration-300 bg-emerald-500 text-white text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1 shadow">
                             <i class="fa-solid fa-check-circle"></i> Guardado
@@ -170,6 +174,25 @@
     <!-- CONTENIDO PRINCIPAL -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5 no-print">
 
+        <!-- AVISO DE PROBLEMA DE SINCRONIZACIÓN CON GOOGLE DRIVE -->
+        <div id="syncErrorBanner" role="alert" class="hidden mb-4 bg-rose-50 border border-rose-200 text-rose-900 rounded-2xl p-3.5 flex flex-wrap items-start justify-between gap-3">
+            <div class="flex items-start gap-2.5 min-w-0">
+                <i class="fa-solid fa-triangle-exclamation text-rose-600 mt-0.5"></i>
+                <div class="min-w-0">
+                    <p class="text-xs sm:text-sm font-extrabold">No se está guardando en Google Drive</p>
+                    <p id="syncErrorText" class="text-xs text-rose-800 mt-0.5 break-words"></p>
+                    <p class="text-[11px] text-rose-700 mt-1">Los cambios quedan en este dispositivo y se suben solos cuando vuelva la conexión.</p>
+                </div>
+            </div>
+            <div class="flex gap-2 shrink-0">
+                <button onclick="forceCloudPull()" class="px-3 py-1.5 rounded-xl bg-white border border-rose-200 text-rose-700 text-xs font-bold hover:bg-rose-100 transition">
+                    <i class="fa-solid fa-rotate mr-1"></i> Reintentar
+                </button>
+                <button onclick="toggleSetupGuideModal()" class="px-3 py-1.5 rounded-xl bg-rose-600 text-white text-xs font-bold hover:bg-rose-700 transition">
+                    Cómo arreglarlo
+                </button>
+            </div>
+        </div>
         <!-- BARRA SUPERIOR DE FILTROS GLOBALES -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-3 sm:p-4 mb-5 space-y-3">
             <!-- FILTRO RÁPIDO POR CATEGORÍA (BOTONERA DIRECTA 7ma, 6ta, 5ta, A Prueba) -->
@@ -1197,7 +1220,7 @@
             <div class="flex items-center justify-between pb-4 border-b border-slate-200">
                 <div>
                     <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full">Instructivo para ugiccba-prog/ugiccba-site</span>
-                    <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">Cómo dejarla en www.ugiccba.com.ar/hockey con Guardado en Vivo</h3>
+                    <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">Conectar la app a Google Sheets con Guardado en Vivo</h3>
                 </div>
                 <button onclick="toggleSetupGuideModal()" class="text-slate-400 hover:text-slate-700 p-2 rounded-lg">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -1213,40 +1236,38 @@
                 </div>
 
                 <div class="space-y-2">
-                    <h4 class="font-extrabold text-slate-900">Paso 1: Preparar la Planilla en tu Google Drive (1 minuto)</h4>
+                    <h4 class="font-extrabold text-slate-900">Paso 1: Pegar el código en Apps Script (2 minutos)</h4>
                     <ol class="list-decimal list-inside space-y-1.5 text-xs text-slate-600">
-                        <li>Abrí una planilla nueva en tu Google Drive (ej: <em>"Base Datos Selectividad Hockey 2027"</em>).</li>
-                        <li>En el menú superior de Google Sheets, entrá en <strong>Extensiones → Apps Script</strong>.</li>
-                        <li>Borrá lo que haya y pegá este código completo:</li>
+                        <li>Abrí la planilla de la Selectividad en tu Google Drive (o creá una nueva, ej: <em>"Base Datos Selectividad Hockey 2027"</em>).</li>
+                        <li>En el menú de Google Sheets entrá en <strong>Extensiones → Apps Script</strong>.</li>
+                        <li>Borrá <strong>todo</strong> lo que haya en <code>Código.gs</code>, pegá este código completo y guardá (💾):</li>
                     </ol>
                     <div class="relative mt-2">
-                        <pre id="appsScriptCodeBlock" class="bg-slate-900 text-emerald-300 p-3.5 rounded-xl text-[11px] font-mono overflow-x-auto leading-relaxed">function doGet(e) {
-  var prop = PropertiesService.getScriptProperties().getProperty('CCBA_PLAYERS_2027');
-  return ContentService.createTextOutput(prop || "[]").setMimeType(ContentService.MimeType.JSON);
-}
-
-function doPost(e) {
-  var body = e.postData.contents;
-  PropertiesService.getScriptProperties().setProperty('CCBA_PLAYERS_2027', body);
-  return ContentService.createTextOutput(JSON.stringify({ok: true})).setMimeType(ContentService.MimeType.JSON);
-}</pre>
+                        <pre id="appsScriptCodeBlock" class="bg-slate-900 text-emerald-300 p-3.5 pt-10 rounded-xl text-[11px] font-mono overflow-auto max-h-72 leading-relaxed"><!--GS_CODE--></pre>
                         <button onclick="copyAppsScriptCode()" class="absolute top-2.5 right-2.5 bg-sky-500 hover:bg-sky-600 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg shadow">
                             <i class="fa-regular fa-copy mr-1"></i> Copiar Código
                         </button>
                     </div>
-                    <ol start="4" class="list-decimal list-inside space-y-1.5 text-xs text-slate-600 pt-1">
-                        <li>Arriba a la derecha en Apps Script, tocá el botón azul <strong>Implementar → Nueva implementación</strong>.</li>
-                        <li>En "Seleccionar tipo" elegí <strong>Aplicación web</strong>.</li>
-                        <li>En <em>"Ejecutar como"</em> dejá <strong>Yo</strong>, y en <em>"Quién tiene acceso"</em> elegí <strong>Cualquier persona</strong> (fundamental para que los entrenadores no tengan que loguearse).</li>
-                        <li>Copiá la <strong>URL de la aplicación web</strong> que te entrega (`https://script.google.com/macros/s/.../exec`).</li>
-                    </ol>
+                    <p class="text-[11px] text-slate-500">Los datos se guardan en una pestaña <strong>"Jugadoras"</strong> de la planilla: el comité puede verlos y corregirlos directo en Sheets.</p>
                 </div>
 
                 <div class="space-y-2 pt-2 border-t border-slate-200">
-                    <h4 class="font-extrabold text-slate-900">Paso 2: Subirlo a tu repo <code>ugiccba-prog/ugiccba-site</code></h4>
+                    <h4 class="font-extrabold text-slate-900">Paso 2: Publicar (sin cambiar la URL)</h4>
                     <ol class="list-decimal list-inside space-y-1.5 text-xs text-slate-600">
-                        <li>En este archivo HTML, buscá la constante <code>FIXED_GOOGLE_SCRIPT_URL = ""</code> (al principio del script) y pegá ahí tu URL de Apps Script para que ya quede grabada de fábrica para todos los entrenadores.</li>
-                        <li>En tu repositorio de GitHub <code>ugiccba-site</code>, creá una carpeta llamada <code>hockey</code> y subí este archivo adentro con el nombre <code>index.html</code> (así entran directo con <strong><code>www.ugiccba.com.ar/hockey</code></strong>).</li>
+                        <li><strong>Si ya existe la implementación</strong> que usa la app: <strong>Implementar → Gestionar implementaciones → lápiz ✏️ → Versión: "Nueva versión" → Implementar</strong>. La URL <code>…/exec</code> queda igual y no hay que tocar nada más.</li>
+                        <li><strong>Si es la primera vez</strong>: <strong>Implementar → Nueva implementación → ⚙️ Aplicación web</strong>, con <em>"Ejecutar como: Yo"</em> y <em>"Quién tiene acceso: <strong>Cualquier persona</strong>"</em>. Autorizá con tu cuenta y pegá la URL nueva en la constante <code>FIXED_GOOGLE_SCRIPT_URL</code> de este archivo (o en la caja "URL de Sincronización" de la pestaña Padrón).</li>
+                    </ol>
+                    <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900 leading-relaxed">
+                        <strong>Importante:</strong> guardar el código no alcanza. Si no publicás una <em>"Nueva versión"</em>, Google sigue sirviendo la versión anterior y aparece el error <em>"No se encontró la función de la secuencia de comandos: doGet"</em>.
+                    </div>
+                </div>
+
+                <div class="space-y-2 pt-2 border-t border-slate-200">
+                    <h4 class="font-extrabold text-slate-900">Paso 3: Probar y compartir</h4>
+                    <ol class="list-decimal list-inside space-y-1.5 text-xs text-slate-600">
+                        <li>Abrí en el navegador la URL del script agregando <code>?accion=ping</code> al final: tiene que mostrar <code>{"ok":true,...}</code>.</li>
+                        <li>Recargá esta app: el indicador de arriba tiene que quedar en verde <strong>"Drive en Vivo"</strong>. La primera vez la planilla se carga sola con el padrón.</li>
+                        <li>Tocá <strong>Compartir</strong> (arriba a la derecha) y mandá el link a los entrenadores por WhatsApp.</li>
                     </ol>
                 </div>
             </div>
@@ -1405,11 +1426,15 @@ function doPost(e) {
             if (googleScriptUrl) {
                 await pullFromGoogleScript();
                 // Auto-refresco cada 8 segundos para que todos los entrenadores vean los cambios de las demás estaciones
+                // (se pausa con la pestaña oculta y mientras hay cambios propios sin subir)
                 setInterval(() => {
-                    if (Date.now() - lastWriteTimestamp > 4000) {
+                    if (!document.hidden && pendingIds.size === 0 && !flushInFlight && Date.now() - lastWriteTimestamp > 4000) {
                         pullFromGoogleScript(true);
                     }
                 }, 8000);
+                document.addEventListener('visibilitychange', () => {
+                    if (!document.hidden && pendingIds.size === 0) pullFromGoogleScript(true);
+                });
                 return;
             }
 
@@ -1445,58 +1470,252 @@ function doPost(e) {
             }
         }
 
-        async function pullFromGoogleScript(silent = false) {
-            if (!googleScriptUrl) return;
+        // =================================================================
+        // SINCRONIZACIÓN CON GOOGLE SHEETS (apps-script/HockeySelectividad.gs)
+        // - Cada cambio marca la jugadora con updatedAt y se envía SOLO esa
+        //   jugadora (agrupado cada 0,7 s), así dos entrenadores no se pisan.
+        // - El script mezcla por id y se queda con el cambio más nuevo.
+        // =================================================================
+        const pendingIds = new Set();
+        let flushTimer = null;
+        let flushInFlight = false;
+        let lastRemoteSignature = '';
+
+        function setSyncStatus(state, text, detail = '') {
             const syncDot = document.getElementById('syncDot');
             const syncText = document.getElementById('syncText');
-            if (!silent) {
-                syncDot.className = "w-2 h-2 rounded-full bg-sky-400 animate-ping";
-                syncText.textContent = "Sincronizando Drive...";
-            }
-            try {
-                const res = await fetch(googleScriptUrl, { method: 'GET', cache: 'no-store' });
-                const data = await res.json();
-                if (Array.isArray(data) && data.length > 0) {
-                    players = data.sort((a, b) => (Number(a.sec) || 999) - (Number(b.sec) || 999));
-                    refreshAllViews();
-                } else if (Array.isArray(data) && data.length === 0) {
-                    // Primera vez: poblar la planilla de Drive con las 38 jugadoras reales de 7mas
-                    await pushAllToGoogleScript();
+            const badge = document.getElementById('syncStatusBadge');
+            const dots = {
+                ok: 'bg-emerald-400',
+                busy: 'bg-sky-400 animate-pulse',
+                warn: 'bg-amber-400',
+                error: 'bg-rose-500'
+            };
+            if (syncDot) syncDot.className = `w-2 h-2 rounded-full ${dots[state] || dots.warn}`;
+            if (syncText) syncText.textContent = text;
+            if (badge) badge.title = detail || 'Tocar para forzar actualización ahora';
+
+            const banner = document.getElementById('syncErrorBanner');
+            if (banner) {
+                if (state === 'error') {
+                    document.getElementById('syncErrorText').textContent = detail || text;
+                    banner.classList.remove('hidden');
+                } else if (state === 'ok') {
+                    banner.classList.add('hidden');
                 }
-                syncDot.className = "w-2 h-2 rounded-full bg-emerald-400";
-                syncText.textContent = "Drive en Vivo";
-            } catch (err) {
-                console.error("Error leyendo Google Script:", err);
-                syncDot.className = "w-2 h-2 rounded-full bg-rose-400";
-                syncText.textContent = "Error URL Drive";
             }
         }
 
-        async function pushAllToGoogleScript() {
-            if (!googleScriptUrl) return;
-            lastWriteTimestamp = Date.now();
+        function normalizePlayer(p) {
+            return {
+                ...p,
+                id: String(p.id),
+                notes: p.notes == null ? '' : String(p.notes),
+                attendance: (p.attendance && typeof p.attendance === 'object') ? p.attendance : {},
+                updatedAt: Number(p.updatedAt) || 0
+            };
+        }
+
+        // Lee la respuesta del Apps Script y traduce los errores típicos de Google
+        async function readScriptResponse(res) {
+            const text = (await res.text()).trim();
+            if (text.startsWith('<')) {
+                const plain = text
+                    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+                    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+                    .replace(/<[^>]+>/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                if (/doGet|doPost/.test(plain)) {
+                    throw new Error('El script publicado no tiene doGet/doPost. Pegá apps-script/HockeySelectividad.gs en Apps Script y publicá una "Nueva versión" de la implementación.');
+                }
+                if (/acceso|access|permis|iniciar sesi|sign in/i.test(plain)) {
+                    throw new Error('El script no es público. En la implementación elegí "Quién tiene acceso: Cualquier persona".');
+                }
+                throw new Error('Google devolvió una página de error: ' + plain.slice(0, 160));
+            }
             try {
-                await fetch(googleScriptUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(players)
-                });
-                const syncDot = document.getElementById('syncDot');
-                const syncText = document.getElementById('syncText');
-                syncDot.className = "w-2 h-2 rounded-full bg-emerald-400";
-                syncText.textContent = "Drive Guardado";
+                return JSON.parse(text);
             } catch (e) {
-                console.error("Error enviando datos a Google Drive:", e);
+                throw new Error('Respuesta inválida del script: ' + text.slice(0, 120));
             }
         }
+
+        function describeSyncError(err) {
+            if (err instanceof TypeError) {
+                return 'No se pudo conectar con el script (sin internet, o la implementación no está publicada para "Cualquier persona").';
+            }
+            return err && err.message ? err.message : String(err);
+        }
+
+        function mergeRemotePlayers(remoteList) {
+            const localById = new Map(players.map(p => [String(p.id), p]));
+            const merged = remoteList.map(normalizePlayer).map(remote => {
+                const local = localById.get(remote.id);
+                // Si acá hay un cambio sin enviar o más nuevo, se respeta el local
+                if (local && (pendingIds.has(remote.id) || (Number(local.updatedAt) || 0) > remote.updatedAt)) {
+                    return local;
+                }
+                return remote;
+            });
+            // Jugadoras cargadas en este dispositivo que todavía no llegaron a la planilla
+            const remoteIds = new Set(merged.map(p => p.id));
+            players.forEach(p => {
+                if (!remoteIds.has(String(p.id)) && pendingIds.has(String(p.id))) merged.push(p);
+            });
+            players = merged;
+        }
+
+        async function pullFromGoogleScript(silent = false) {
+            if (!googleScriptUrl) return false;
+            if (!silent) setSyncStatus('busy', 'Sincronizando Drive...');
+            try {
+                const sep = googleScriptUrl.includes('?') ? '&' : '?';
+                const res = await fetch(`${googleScriptUrl}${sep}t=${Date.now()}`, { method: 'GET', cache: 'no-store', redirect: 'follow' });
+                const data = await readScriptResponse(res);
+                if (!Array.isArray(data)) {
+                    throw new Error(data && data.error ? `Error del script: ${data.error}` : 'El script no devolvió la lista de jugadoras.');
+                }
+                if (data.length === 0) {
+                    // Planilla vacía (primera vez): se siembra con el padrón cargado en la app
+                    players = players.map(p => ({ ...normalizePlayer(p), updatedAt: Date.now() }));
+                    await postToGoogleScript('sembrar', players);
+                } else {
+                    const signature = JSON.stringify(data);
+                    if (signature !== lastRemoteSignature) {
+                        lastRemoteSignature = signature;
+                        mergeRemotePlayers(data);
+                        refreshAllViews();
+                    }
+                }
+                setSyncStatus('ok', 'Drive en Vivo', `Última sincronización: ${new Date().toLocaleTimeString('es-AR')}`);
+                return true;
+            } catch (err) {
+                console.error('Error leyendo Google Script:', err);
+                setSyncStatus('error', 'Error Drive · reintentar', describeSyncError(err));
+                return false;
+            }
+        }
+
+        async function postToGoogleScript(accion, lista) {
+            if (!googleScriptUrl) return false;
+            const body = JSON.stringify({ accion, jugadoras: lista });
+            const headers = { 'Content-Type': 'text/plain;charset=utf-8' };
+            try {
+                const res = await fetch(googleScriptUrl, { method: 'POST', headers, body, redirect: 'follow' });
+                const data = await readScriptResponse(res);
+                if (!data || data.ok === false) {
+                    throw new Error(data && data.error ? `Error del script: ${data.error}` : 'El script no confirmó el guardado.');
+                }
+                return true;
+            } catch (err) {
+                if (err instanceof TypeError) {
+                    // Algunos navegadores no dejan leer la respuesta del redirect de Google:
+                    // se reenvía sin leerla (el script igual guarda).
+                    await fetch(googleScriptUrl, { method: 'POST', mode: 'no-cors', headers, body });
+                    return true;
+                }
+                throw err;
+            }
+        }
+
+        function queueCloudSave(playerObj) {
+            pendingIds.add(String(playerObj.id));
+            clearTimeout(flushTimer);
+            flushTimer = setTimeout(flushPendingSaves, 700);
+        }
+
+        async function flushPendingSaves() {
+            flushTimer = null;
+            if (!googleScriptUrl || pendingIds.size === 0) return;
+            if (flushInFlight) {
+                flushTimer = setTimeout(flushPendingSaves, 500);
+                return;
+            }
+            flushInFlight = true;
+            const ids = new Set(pendingIds);
+            const batch = players.filter(p => ids.has(String(p.id)));
+            const sentVersion = new Map(batch.map(p => [String(p.id), p.updatedAt]));
+            setSyncStatus('busy', 'Guardando en Drive...');
+            try {
+                await postToGoogleScript('actualizar', batch);
+                // Solo se liberan las que no se volvieron a editar mientras viajaba el envío
+                ids.forEach(id => {
+                    const current = players.find(p => String(p.id) === id);
+                    if (!current || current.updatedAt === sentVersion.get(id)) pendingIds.delete(id);
+                });
+                lastWriteTimestamp = Date.now();
+                setSyncStatus('ok', 'Drive Guardado', `Guardado: ${new Date().toLocaleTimeString('es-AR')}`);
+                if (pendingIds.size > 0 && !flushTimer) flushTimer = setTimeout(flushPendingSaves, 300);
+            } catch (err) {
+                console.error('Error guardando en Google Drive:', err);
+                setSyncStatus('error', 'Sin guardar · reintentando', describeSyncError(err));
+                if (!flushTimer) flushTimer = setTimeout(flushPendingSaves, 5000);
+            } finally {
+                flushInFlight = false;
+            }
+        }
+
+        // Aviso si se cierra la pestaña con cambios todavía sin subir
+        window.addEventListener('beforeunload', (e) => {
+            if (pendingIds.size > 0) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
 
         async function saveGoogleScriptUrl() {
             const inputVal = document.getElementById('googleScriptUrlInput').value.trim();
             if (!inputVal) return;
             googleScriptUrl = inputVal;
-            await pullFromGoogleScript();
-            showSaveToast();
+            lastRemoteSignature = '';
+            const ok = await pullFromGoogleScript();
+            if (ok) showSaveToast();
+        }
+
+        async function shareAppLink() {
+            const url = `${window.location.origin}${window.location.pathname}`;
+            const shareData = {
+                title: 'Selectividad Menores 2027 - Hockey CCBA',
+                text: 'Planilla de evaluación de la Selectividad Hockey CCBA 2027',
+                url
+            };
+            if (navigator.share && (!navigator.canShare || navigator.canShare(shareData))) {
+                try {
+                    await navigator.share(shareData);
+                    return;
+                } catch (err) {
+                    if (err && err.name === 'AbortError') return;
+                }
+            }
+            const copied = await copyTextToClipboard(url);
+            const label = document.getElementById('shareBtnLabel');
+            if (label && copied) {
+                label.textContent = '¡Link copiado!';
+                setTimeout(() => { label.textContent = 'Compartir'; }, 1800);
+            } else if (!copied) {
+                window.prompt('Copiá este link para compartir:', url);
+            }
+        }
+
+        async function copyTextToClipboard(text) {
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(text);
+                    return true;
+                }
+            } catch (e) { /* se usa el método alternativo */ }
+            const tempArea = document.createElement('textarea');
+            tempArea.value = text;
+            tempArea.setAttribute('readonly', '');
+            tempArea.style.position = 'fixed';
+            tempArea.style.opacity = '0';
+            document.body.appendChild(tempArea);
+            tempArea.select();
+            let ok = false;
+            try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+            document.body.removeChild(tempArea);
+            return ok;
         }
 
         async function forceCloudPull() {
@@ -1514,15 +1733,9 @@ function doPost(e) {
             modal.classList.toggle('hidden');
         }
 
-        function copyAppsScriptCode() {
-            const codeText = document.getElementById('appsScriptCodeBlock').innerText;
-            const tempArea = document.createElement('textarea');
-            tempArea.value = codeText;
-            document.body.appendChild(tempArea);
-            tempArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempArea);
-            showSaveToast();
+        async function copyAppsScriptCode() {
+            const codeText = document.getElementById('appsScriptCodeBlock').textContent;
+            if (await copyTextToClipboard(codeText)) showSaveToast();
         }
 
         function subscribeToPlayersCollection() {
@@ -1566,10 +1779,11 @@ function doPost(e) {
         }
 
         async function persistPlayerToCloud(playerObj) {
+            playerObj.updatedAt = Date.now();
             showSaveToast();
             updatePadronCounterBadge();
             if (googleScriptUrl) {
-                await pushAllToGoogleScript();
+                queueCloudSave(playerObj);
             }
             if (!isCloudActive || !currentUser || !db) return;
             try {
@@ -1951,7 +2165,13 @@ function doPost(e) {
             document.getElementById('valPsico').textContent = p.psico;
 
             document.getElementById('evalAvgScore').textContent = calcPlayerAverage(p);
-            document.getElementById('evalNotes').value = p.notes || '';
+            // No pisar lo que el entrenador está escribiendo cuando llega un refresco automático
+            const notesEl = document.getElementById('evalNotes');
+            const isTypingSamePlayer = document.activeElement === notesEl && notesEl.dataset.playerId === String(p.id);
+            if (!isTypingSamePlayer) {
+                notesEl.value = p.notes || '';
+                notesEl.dataset.playerId = String(p.id);
+            }
 
             renderMiniCanchaRadar(p);
         }
@@ -2607,7 +2827,9 @@ function doPost(e) {
                         targetCat === 'PRUEBA' ? 'Jugadora a prueba' : ''
                     );
                     newPlayer.id = `P_${targetCat}_${Date.now()}_${addedCount}`;
+                    newPlayer.updatedAt = Date.now();
                     players.push(newPlayer);
+                    if (googleScriptUrl) pendingIds.add(newPlayer.id);
                     addedCount++;
                 }
             }
@@ -2620,7 +2842,7 @@ function doPost(e) {
 
             document.getElementById('bulkPasteInput').value = '';
             selectCategoryFilter(targetCat);
-            if (googleScriptUrl) await pushAllToGoogleScript();
+            if (googleScriptUrl && addedCount > 0) await flushPendingSaves();
         }
 
         async function addSinglePlayer() {
@@ -2780,6 +3002,7 @@ Asistencia Promedio: =AVERAGE('7MAS 2013-2014'!P:P)
             switchMainTab,
             switchCanchaSubTab,
             selectCategoryFilter,
+            shareAppLink,
             toggleBlindMode,
             handleCategoryChange,
             updateStationInfo,
