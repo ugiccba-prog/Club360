@@ -108,6 +108,36 @@
 </head>
 <body class="text-slate-800 antialiased min-h-screen flex flex-col">
 
+    <!-- PANTALLA DE ACCESO CON CONTRASEÑA (hsc2027) -->
+    <div id="authLockOverlay" class="fixed inset-0 z-50 bg-gradient-to-br from-slate-950 via-ccba-blue to-sky-900 flex items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-8 shadow-2xl border border-white/20 text-center space-y-5">
+            <div class="flex flex-col items-center">
+                <img src="escudo-ccba.png" alt="Escudo C.C.B.A." class="w-20 h-24 object-contain drop-shadow-md mb-3">
+                <span class="bg-sky-100 text-ccba-blue text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider border border-sky-200 inline-flex items-center justify-center text-center whitespace-nowrap">
+                    Hockey sobre Césped • C.C.B.A.
+                </span>
+                <h2 class="text-xl font-black text-slate-900 mt-2">Selectividad Menores 2027</h2>
+                <p class="text-xs text-slate-500 mt-1">Ingresá la clave del Cuerpo Técnico / Comité para acceder</p>
+            </div>
+
+            <form onsubmit="event.preventDefault(); checkAppPassword();" class="space-y-3 text-left">
+                <div>
+                    <label for="authPasswordInput" class="block text-[11px] font-extrabold uppercase text-slate-500 mb-1">Contraseña de Acceso</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-3.5 top-3 text-slate-400 text-xs"></i>
+                        <input type="password" id="authPasswordInput" placeholder="Ingresá la contraseña..." autocomplete="current-password" class="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                    </div>
+                </div>
+                <p id="authErrorMsg" class="hidden text-xs font-bold text-rose-600 text-center bg-rose-50 py-1.5 px-3 rounded-lg border border-rose-200">
+                    Contraseña incorrecta. Intentá nuevamente.
+                </p>
+                <button type="submit" class="w-full bg-ccba-blue hover:bg-blue-800 text-white font-extrabold text-sm py-2.5 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-right-to-bracket"></i> Ingresar
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- HEADER PRINCIPAL CCBA -->
     <header class="bg-gradient-to-r from-slate-900 via-ccba-blue to-sky-700 text-white shadow-lg sticky top-0 z-40 no-print">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -117,12 +147,12 @@
                     <div class="flex items-center gap-3">
                         <!-- Escudo Oficial CCBA -->
                         <img src="escudo-ccba.png" alt="Escudo Club Ciudad de Buenos Aires (C.C.B.A.)" class="w-11 h-13 object-contain drop-shadow-md shrink-0">
-                        <div>
+                        <div class="flex flex-col items-start">
                             <div class="flex items-center gap-2">
-                                <span class="bg-sky-400/20 text-sky-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider border border-sky-400/30">Hockey sobre Césped</span>
-                                <span class="text-xs text-sky-200 hidden md:inline">• Padrón 2027/28</span>
+                                <span class="bg-sky-400/20 text-sky-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider border border-sky-400/30 inline-flex items-center justify-center text-center whitespace-nowrap">Hockey sobre Césped</span>
+                                <span class="text-xs text-sky-200 hidden md:inline whitespace-nowrap">• Padrón 2027/28</span>
                             </div>
-                            <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white">Selectividad Menores 2027</h1>
+                            <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white whitespace-nowrap mt-0.5">Selectividad Menores 2027</h1>
                         </div>
                     </div>
 
@@ -1013,6 +1043,14 @@
                                 <i class="fa-solid fa-file-excel"></i> Bajar Excel / CSV
                             </button>
                         </div>
+                        <div class="grid grid-cols-2 gap-2 pt-1 border-t border-white/10">
+                            <button onclick="openClearPadronModal()" class="py-2 px-3 bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs rounded-lg shadow flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-trash-can"></i> Borrar Todo el Padrón
+                            </button>
+                            <button onclick="resetToDefaultCCBA()" class="py-2 px-3 bg-slate-700 hover:bg-slate-600 text-slate-100 font-bold text-xs rounded-lg shadow flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-rotate-left"></i> Restaurar Base (47)
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1514,6 +1552,29 @@ function json(obj, callback) {
         </div>
     </div>
 
+    <!-- MODAL DE CONFIRMACIÓN PARA BORRAR TODO EL PADRÓN -->
+    <div id="clearPadronModal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+            <div class="flex items-center gap-3 text-rose-600">
+                <div class="w-11 h-11 rounded-2xl bg-rose-100 flex items-center justify-center text-lg shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-extrabold text-slate-900">¿Borrar todo el padrón?</h3>
+                    <p class="text-xs text-slate-500">Se vaciarán todas las jugadoras de la app y de la hoja de Google Drive para que puedas cargar desde cero.</p>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
+                <button onclick="closeClearPadronModal()" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">
+                    Cancelar
+                </button>
+                <button onclick="confirmClearAllPadron()" class="px-4 py-2 rounded-xl text-xs font-extrabold bg-rose-600 text-white hover:bg-rose-700 flex items-center gap-1.5 shadow">
+                    <i class="fa-solid fa-trash-can"></i> Sí, Borrar Todo el Padrón
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ================================================================= -->
     <!-- LÓGICA JAVASCRIPT, FIREBASE FIRESTORE + GOOGLE DRIVE WEBHOOK      -->
     <!-- ================================================================= -->
@@ -1642,6 +1703,7 @@ function json(obj, callback) {
         };
 
         const LOCAL_STORAGE_KEY = 'ccba_hockey_players_2027_v2';
+        const PADRON_CLEARED_KEY = 'ccba_padron_cleared_v2';
 
         function saveLocalBackup() {
             try {
@@ -1651,15 +1713,23 @@ function json(obj, callback) {
 
         function loadLocalBackup() {
             try {
+                const isCleared = localStorage.getItem(PADRON_CLEARED_KEY) === '1';
                 const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-                if (!raw) return;
+                if (!raw) {
+                    if (isCleared) players = [];
+                    return;
+                }
                 const saved = JSON.parse(raw);
-                if (Array.isArray(saved) && saved.length > 0) {
-                    const byId = new Map(saved.map(p => [String(p.id), p]));
-                    initialPlayers.forEach(initP => {
-                        if (!byId.has(String(initP.id))) byId.set(String(initP.id), initP);
-                    });
-                    players = Array.from(byId.values());
+                if (Array.isArray(saved)) {
+                    if (isCleared) {
+                        players = saved;
+                    } else if (saved.length > 0) {
+                        const byId = new Map(saved.map(p => [String(p.id), p]));
+                        initialPlayers.forEach(initP => {
+                            if (!byId.has(String(initP.id))) byId.set(String(initP.id), initP);
+                        });
+                        players = Array.from(byId.values());
+                    }
                 }
             } catch (e) { /* ignore parse errors */ }
         }
@@ -1839,17 +1909,14 @@ function json(obj, callback) {
                     throw new Error(data && data.error ? `Error del script: ${data.error}` : 'El script no devolvió la lista de jugadoras.');
                 }
                 if (data.length === 0) {
-                    // Planilla vacía (primera vez): se siembra con el padrón cargado en la app
-                    players = players.map(p => ({ ...normalizePlayer(p), updatedAt: Date.now() }));
-                    await postToGoogleScript('sembrar', players);
-                } else {
-                    const signature = JSON.stringify(data);
-                    if (signature !== lastRemoteSignature) {
-                        lastRemoteSignature = signature;
-                        mergeRemotePlayers(data);
-                        saveLocalBackup();
-                        refreshAllViews();
-                    }
+                    localStorage.setItem(PADRON_CLEARED_KEY, '1');
+                }
+                const signature = JSON.stringify(data);
+                if (signature !== lastRemoteSignature) {
+                    lastRemoteSignature = signature;
+                    mergeRemotePlayers(data);
+                    saveLocalBackup();
+                    refreshAllViews();
                 }
                 setSyncStatus('ok', 'Drive en Vivo', `Última sincronización: ${new Date().toLocaleTimeString('es-AR')}`);
                 return true;
@@ -2332,6 +2399,16 @@ function json(obj, callback) {
                 String(p.sec).includes(search)
             );
 
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="p-6 text-center text-slate-400 text-xs font-semibold">
+                        <i class="fa-solid fa-users-slash text-xl mb-2 block text-slate-300"></i>
+                        No hay jugadoras cargadas en esta categoría.
+                    </div>
+                `;
+                return;
+            }
+
             container.innerHTML = filtered.map(p => {
                 const isSelected = String(p.id) === String(selectedPlayerId);
                 const avg = calcPlayerAverage(p);
@@ -2385,7 +2462,19 @@ function json(obj, callback) {
 
         function renderPlayerEvaluationCard() {
             const p = getSelectedPlayer();
-            if (!p) return;
+            if (!p) {
+                document.getElementById('evalPlayerAvatar').textContent = '-';
+                document.getElementById('evalPlayerName').textContent = 'Sin jugadoras en esta categoría';
+                document.getElementById('evalPlayerTeamBadge').textContent = 'Padrón vacío';
+                document.getElementById('evalPlayerYearBadge').textContent = '-';
+                document.getElementById('evalAvgScore').textContent = '0.0';
+                const notesEl = document.getElementById('evalNotes');
+                if (notesEl) {
+                    notesEl.value = '';
+                    notesEl.dataset.playerId = '';
+                }
+                return;
+            }
 
             const stationSelect = document.getElementById('currentStation');
             const stationText = stationSelect.options[stationSelect.selectedIndex].text;
@@ -2572,6 +2661,17 @@ function json(obj, callback) {
                 `;
             }
 
+            if (catPlayers.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="20" class="py-8 text-center text-slate-400 font-semibold">
+                            No hay jugadoras cargadas en esta categoría.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
             tbody.innerHTML = catPlayers.map(p => {
                 const pct = calcAttendancePercent(p);
                 const isTodayPresent = !!(p.attendance && p.attendance[dateKey]);
@@ -2651,7 +2751,6 @@ function json(obj, callback) {
         function updateCommitteeDashboard() {
             const catPlayers = getCategoryPlayers();
             const p = getSelectedPlayer();
-            if (!p) return;
 
             // 1. KPIs superiores
             const verdeCount = catPlayers.filter(x => x.semaforo === 'VERDE').length;
@@ -2668,6 +2767,16 @@ function json(obj, callback) {
             document.getElementById('kpiAmarilloCount').textContent = amarilloCount;
             document.getElementById('kpiRojoCount').textContent = rojoCount;
             document.getElementById('kpiAvgAttendance').textContent = `${avgAsist}%`;
+
+            renderPadronProjectionChart();
+            renderCommitteeTable();
+
+            if (!p) {
+                document.getElementById('comiteCardName').textContent = 'Sin jugadoras en esta categoría';
+                document.getElementById('comiteCardMeta').textContent = 'Cargá jugadoras desde la pestaña Cargar / Padrón';
+                document.getElementById('comiteCardNotes').textContent = '"Padrón sin jugadoras en la categoría seleccionada."';
+                return;
+            }
 
             // 2. Tarjeta lateral de Diagnóstico del Comité
             document.getElementById('comiteCardName').textContent = `${p.sec}. ${p.apellido}, ${p.nombre}`;
@@ -2702,8 +2811,6 @@ function json(obj, callback) {
             if (radarSel1) radarSel1.value = String(p.id);
 
             updateCommitteeCharts();
-            renderPadronProjectionChart();
-            renderCommitteeTable();
         }
 
         function updateCommitteeCharts() {
@@ -3109,6 +3216,8 @@ function json(obj, callback) {
             }
 
             document.getElementById('bulkPasteInput').value = '';
+            saveLocalBackup();
+            showSaveToast();
             selectCategoryFilter(targetCat);
             if (googleScriptUrl && addedCount > 0) await flushPendingSaves();
         }
@@ -3161,10 +3270,115 @@ function json(obj, callback) {
             await persistPlayerToCloud(newPlayer);
         }
 
-        function resetToDefaultCCBA() {
-            players = [...initialPlayers];
+        // =================================================================
+        // CONTRASEÑA DE ACCESO ("hsc2027") Y BORRADO TOTAL DEL PADRÓN
+        // =================================================================
+        const APP_AUTH_SESSION_KEY = 'ccba_hsc2027_unlocked';
+        const APP_PASSWORD_EXPECTED = 'hsc2027';
+
+        function initAppAuth() {
+            const overlay = document.getElementById('authLockOverlay');
+            if (!overlay) return;
+            if (sessionStorage.getItem(APP_AUTH_SESSION_KEY) === '1') {
+                overlay.classList.add('hidden');
+            } else {
+                overlay.classList.remove('hidden');
+                const input = document.getElementById('authPasswordInput');
+                if (input) setTimeout(() => input.focus(), 100);
+            }
+        }
+
+        function checkAppPassword() {
+            const input = document.getElementById('authPasswordInput');
+            const errEl = document.getElementById('authErrorMsg');
+            const overlay = document.getElementById('authLockOverlay');
+            const val = (input?.value || '').trim().toLowerCase();
+
+            if (val === APP_PASSWORD_EXPECTED) {
+                sessionStorage.setItem(APP_AUTH_SESSION_KEY, '1');
+                if (errEl) errEl.classList.add('hidden');
+                if (overlay) overlay.classList.add('hidden');
+            } else {
+                if (errEl) errEl.classList.remove('hidden');
+                if (input) {
+                    input.value = '';
+                    input.focus();
+                }
+            }
+        }
+
+        function openClearPadronModal() {
+            const modal = document.getElementById('clearPadronModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeClearPadronModal() {
+            const modal = document.getElementById('clearPadronModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        async function confirmClearAllPadron() {
+            closeClearPadronModal();
+            clearTimeout(flushTimer);
+            pendingIds.clear();
+            players = [];
+            selectedPlayerId = '';
+            localStorage.setItem(PADRON_CLEARED_KEY, '1');
+            saveLocalBackup();
+            lastRemoteSignature = '[]';
+            lastWriteTimestamp = Date.now();
             refreshAllViews();
             showSaveToast();
+
+            const msgEl = document.getElementById('bulkStatusMsg');
+            if (msgEl) {
+                msgEl.className = "mt-3 p-3 rounded-xl text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200";
+                msgEl.textContent = "Se vació todo el padrón de jugadoras. Podés cargar un padrón nuevo o restaurar la base.";
+                msgEl.classList.remove('hidden');
+            }
+
+            if (googleScriptUrl) {
+                setSyncStatus('busy', 'Vaciando Drive...');
+                try {
+                    await postToGoogleScript('reemplazar', []);
+                    setSyncStatus('ok', 'Padrón Vaciado en Drive', `Vaciado: ${new Date().toLocaleTimeString('es-AR')}`);
+                } catch (err) {
+                    console.warn('Error al vaciar padrón en Google Drive:', err);
+                    setSyncStatus('warn', 'Vaciado Local', describeSyncError(err), false);
+                }
+            }
+        }
+
+        async function resetToDefaultCCBA() {
+            clearTimeout(flushTimer);
+            pendingIds.clear();
+            localStorage.removeItem(PADRON_CLEARED_KEY);
+            const now = Date.now();
+            players = initialPlayers.map(p => ({ ...p, updatedAt: now }));
+            selectedPlayerId = players[0]?.id || '';
+            saveLocalBackup();
+            lastRemoteSignature = '';
+            lastWriteTimestamp = now;
+            refreshAllViews();
+            showSaveToast();
+
+            const msgEl = document.getElementById('bulkStatusMsg');
+            if (msgEl) {
+                msgEl.className = "mt-3 p-3 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200";
+                msgEl.textContent = "Padrón base CCBA (47 jugadoras) restaurado con éxito.";
+                msgEl.classList.remove('hidden');
+            }
+
+            if (googleScriptUrl) {
+                setSyncStatus('busy', 'Restaurando en Drive...');
+                try {
+                    await postToGoogleScript('reemplazar', players);
+                    setSyncStatus('ok', 'Drive Restaurado', `Restaurado: ${new Date().toLocaleTimeString('es-AR')}`);
+                } catch (err) {
+                    console.warn('Error al restaurar padrón en Google Drive:', err);
+                    setSyncStatus('warn', 'Restaurado Local', describeSyncError(err), false);
+                }
+            }
         }
 
         function renderExcelDashboardCharts() {
@@ -3267,6 +3481,10 @@ Asistencia Promedio: =AVERAGE('7MAS 2013-2014'!P:P)
 
         // Exponer funciones al ámbito global (window) para los eventos onclick del HTML
         Object.assign(window, {
+            checkAppPassword,
+            openClearPadronModal,
+            closeClearPadronModal,
+            confirmClearAllPadron,
             switchMainTab,
             switchCanchaSubTab,
             selectCategoryFilter,
@@ -3308,6 +3526,7 @@ Asistencia Promedio: =AVERAGE('7MAS 2013-2014'!P:P)
 
         // Inicialización al cargar la página
         window.onload = function() {
+            initAppAuth();
             updatePadronCounterBadge();
             renderCanchaPlayerList();
             renderPlayerEvaluationCard();
