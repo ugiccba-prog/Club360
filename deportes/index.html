@@ -3,770 +3,870 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ciudad Integrado - Gestión Deportiva</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#082b49">
+  <title>Ciudad Integrado · Deportes</title>
   <style>
     :root {
-      --primary: #004b87;
-      --primary-light: #e6f0f9;
-      --accent: #00a859;
-      --warning: #f59e0b;
-      --danger: #ef4444;
+      --primary: #082b49;
+      --primary-soft: #e6eef6;
+      --ok: #15803d;
+      --warn: #b45309;
+      --bad: #b91c1c;
       --bg: #f4f6f9;
       --text: #1e293b;
       --muted: #64748b;
       --border: #cbd5e1;
-      --white: #ffffff;
+      --white: #fff;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding-bottom: 50px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.4; padding-bottom: 60px; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    :focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
 
-    /* Cabecera */
-    header { background: var(--primary); color: var(--white); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    header h1 { font-size: 1.05rem; font-weight: 700; }
-    .badge-rol { background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
-    .btn-salir { background: transparent; border: 1px solid rgba(255,255,255,0.5); color: white; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; margin-left: 8px; }
+    header { background: var(--primary); color: var(--white); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 50; }
+    header h1 { font-size: 1rem; font-weight: 700; }
+    header small { display: block; font-size: 0.75rem; opacity: 0.8; font-weight: 500; }
+    .btn-salir { background: transparent; border: 1px solid rgba(255,255,255,0.5); color: var(--white); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; }
+    #estado { font-size: 0.78rem; text-align: center; padding: 6px 12px; color: var(--muted); }
+    #estado.ok::before { content: "● "; color: var(--ok); }
+    #estado.warn::before { content: "● "; color: var(--warn); }
 
-    .container { max-width: 680px; margin: 16px auto; padding: 0 12px; }
-    .card { background: var(--white); border-radius: 12px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 14px; }
+    .container { max-width: 640px; margin: 12px auto; padding: 0 12px; }
+    .card { background: var(--white); border-radius: 12px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 12px; }
+    .card h3 { font-size: 0.95rem; color: var(--primary); margin-bottom: 4px; }
+    .hint { font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; }
+
+    label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
+    select, input, textarea { width: 100%; min-height: 48px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; background: var(--white); }
+    textarea { min-height: 120px; resize: vertical; }
+    .field { margin-bottom: 12px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .grid2 .field { margin-bottom: 0; }
+
+    .btn { width: 100%; min-height: 48px; background: var(--primary); color: var(--white); border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    .btn:active { opacity: 0.85; }
+    .btn.ok { background: var(--ok); }
+    .btn-sec { min-height: 40px; background: #e2e8f0; border: none; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+    .row { display: flex; gap: 8px; align-items: center; }
+    .row > input { flex: 1; }
+    .row > .btn { width: auto; padding: 0 18px; }
+    .spread { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
 
     /* Login */
-    #login-screen { max-width: 400px; margin: 50px auto; }
-    .form-group { margin-bottom: 14px; }
-    label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.4px; }
-    select, input[type="password"], input[type="text"], input[type="date"], textarea {
-      width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; background: var(--white); color: var(--text);
-    }
-    textarea { resize: vertical; min-height: 110px; font-family: inherit; }
-    .btn-primary { width: 100%; background: var(--primary); color: var(--white); border: none; padding: 14px; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: 0.15s; }
-    .btn-primary:active { transform: scale(0.99); opacity: 0.9; }
-    .btn-secondary { background: #e2e8f0; color: var(--text); border: none; padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
-    .error-msg { color: var(--danger); font-size: 0.85rem; margin-top: 8px; display: none; }
+    .login { max-width: 380px; margin: 48px auto; }
+    .login h2 { color: var(--primary); margin-bottom: 2px; }
+    .error { color: var(--bad); font-size: 0.85rem; margin-top: 8px; min-height: 1.2em; }
 
-    /* Navegación */
-    .nav-tabs { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
-    .tab-btn { flex: 1; white-space: nowrap; padding: 11px 10px; border: none; background: #e2e8f0; color: var(--muted); font-weight: 700; border-radius: 8px; cursor: pointer; font-size: 0.85rem; }
-    .tab-btn.active { background: var(--primary); color: var(--white); }
+    /* Pestañas */
+    .tabs { display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; }
+    .tab { flex: 1; white-space: nowrap; min-height: 44px; padding: 0 12px; border: none; background: #e2e8f0; color: var(--muted); font-weight: 700; border-radius: 8px; cursor: pointer; font-size: 0.88rem; }
+    .tab[aria-selected="true"] { background: var(--primary); color: var(--white); }
 
-    /* Grilla de Filtros */
-    .filters-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    @media (max-width: 480px) { .filters-grid { grid-template-columns: 1fr; } }
+    /* Jugadores */
+    .lista { display: flex; flex-direction: column; gap: 6px; }
+    .jugador { min-height: 48px; padding: 10px 14px; border-radius: 8px; border: 1px solid #e2e8f0; background: var(--white); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; text-align: left; width: 100%; }
+    .jugador[aria-pressed="true"] { background: var(--primary); color: var(--white); border-color: var(--primary); }
+    .tag { font-size: 0.72rem; font-weight: 700; padding: 3px 8px; border-radius: 10px; background: #dcfce7; color: #166534; }
+    .vacio { color: var(--muted); font-size: 0.88rem; padding: 12px 0; text-align: center; }
 
-    /* Lista de Jugadores (Toma Limpia) */
-    .players-list { display: flex; flex-direction: column; gap: 6px; max-height: 250px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 8px; background: #fafbfc; }
-    .player-item { padding: 12px 14px; border-radius: 8px; border: 1px solid #e2e8f0; background: var(--white); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 0.95rem; }
-    .player-item.selected { background: var(--primary); color: var(--white); border-color: var(--primary); }
-    .status-dot { background: var(--accent); color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 700; }
-
-    /* Gestos (Limpio en Cancha) */
-    .gesto-row { padding: 12px 0; border-bottom: 1px solid #f1f5f9; display: flex; flex-direction: column; gap: 8px; }
-    .gesto-row:last-child { border-bottom: none; }
-    .gesto-title { font-weight: 600; font-size: 0.95rem; }
-    .score-group { display: flex; gap: 6px; }
-    .score-btn { flex: 1; padding: 12px 0; border: 1px solid var(--border); background: var(--bg); border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; color: var(--text); }
-    .score-btn.active { background: var(--accent); color: var(--white); border-color: var(--accent); }
+    /* Gestos */
+    .gesto { padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+    .gesto:last-of-type { border-bottom: none; }
+    .gesto-nombre { font-weight: 600; font-size: 0.92rem; margin-bottom: 6px; }
+    .gesto-nombre em { font-style: normal; font-size: 0.7rem; color: var(--muted); font-weight: 600; margin-left: 4px; }
+    .notas { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .nota { min-height: 46px; border: 1px solid var(--border); background: var(--bg); border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; }
+    .nota[aria-pressed="true"] { background: var(--ok); color: var(--white); border-color: var(--ok); }
 
     /* Asistencia */
-    .asist-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
-    .asist-btns { display: flex; gap: 6px; }
-    .asist-btn { padding: 8px 14px; border: 1px solid var(--border); border-radius: 6px; font-weight: 700; cursor: pointer; background: var(--white); }
-    .asist-btn.P.active { background: var(--accent); color: white; border-color: var(--accent); }
-    .asist-btn.A.active { background: var(--danger); color: white; border-color: var(--danger); }
-    .asist-btn.T.active { background: var(--warning); color: white; border-color: var(--warning); }
+    .asist { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+    .asist span { font-weight: 600; font-size: 0.92rem; }
+    .pat { display: flex; gap: 6px; flex-shrink: 0; }
+    .pat button { width: 46px; min-height: 44px; border: 1px solid var(--border); border-radius: 8px; font-weight: 700; cursor: pointer; background: var(--white); }
+    .pat button[aria-pressed="true"][data-e="P"] { background: var(--ok); color: var(--white); border-color: var(--ok); }
+    .pat button[aria-pressed="true"][data-e="A"] { background: var(--bad); color: var(--white); border-color: var(--bad); }
+    .pat button[aria-pressed="true"][data-e="T"] { background: var(--warn); color: var(--white); border-color: var(--warn); }
 
-    /* DASHBOARD DE ANÁLISIS Y MÉTRICAS */
-    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
-    .kpi-card { background: var(--white); border-radius: 10px; padding: 14px 10px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border-top: 4px solid var(--primary); }
-    .kpi-val { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin: 4px 0; }
-    .kpi-lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
+    /* Análisis */
+    .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+    .kpi { background: var(--white); border-radius: 10px; padding: 12px 6px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    .kpi b { display: block; font-size: 1.5rem; color: var(--primary); }
+    .kpi span { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
+    .barra { margin-bottom: 10px; }
+    .barra-top { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 3px; gap: 8px; }
+    .barra-bg { height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; }
+    .barra-bg div { height: 100%; border-radius: 5px; }
+    .flojo { color: var(--bad); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th, td { text-align: left; padding: 9px 6px; border-bottom: 1px solid #e2e8f0; }
+    th { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; }
+    .pill { padding: 3px 8px; border-radius: 10px; font-weight: 700; font-size: 0.72rem; white-space: nowrap; }
+    .pill.v { background: #dcfce7; color: #166534; }
+    .pill.a { background: #fef3c7; color: #92400e; }
+    .pill.r { background: #fee2e2; color: #991b1b; }
 
-    /* Gráfico de Barras CSS Puro */
-    .chart-row { margin-bottom: 12px; }
-    .chart-header { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
-    .chart-bar-bg { width: 100%; height: 12px; background: #e2e8f0; border-radius: 6px; overflow: hidden; }
-    .chart-bar-fill { height: 100%; border-radius: 6px; transition: width 0.4s ease; }
-
-    /* Tabla de Decisiones */
-    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.85rem; }
-    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #e2e8f0; }
-    th { background: #f8fafc; color: var(--muted); font-size: 0.75rem; text-transform: uppercase; }
-    .pill { padding: 3px 8px; border-radius: 10px; font-weight: 700; font-size: 0.75rem; display: inline-block; }
-    .pill-green { background: #dcfce7; color: #166534; }
-    .pill-amber { background: #fef3c7; color: #92400e; }
-    .pill-red { background: #fee2e2; color: #991b1b; }
+    /* Padrón */
+    .item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; gap: 8px; }
+    .quitar { background: none; border: 1px solid #fecaca; color: var(--bad); border-radius: 6px; padding: 6px 10px; font-size: 0.78rem; cursor: pointer; }
 
     .hidden { display: none !important; }
-    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; display: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: var(--white); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; z-index: 100; max-width: 90vw; text-align: center; }
+    @media (max-width: 420px) { .grid2 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
-  <!-- CABECERA -->
   <header id="app-header" class="hidden">
-    <div>
-      <h1 id="header-title">Ciudad Integrado</h1>
-    </div>
-    <div style="display: flex; align-items: center;">
-      <span id="role-badge" class="badge-rol">Rol</span>
-      <button class="btn-salir" onclick="logout()">Salir</button>
-    </div>
+    <h1>Ciudad Integrado<small id="header-sub"></small></h1>
+    <button type="button" class="btn-salir" id="btn-salir">Salir</button>
   </header>
+  <div id="estado" class="hidden" role="status"></div>
 
-  <div class="container">
+  <main class="container">
 
-    <!-- 1. LOGIN -->
-    <div id="login-screen" class="card">
-      <h2 style="margin-bottom: 4px; color: var(--primary);">Portal Deportivo</h2>
-      <p style="color: var(--muted); font-size: 0.88rem; margin-bottom: 18px;">Ingresá tu clave de Profe o Coordinación</p>
-      
-      <div class="form-group">
-        <label>Contraseña</label>
-        <input type="password" id="input-pass" placeholder="Ej: hockeycoord o hockeyprofe" onkeypress="if(event.key === 'Enter') login()">
-        <p id="login-error" class="error-msg">Clave incorrecta.</p>
+    <!-- LOGIN -->
+    <form id="login-form" class="card login">
+      <h2>Ciudad Integrado</h2>
+      <p class="hint">Evaluación y asistencia por deporte</p>
+      <div class="field">
+        <label for="input-pass">Clave de profe o coordinación</label>
+        <input type="password" id="input-pass" name="clave" autocomplete="current-password" autocapitalize="off" spellcheck="false" required>
+        <p id="login-error" class="error" aria-live="polite"></p>
       </div>
-      <button class="btn-primary" onclick="login()">Entrar</button>
+      <button type="submit" class="btn">Entrar</button>
+    </form>
 
-      <div style="margin-top: 18px; font-size: 0.78rem; color: var(--muted); background: #f8fafc; padding: 12px; border-radius: 8px; line-height: 1.5;">
-        <strong>Claves activas para probar:</strong><br>
-        • Hockey: <code>hockeyprofe</code> | <code>hockeycoord</code><br>
-        • Básquet: <code>basquetprofe</code> | <code>basquetcoord</code><br>
-        • Fútbol: <code>futbolprofe</code> | <code>futbolcoord</code><br>
-        • Dirección UGI: <code>adminciudad</code>
-      </div>
-    </div>
-
-    <!-- 2. APP PRINCIPAL -->
+    <!-- APP -->
     <div id="app-screen" class="hidden">
 
-      <!-- PESTAÑAS -->
-      <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('evaluacion', this)">1. Evaluar</button>
-        <button class="tab-btn" onclick="switchTab('asistencia', this)">2. Asistencia</button>
-        <button class="tab-btn" onclick="switchTab('analisis', this)">3. Métricas y Gráficos</button>
-        <button id="tab-btn-padron" class="tab-btn hidden" onclick="switchTab('padron', this)">4. Padrón / Config</button>
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab" role="tab" data-tab="evaluacion" aria-selected="true">Evaluar</button>
+        <button type="button" class="tab" role="tab" data-tab="asistencia" aria-selected="false">Asistencia</button>
+        <button type="button" class="tab" role="tab" data-tab="analisis" aria-selected="false">Análisis</button>
+        <button type="button" class="tab hidden" role="tab" data-tab="padron" aria-selected="false" id="tab-btn-padron">Padrón</button>
       </div>
 
-      <!-- FILTROS GLOBALES: Deporte, Categoría, Equipo -->
+      <!-- FILTROS -->
       <div class="card">
-        <div class="filters-grid">
-          <div class="form-group" style="margin-bottom:0;">
-            <label>Deporte</label>
-            <select id="sel-deporte" onchange="cargarCategorias()"></select>
+        <div class="field" id="wrap-deporte">
+          <label for="sel-deporte">Deporte</label>
+          <select id="sel-deporte"></select>
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label for="sel-categoria">Categoría</label>
+            <select id="sel-categoria"></select>
           </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label>Fecha</label>
-            <input type="date" id="input-fecha">
+          <div class="field">
+            <label for="sel-equipo">Equipo / Tira</label>
+            <select id="sel-equipo"></select>
           </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label>Categoría</label>
-            <select id="sel-categoria" onchange="cargarEquipos()"></select>
-          </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label>Equipo / Tira</label>
-            <select id="sel-equipo" onchange="actualizarVistaActiva()"></select>
-          </div>
+        </div>
+        <div class="field" style="margin:10px 0 0;" id="wrap-fecha">
+          <label for="input-fecha">Fecha</label>
+          <input type="date" id="input-fecha">
         </div>
       </div>
 
-      <!-- APARTADO 1: TOMA DE EVALUACIÓN (100% LIMPIA EN CANCHA) -->
-      <div id="tab-evaluacion">
+      <!-- 1. EVALUAR -->
+      <section id="tab-evaluacion">
         <div class="card">
-          <label>Lista de Jugadores (Tocá un nombre)</label>
-          <div id="lista-jugadores-eval" class="players-list"></div>
+          <h3>Tocá un jugador para evaluarlo</h3>
+          <div id="lista-eval" class="lista"></div>
         </div>
-
         <div id="panel-gestos" class="card hidden">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
-            <h3 id="nombre-jugador-activo" style="color: var(--primary); font-size: 1.05rem;">Jugador</h3>
-            <span style="font-size: 0.75rem; color: var(--muted); font-weight:600;">1 (Bajo) a 5 (Óptimo)</span>
+          <div class="spread">
+            <h3 id="jugador-activo"></h3>
+            <span class="hint" style="margin:0;">1 bajo · 5 óptimo</span>
           </div>
           <div id="contenedor-gestos"></div>
-          <button class="btn-primary" style="margin-top: 14px; background: var(--accent);" onclick="guardarEvaluacion()">Guardar Evaluación</button>
+          <button type="button" class="btn ok" id="btn-guardar-eval" style="margin-top:12px;">Guardar y seguir</button>
         </div>
-      </div>
+      </section>
 
-      <!-- APARTADO 2: TOMA DE ASISTENCIA -->
-      <div id="tab-asistencia" class="hidden">
+      <!-- 2. ASISTENCIA -->
+      <section id="tab-asistencia" class="hidden">
         <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
-            <label style="margin:0;">Asistencia del Equipo</label>
-            <button class="btn-secondary" onclick="marcarTodosPresentes()">Todos Presentes (P)</button>
+          <div class="spread">
+            <h3>Lista del día</h3>
+            <button type="button" class="btn-sec" id="btn-todos-p">Todos presentes</button>
           </div>
-          <div id="lista-jugadores-asist"></div>
-          <button class="btn-primary" style="margin-top: 16px;" onclick="guardarAsistencia()">Registrar Asistencia</button>
+          <div id="lista-asist"></div>
+          <button type="button" class="btn" id="btn-guardar-asist" style="margin-top:14px;">Guardar asistencia</button>
         </div>
-      </div>
+      </section>
 
-      <!-- APARTADO 3: BASE DE INFORMACIÓN, GRÁFICOS Y DECISIONES -->
-      <div id="tab-analisis" class="hidden">
-        
-        <!-- KPIs Rápidos -->
-        <div class="kpi-grid">
-          <div class="kpi-card">
-            <div class="kpi-lbl">Promedio Equipo</div>
-            <div id="kpi-promedio" class="kpi-val">-</div>
-            <div style="font-size:0.7rem; color:var(--muted);">Sobre 5.0 pts</div>
-          </div>
-          <div class="kpi-card" style="border-top-color: var(--accent);">
-            <div class="kpi-lbl">% Asistencia</div>
-            <div id="kpi-asistencia" class="kpi-val" style="color:var(--accent);">-</div>
-            <div style="font-size:0.7rem; color:var(--muted);">Presentismo</div>
-          </div>
-          <div class="kpi-card" style="border-top-color: var(--warning);">
-            <div class="kpi-lbl">Alertas</div>
-            <div id="kpi-alertas" class="kpi-val" style="color:var(--warning);">0</div>
-            <div style="font-size:0.7rem; color:var(--muted);">Para seguimiento</div>
-          </div>
+      <!-- 3. ANÁLISIS -->
+      <section id="tab-analisis" class="hidden">
+        <div class="card" style="padding:12px 16px;">
+          <label for="sel-periodo">Período</label>
+          <select id="sel-periodo">
+            <option value="30">Últimos 30 días</option>
+            <option value="90">Últimos 90 días</option>
+            <option value="0">Todo</option>
+          </select>
         </div>
-
-        <!-- Gráfico de Promedio por Gesto Técnico -->
+        <div class="kpis">
+          <div class="kpi"><span>Promedio</span><b id="kpi-promedio">-</b><span>sobre 5</span></div>
+          <div class="kpi"><span>Asistencia</span><b id="kpi-asistencia">-</b><span>presentismo</span></div>
+          <div class="kpi"><span>Alertas</span><b id="kpi-alertas">0</b><span>seguimiento</span></div>
+        </div>
         <div class="card">
-          <h3 style="font-size: 0.95rem; color: var(--primary); margin-bottom: 4px;">Rendimiento del Equipo por Gesto Técnico</h3>
-          <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 14px;">Detectá rápido qué gesto reforzar en la semana con este grupo.</p>
+          <h3>Rendimiento por gesto</h3>
+          <p class="hint">El más flojo es el que conviene reforzar esta semana.</p>
           <div id="grafico-gestos"></div>
         </div>
-
-        <!-- Matriz de Jugadores (Cruce Evaluación + Asistencia) -->
         <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+          <div class="spread">
             <div>
-              <h3 style="font-size: 0.95rem; color: var(--primary);">Matriz Individual para Toma de Decisiones</h3>
-              <p style="font-size: 0.75rem; color: var(--muted);">Cruce de nivel técnico, cantidad de tomas y asistencia</p>
+              <h3>Matriz de jugadores</h3>
+              <p class="hint" style="margin:0;">Alerta: promedio &lt; 2.8 o asistencia &lt; 70%</p>
             </div>
-            <button class="btn-secondary" onclick="exportarCSV()">Bajar Excel/CSV</button>
+            <button type="button" class="btn-sec" id="btn-csv">Bajar Excel</button>
           </div>
-          <div style="overflow-x: auto;">
+          <div style="overflow-x:auto;">
             <table>
-              <thead>
-                <tr>
-                  <th>Jugador</th>
-                  <th>Prom. Gesto</th>
-                  <th>Punto a trabajar</th>
-                  <th>Asist.</th>
-                  <th>Estado</th>
-                </tr>
-              </thead>
-              <tbody id="tabla-matriz-jugadores"></tbody>
+              <thead><tr><th>Jugador</th><th>Prom.</th><th>A trabajar</th><th>Asist.</th><th>Estado</th></tr></thead>
+              <tbody id="tabla-matriz"></tbody>
             </table>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- APARTADO 4: CARGA SIMPLE DE PADRONES (SOLO COORDINACIÓN) -->
-      <div id="tab-padron" class="hidden">
-        <div class="card">
-          <h3 style="font-size: 1rem; color: var(--primary); margin-bottom: 6px;">Carga Masiva de Padrón (Copiar y Pegar)</h3>
-          <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 12px;">
-            Pegá acá la lista de jugadores desde WhatsApp o Excel (un jugador por renglón). Se van a sumar al equipo seleccionado arriba y a tu Google Sheet.
-          </p>
-          <div class="form-group">
-            <textarea id="input-padron-masivo" placeholder="Ejemplo:&#10;Gómez, Juan&#10;Pérez, Mateo&#10;Rodríguez, Lucas"></textarea>
+      <!-- 4. PADRÓN (solo Coordinación) -->
+      <section id="tab-padron" class="hidden">
+        <form class="card" id="form-padron">
+          <h3>Carga masiva de jugadores</h3>
+          <p class="hint">Pegá la lista desde WhatsApp o Excel, un jugador por renglón. Si la categoría o el equipo no existen, se crean.</p>
+          <div class="grid2" style="margin-bottom:12px;">
+            <div class="field">
+              <label for="padron-cat">Categoría</label>
+              <input type="text" id="padron-cat" list="dl-cat" required placeholder="Ej: Sub 12">
+            </div>
+            <div class="field">
+              <label for="padron-eq">Equipo / Tira</label>
+              <input type="text" id="padron-eq" list="dl-eq" required placeholder="Ej: Tira A">
+            </div>
           </div>
-          <button class="btn-primary" onclick="cargarPadronMasivo()">Cargar Lista al Equipo</button>
+          <datalist id="dl-cat"></datalist>
+          <datalist id="dl-eq"></datalist>
+          <div class="field">
+            <label for="padron-lista">Jugadores</label>
+            <textarea id="padron-lista" required placeholder="Gómez, Juan&#10;Pérez, Mateo&#10;Rodríguez, Lucas"></textarea>
+          </div>
+          <button type="submit" class="btn">Cargar al equipo</button>
+        </form>
+
+        <div class="card">
+          <h3>Plantel del equipo seleccionado</h3>
+          <div id="lista-padron"></div>
         </div>
 
         <div class="card">
-          <h3 style="font-size: 1rem; color: var(--primary); margin-bottom: 6px;">Configurar Gestos del Deporte</h3>
-          <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 12px;">Sumá una nueva variable técnica para evaluar en todas las categorías de este deporte.</p>
-          <div style="display:flex; gap:8px;">
-            <input type="text" id="input-nuevo-gesto" placeholder="Ej: Recepción de revés en movimiento">
-            <button class="btn-primary" style="width:auto; padding:0 20px;" onclick="agregarGesto()">Sumar</button>
+          <h3>Variables a evaluar en <span id="gestos-dep"></span></h3>
+          <p class="hint">Las marcadas como "UGI" son comunes a todos los deportes y no se pueden quitar.</p>
+          <div id="lista-gestos-config"></div>
+          <div class="row" style="margin-top:10px;">
+            <label for="input-nuevo-gesto" class="sr">Nueva variable</label>
+            <input type="text" id="input-nuevo-gesto" placeholder="Nueva variable técnica">
+            <button type="button" class="btn" id="btn-sumar-gesto">Sumar</button>
           </div>
         </div>
-      </div>
 
+        <form class="card" id="form-email">
+          <h3>Mail del coordinador</h3>
+          <p class="hint">Recibe el aviso de los viernes 9 AM si algún grupo no cargó asistencia en la semana.</p>
+          <div class="row">
+            <label for="input-email" class="sr">Email</label>
+            <input type="email" id="input-email" autocomplete="email" placeholder="coordinador@mail.com">
+            <button type="submit" class="btn">Guardar</button>
+          </div>
+        </form>
+      </section>
     </div>
-  </div>
+  </main>
 
-  <div id="toast" class="toast">Guardado</div>
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
   <script>
     // =========================================================================
-    // 1. CLAVES Y CONEXIÓN A UN GOOGLE SHEET DISTINTO POR DEPORTE
+    // 1. CONEXIÓN: URL del Web App de Apps Script (apps-script/DeportesUGI.gs)
+    //    Un solo script escribe en el Sheet de cada deporte. Si preferís un
+    //    script por planilla, poné su URL propia en el sheetUrl de cada clave.
     // =========================================================================
+    const SCRIPT_URL = "PEGAR_ACA_URL_WEB_APP"; // https://script.google.com/macros/s/.../exec
+
+    // Claves = mismos PINs de la app de asistencia anterior
     const CLAVES = {
-      "hockeyprofe":  { deporte: "Hockey",  rol: "Profe",        sheetUrl: "URL_APPS_SCRIPT_HOCKEY" },
-      "hockeycoord":  { deporte: "Hockey",  rol: "Coordinación", sheetUrl: "URL_APPS_SCRIPT_HOCKEY" },
-      "basquetprofe": { deporte: "Básquet", rol: "Profe",        sheetUrl: "URL_APPS_SCRIPT_BASQUET" },
-      "basquetcoord": { deporte: "Básquet", rol: "Coordinación", sheetUrl: "URL_APPS_SCRIPT_BASQUET" },
-      "futbolprofe":  { deporte: "Fútbol",  rol: "Profe",        sheetUrl: "URL_APPS_SCRIPT_FUTBOL" },
-      "futbolcoord":  { deporte: "Fútbol",  rol: "Coordinación", sheetUrl: "URL_APPS_SCRIPT_FUTBOL" },
-      "adminciudad":  { deporte: "TODOS",   rol: "Coordinación", sheetUrl: "URL_APPS_SCRIPT_MASTER" }
+      "1001": { deporte: "Colonia",              rol: "Profe",        sheetUrl: SCRIPT_URL },
+      "2001": { deporte: "Colonia",              rol: "Coordinación", sheetUrl: SCRIPT_URL },
+      "1002": { deporte: "Hockey sobre Patines", rol: "Profe",        sheetUrl: SCRIPT_URL },
+      "2002": { deporte: "Hockey sobre Patines", rol: "Coordinación", sheetUrl: SCRIPT_URL },
+      "1003": { deporte: "Hockey sobre Césped",  rol: "Profe",        sheetUrl: SCRIPT_URL },
+      "2003": { deporte: "Hockey sobre Césped",  rol: "Coordinación", sheetUrl: SCRIPT_URL },
+      "1004": { deporte: "Básquet",              rol: "Profe",        sheetUrl: SCRIPT_URL },
+      "2004": { deporte: "Básquet",              rol: "Coordinación", sheetUrl: SCRIPT_URL },
+      "1005": { deporte: "Fútbol",               rol: "Profe",        sheetUrl: SCRIPT_URL },
+      "2005": { deporte: "Fútbol",               rol: "Coordinación", sheetUrl: SCRIPT_URL },
+      "1006": { deporte: "Vóley",                rol: "Profe",        sheetUrl: SCRIPT_URL },
+      "2006": { deporte: "Vóley",                rol: "Coordinación", sheetUrl: SCRIPT_URL },
+      "1007": { deporte: "Rugby",                rol: "Profe",        sheetUrl: SCRIPT_URL },
+      "2007": { deporte: "Rugby",                rol: "Coordinación", sheetUrl: SCRIPT_URL },
+      "1008": { deporte: "Natación",             rol: "Profe",        sheetUrl: SCRIPT_URL },
+      "2008": { deporte: "Natación",             rol: "Coordinación", sheetUrl: SCRIPT_URL },
+      "1009": { deporte: "Tenis",                rol: "Profe",        sheetUrl: SCRIPT_URL },
+      "2009": { deporte: "Tenis",                rol: "Coordinación", sheetUrl: SCRIPT_URL },
+      "1010": { deporte: "Handball",             rol: "Profe",        sheetUrl: SCRIPT_URL },
+      "2010": { deporte: "Handball",             rol: "Coordinación", sheetUrl: SCRIPT_URL },
+      "1011": { deporte: "Gimnasia",             rol: "Profe",        sheetUrl: SCRIPT_URL },
+      "2011": { deporte: "Gimnasia",             rol: "Coordinación", sheetUrl: SCRIPT_URL },
+      "1012": { deporte: "Patín Artístico",      rol: "Profe",        sheetUrl: SCRIPT_URL },
+      "2012": { deporte: "Patín Artístico",      rol: "Coordinación", sheetUrl: SCRIPT_URL },
+      "ugi2026": { deporte: "TODOS",             rol: "Coordinación", sheetUrl: SCRIPT_URL }
     };
 
     // =========================================================================
-    // 2. PADRÓN Y GESTOS POR DEPORTE (Con datos precargados para que veas métricas)
+    // 2. VARIABLES DE EVALUACIÓN (criterio unificado UGI)
+    //    Específicas por deporte + comunes a todos. Coordinación puede editar
+    //    las específicas desde Padrón (se guardan en la pestaña "Gestos").
     // =========================================================================
-    const DB_DEPORTES = {
-      "Hockey": {
-        gestos: ["Conducción y Control", "Pase y Recepción", "Técnica de Barrida / Push", "Posición y Desplazamiento", "Toma de Decisión"],
-        categorias: {
-          "Sub 12": {
-            "Tira A": ["Martínez, Lucas", "Gómez, Bautista", "Pérez, Joaquín", "López, Santino"],
-            "Tira B": ["Fernández, Mateo", "Díaz, Tomás", "Sánchez, Felipe"]
-          },
-          "Sub 14": {
-            "Tira A": ["Acosta, Nicolás", "Romero, Valentín", "Suárez, Ignacio"]
-          }
-        }
-      },
-      "Básquet": {
-        gestos: ["Dribbling y Manejo", "Mecánica de Tiro", "Pase sobre hombro / pique", "Postura Defensiva", "Finalización en Bandeja"],
-        categorias: {
-          "U13": {
-            "Equipo Azul": ["Silva, Ramiro", "Castro, Julián", "Ortiz, Manuel"],
-            "Equipo Blanco": ["Morales, Facundo", "Núñez, Bruno"]
-          }
-        }
-      },
-      "Fútbol": {
-        gestos: ["Control Orientado", "Pase Corto y Largo", "Conducción en Velocidad", "Perfilación", "Remate"],
-        categorias: {
-          "Infantil 2014": {
-            "Verde": ["Benítez, Thiago", "Medina, Lorenzo", "Herrera, Ciro"]
-          }
-        }
-      }
+    const GESTOS_COMUNES = ["Actitud y compromiso", "Respeto y convivencia"];
+
+    const GESTOS_DEPORTE = {
+      "Colonia":              ["Participación y entusiasmo", "Respeto de consignas", "Trabajo en equipo", "Coordinación motriz", "Adaptación al agua", "Autonomía personal", "Resolución de conflictos"],
+      "Hockey sobre Patines": ["Patinaje y equilibrio", "Frenado y cambios de dirección", "Conducción de bocha", "Pase y recepción", "Tiro al arco", "Posición defensiva", "Lectura de juego"],
+      "Hockey sobre Césped":  ["Conducción (derecha y revés)", "Pase (push / slap)", "Recepción", "Barrida / hit", "Tackle y marca", "Ubicación en cancha", "Toma de decisión"],
+      "Básquet":              ["Dribbling con ambas manos", "Mecánica de tiro", "Bandeja / finalización", "Pase", "Postura defensiva", "Rebote", "Juego sin pelota", "Toma de decisión"],
+      "Fútbol":               ["Control orientado", "Pase corto", "Pase largo / cambio de frente", "Conducción", "Remate", "Juego aéreo", "Marca y recuperación", "Perfil y lectura de juego"],
+      "Vóley":                ["Saque", "Recepción (antebrazos)", "Armado (dedos)", "Ataque / remate", "Bloqueo", "Defensa y desplazamiento", "Comunicación en cancha"],
+      "Rugby":                ["Pase", "Recepción", "Tackle (técnica segura)", "Ruck / contacto", "Apoyo y línea de ventaja", "Evasión", "Patada"],
+      "Natación":             ["Crol", "Espalda", "Pecho", "Mariposa", "Respiración", "Patada", "Salidas y vueltas", "Resistencia"],
+      "Tenis":                ["Drive", "Revés", "Saque", "Volea", "Desplazamiento", "Devolución de saque", "Consistencia", "Táctica / decisión"],
+      "Handball":             ["Pase y recepción", "Pique", "Lanzamiento", "Finta y desmarque", "Defensa y desplazamiento", "Contraataque", "Lectura de juego"],
+      "Gimnasia":             ["Flexibilidad", "Fuerza", "Equilibrio", "Roles", "Vertical / medialuna", "Saltos y aterrizaje", "Postura y alineación", "Expresión"],
+      "Patín Artístico":      ["Postura y equilibrio", "Patinaje adelante / atrás", "Filos y curvas", "Saltos", "Trompos / giros", "Pasos y figuras", "Expresión y ritmo"]
     };
+    const DEPORTES = Object.keys(GESTOS_DEPORTE);
 
-    // Base histórica (precargada con ejemplos reales para que veas los gráficos desde el celular)
-    let DB_EVALUACIONES = [
-      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "Martínez, Lucas", notas: { "Conducción y Control": 4, "Pase y Recepción": 4, "Técnica de Barrida / Push": 3, "Posición y Desplazamiento": 5, "Toma de Decisión": 4 } },
-      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "Gómez, Bautista", notas: { "Conducción y Control": 4, "Pase y Recepción": 3, "Técnica de Barrida / Push": 3, "Posición y Desplazamiento": 4, "Toma de Decisión": 3 } },
-      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "Pérez, Joaquín", notas: { "Conducción y Control": 3, "Pase y Recepción": 2, "Técnica de Barrida / Push": 2, "Posición y Desplazamiento": 3, "Toma de Decisión": 2 } },
-      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "López, Santino", notas: { "Conducción y Control": 5, "Pase y Recepción": 4, "Técnica de Barrida / Push": 3, "Posición y Desplazamiento": 4, "Toma de Decisión": 4 } }
-    ];
+    const UMBRAL_NOTA = 2.8;
+    const UMBRAL_ASIST = 70;
 
-    let DB_ASISTENCIAS = [
-      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "Martínez, Lucas", estado: "P" },
-      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "Gómez, Bautista", estado: "P" },
-      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "Pérez, Joaquín", estado: "A" },
-      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "López, Santino", estado: "P" }
-    ];
-
-    let sesionActual = null;
+    // =========================================================================
+    // 3. ESTADO
+    // =========================================================================
+    const $ = id => document.getElementById(id);
+    let sesion = null;
+    let datos = vacio();
     let jugadorActivo = null;
-    let puntajesTemporales = {};
-    let estadoAsistencia = {};
+    let notasTemp = {};
+    let asistTemp = {};
+    let tabActual = 'evaluacion';
 
-    document.getElementById('input-fecha').valueAsDate = new Date();
-
-    // =========================================================================
-    // 3. LOGIN Y PERMISOS
-    // =========================================================================
-    function login() {
-      const pass = document.getElementById('input-pass').value.trim().toLowerCase();
-      if (CLAVES[pass]) {
-        sesionActual = CLAVES[pass];
-        document.getElementById('login-error').style.display = 'none';
-        iniciarApp();
-      } else {
-        document.getElementById('login-error').style.display = 'block';
-      }
+    function vacio() { return { padron: [], evaluaciones: [], asistencia: [], gestos: null, email: '' }; }
+    function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+    function fechaLocal(diasAtras = 0) {
+      const d = new Date();
+      d.setDate(d.getDate() - diasAtras);
+      d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+      return d.toISOString().slice(0, 10);
     }
+    const orden = (a, b) => String(a).localeCompare(String(b), 'es', { numeric: true });
+    const igual = (a, b) => String(a).trim().toLowerCase() === String(b).trim().toLowerCase();
 
-    function logout() {
-      sesionActual = null;
-      document.getElementById('input-pass').value = '';
-      document.getElementById('app-screen').classList.add('hidden');
-      document.getElementById('app-header').classList.add('hidden');
-      document.getElementById('login-screen').classList.remove('hidden');
-    }
-
-    function iniciarApp() {
-      document.getElementById('login-screen').classList.add('hidden');
-      document.getElementById('app-header').classList.remove('hidden');
-      document.getElementById('app-screen').classList.remove('hidden');
-      document.getElementById('role-badge').textContent = `${sesionActual.deporte} • ${sesionActual.rol}`;
-
-      const btnPadron = document.getElementById('tab-btn-padron');
-      if (sesionActual.rol === "Coordinación") {
-        btnPadron.classList.remove('hidden');
-      } else {
-        btnPadron.classList.add('hidden');
-      }
-
-      const selDeporte = document.getElementById('sel-deporte');
-      selDeporte.innerHTML = '';
-      const deportes = sesionActual.deporte === "TODOS" ? Object.keys(DB_DEPORTES) : [sesionActual.deporte];
-      deportes.forEach(d => {
-        const opt = document.createElement('option');
-        opt.value = d; opt.textContent = d;
-        selDeporte.appendChild(opt);
-      });
-      selDeporte.disabled = (deportes.length === 1);
-      cargarCategorias();
-    }
-
-    // =========================================================================
-    // 4. FILTROS EN CASCADA
-    // =========================================================================
-    function cargarCategorias() {
-      const dep = document.getElementById('sel-deporte').value;
-      const selCat = document.getElementById('sel-categoria');
-      selCat.innerHTML = '';
-      Object.keys(DB_DEPORTES[dep].categorias).forEach(cat => {
-        const opt = document.createElement('option');
-        opt.value = cat; opt.textContent = cat;
-        selCat.appendChild(opt);
-      });
-      cargarEquipos();
-    }
-
-    function cargarEquipos() {
-      const dep = document.getElementById('sel-deporte').value;
-      const cat = document.getElementById('sel-categoria').value;
-      const selEq = document.getElementById('sel-equipo');
-      selEq.innerHTML = '';
-      Object.keys(DB_DEPORTES[dep].categorias[cat]).forEach(eq => {
-        const opt = document.createElement('option');
-        opt.value = eq; opt.textContent = eq;
-        selEq.appendChild(opt);
-      });
-      actualizarVistaActiva();
-    }
-
-    function obtenerFiltroActual() {
-      return {
-        dep: document.getElementById('sel-deporte').value,
-        cat: document.getElementById('sel-categoria').value,
-        eq: document.getElementById('sel-equipo').value,
-        fecha: document.getElementById('input-fecha').value
-      };
-    }
-
-    function obtenerPlantelActual() {
-      const { dep, cat, eq } = obtenerFiltroActual();
-      return DB_DEPORTES[dep].categorias[cat][eq] || [];
-    }
-
-    function actualizarVistaActiva() {
-      jugadorActivo = null;
-      document.getElementById('panel-gestos').classList.add('hidden');
-      renderListaEvaluacion();
-      renderListaAsistencia();
-      renderDashboardAnalisis();
-    }
-
-    // =========================================================================
-    // 5. TOMA DE EVALUACIONES LIMPIA
-    // =========================================================================
-    function renderListaEvaluacion() {
-      const plantel = obtenerPlantelActual();
-      const { fecha } = obtenerFiltroActual();
-      const contenedor = document.getElementById('lista-jugadores-eval');
-      contenedor.innerHTML = '';
-
-      plantel.forEach(jugador => {
-        const div = document.createElement('div');
-        const evaluadoHoy = DB_EVALUACIONES.some(e => e.jugador === jugador && e.fecha === fecha);
-        div.className = 'player-item' + (jugadorActivo === jugador ? ' selected' : '');
-        div.innerHTML = `
-          <span>${jugador}</span>
-          ${evaluadoHoy ? '<span class="status-dot">Evaluado</span>' : ''}
-        `;
-        div.onclick = () => seleccionarJugadorParaEvaluar(jugador);
-        contenedor.appendChild(div);
-      });
-    }
-
-    function seleccionarJugadorParaEvaluar(jugador) {
-      jugadorActivo = jugador;
-      puntajesTemporales = {};
-      renderListaEvaluacion();
-
-      document.getElementById('nombre-jugador-activo').textContent = jugador;
-      const { dep } = obtenerFiltroActual();
-      const gestos = DB_DEPORTES[dep].gestos;
-
-      const contGestos = document.getElementById('contenedor-gestos');
-      contGestos.innerHTML = '';
-
-      gestos.forEach((gesto, idx) => {
-        const fila = document.createElement('div');
-        fila.className = 'gesto-row';
-        fila.innerHTML = `
-          <div class="gesto-title">${gesto}</div>
-          <div class="score-group" id="grupo-gesto-${idx}">
-            ${[1, 2, 3, 4, 5].map(nota => `
-              <button type="button" class="score-btn" onclick="asignarNota('${gesto}', ${nota}, ${idx}, this)">${nota}</button>
-            `).join('')}
-          </div>
-        `;
-        contGestos.appendChild(fila);
-      });
-
-      document.getElementById('panel-gestos').classList.remove('hidden');
-    }
-
-    function asignarNota(gesto, nota, idx, btn) {
-      puntajesTemporales[gesto] = nota;
-      const grupo = document.getElementById(`grupo-gesto-${idx}`);
-      Array.from(grupo.children).forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    }
-
-    function guardarEvaluacion() {
-      const { dep, cat, eq, fecha } = obtenerFiltroActual();
-      const gestos = DB_DEPORTES[dep].gestos;
-
-      if (Object.keys(puntajesTemporales).length < gestos.length) {
-        mostrarToast("Completá todos los gestos");
-        return;
-      }
-
-      const nuevoRegistro = {
-        tipo: "EVALUACION",
-        fecha, deporte: dep, categoria: cat, equipo: eq,
-        jugador: jugadorActivo,
-        notas: { ...puntajesTemporales }
-      };
-
-      DB_EVALUACIONES.push(nuevoRegistro);
-      enviarAlSheetDeporte(nuevoRegistro);
-
-      document.getElementById('panel-gestos').classList.add('hidden');
-      jugadorActivo = null;
-      renderListaEvaluacion();
-      renderDashboardAnalisis();
-      mostrarToast("Evaluación guardada en base");
-    }
-
-    // =========================================================================
-    // 6. ASISTENCIA RÁPIDA
-    // =========================================================================
-    function renderListaAsistencia() {
-      const plantel = obtenerPlantelActual();
-      const contenedor = document.getElementById('lista-jugadores-asist');
-      contenedor.innerHTML = '';
-      estadoAsistencia = {};
-
-      plantel.forEach((jugador, idx) => {
-        const fila = document.createElement('div');
-        fila.className = 'asist-row';
-        fila.innerHTML = `
-          <span style="font-weight:600; font-size:0.92rem;">${jugador}</span>
-          <div class="asist-btns" id="asist-grupo-${idx}">
-            <button class="asist-btn P" onclick="setAsistencia('${jugador}', 'P', ${idx}, this)">P</button>
-            <button class="asist-btn A" onclick="setAsistencia('${jugador}', 'A', ${idx}, this)">A</button>
-            <button class="asist-btn T" onclick="setAsistencia('${jugador}', 'T', ${idx}, this)">T</button>
-          </div>
-        `;
-        contenedor.appendChild(fila);
-      });
-    }
-
-    function setAsistencia(jugador, estado, idx, btn) {
-      estadoAsistencia[jugador] = estado;
-      const grupo = document.getElementById(`asist-grupo-${idx}`);
-      Array.from(grupo.children).forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    }
-
-    function marcarTodosPresentes() {
-      const plantel = obtenerPlantelActual();
-      plantel.forEach((jugador, idx) => {
-        estadoAsistencia[jugador] = 'P';
-        const grupo = document.getElementById(`asist-grupo-${idx}`);
-        Array.from(grupo.children).forEach(b => b.classList.remove('active'));
-        grupo.children[0].classList.add('active');
-      });
-    }
-
-    function guardarAsistencia() {
-      const { dep, cat, eq, fecha } = obtenerFiltroActual();
-      const entradas = Object.entries(estadoAsistencia);
-      if (entradas.length === 0) {
-        mostrarToast("Marcá la asistencia primero");
-        return;
-      }
-
-      entradas.forEach(([jugador, estado]) => {
-        DB_ASISTENCIAS.push({ fecha, deporte: dep, categoria: cat, equipo: eq, jugador, estado });
-      });
-
-      enviarAlSheetDeporte({ tipo: "ASISTENCIA", fecha, deporte: dep, categoria: cat, equipo: eq, datos: estadoAsistencia });
-      renderDashboardAnalisis();
-      mostrarToast("Asistencia registrada");
-    }
-
-    // =========================================================================
-    // 7. MOTOR DE MÉTRICAS, GRÁFICOS Y TOMA DE DECISIONES
-    // =========================================================================
-    function renderDashboardAnalisis() {
-      const { dep, cat, eq } = obtenerFiltroActual();
-      const plantel = obtenerPlantelActual();
-      const gestosDeporte = DB_DEPORTES[dep].gestos;
-
-      const evalsEquipo = DB_EVALUACIONES.filter(e => e.deporte === dep && e.categoria === cat && e.equipo === eq);
-      const asistEquipo = DB_ASISTENCIAS.filter(a => a.deporte === dep && a.categoria === cat && a.equipo === eq);
-
-      // 1. Calcular promedio por gesto para el gráfico de barras
-      const contGrafico = document.getElementById('grafico-gestos');
-      contGrafico.innerHTML = '';
-      let sumaTotalEquipo = 0;
-      let cantNotasEquipo = 0;
-
-      gestosDeporte.forEach(gesto => {
-        let sumaGesto = 0;
-        let contGesto = 0;
-        evalsEquipo.forEach(ev => {
-          if (ev.notas[gesto]) {
-            sumaGesto += ev.notas[gesto];
-            contGesto++;
-            sumaTotalEquipo += ev.notas[gesto];
-            cantNotasEquipo++;
-          }
-        });
-        const promGesto = contGesto > 0 ? (sumaGesto / contGesto) : 0;
-        const porcentajeBarra = (promGesto / 5) * 100;
-        const colorBarra = promGesto >= 3.8 ? 'var(--accent)' : (promGesto >= 2.8 ? 'var(--primary)' : 'var(--danger)');
-
-        const row = document.createElement('div');
-        row.className = 'chart-row';
-        row.innerHTML = `
-          <div class="chart-header">
-            <span>${gesto}</span>
-            <span>${promGesto > 0 ? promGesto.toFixed(1) + ' / 5' : 'Sin datos'}</span>
-          </div>
-          <div class="chart-bar-bg">
-            <div class="chart-bar-fill" style="width:${porcentajeBarra}%; background:${colorBarra};"></div>
-          </div>
-        `;
-        contGrafico.appendChild(row);
-      });
-
-      // 2. Matriz por Jugador + Alertas
-      const tbody = document.getElementById('tabla-matriz-jugadores');
-      tbody.innerHTML = '';
-      let alertasCount = 0;
-
-      plantel.forEach(jugador => {
-        const evJugador = evalsEquipo.filter(e => e.jugador === jugador);
-        const asJugador = asistEquipo.filter(a => a.jugador === jugador);
-
-        // Promedio técnico y gesto más flojo
-        let sumaJ = 0, cantJ = 0;
-        let peorGesto = "-";
-        let peorNota = 6;
-
-        evJugador.forEach(ev => {
-          Object.entries(ev.notas).forEach(([g, n]) => {
-            sumaJ += n; cantJ++;
-            if (n < peorNota) { peorNota = n; peorGesto = g; }
-          });
-        });
-
-        const promJ = cantJ > 0 ? (sumaJ / cantJ) : 0;
-        const presentes = asJugador.filter(a => a.estado === 'P' || a.estado === 'T').length;
-        const pctAsist = asJugador.length > 0 ? Math.round((presentes / asJugador.length) * 100) : 100;
-
-        // Regla de decisión: Alerta si promedio < 2.8 o asistencia < 70%
-        let estadoHtml = '<span class="pill pill-green">Óptimo</span>';
-        if (cantJ === 0) {
-          estadoHtml = '<span class="pill pill-amber">Sin evaluar</span>';
-        } else if (promJ < 2.8 || pctAsist < 70) {
-          estadoHtml = '<span class="pill pill-red">Seguimiento</span>';
-          alertasCount++;
-        }
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong>${jugador}</strong></td>
-          <td>${promJ > 0 ? promJ.toFixed(1) : '-'}</td>
-          <td style="font-size:0.78rem; color:var(--muted);">${peorNota <= 3 ? peorGesto : 'Parejo'}</td>
-          <td>${asJugador.length > 0 ? pctAsist + '%' : '-'}</td>
-          <td>${estadoHtml}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      // 3. Actualizar KPIs superiores
-      const promGeneral = cantNotasEquipo > 0 ? (sumaTotalEquipo / cantNotasEquipo).toFixed(1) : '-';
-      const totalPresentes = asistEquipo.filter(a => a.estado === 'P' || a.estado === 'T').length;
-      const pctAsistEquipo = asistEquipo.length > 0 ? Math.round((totalPresentes / asistEquipo.length) * 100) + '%' : '-';
-
-      document.getElementById('kpi-promedio').textContent = promGeneral;
-      document.getElementById('kpi-asistencia').textContent = pctAsistEquipo;
-      document.getElementById('kpi-alertas').textContent = alertasCount;
-    }
-
-    // =========================================================================
-    // 8. CARGA MASIVA DE PADRÓN Y CONEXIÓN A SHEETS
-    // =========================================================================
-    function cargarPadronMasivo() {
-      const texto = document.getElementById('input-padron-masivo').value;
-      const lineas = texto.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-
-      if (lineas.length === 0) {
-        mostrarToast("Pegá al menos un jugador");
-        return;
-      }
-
-      const { dep, cat, eq } = obtenerFiltroActual();
-      lineas.forEach(nombre => {
-        if (!DB_DEPORTES[dep].categorias[cat][eq].includes(nombre)) {
-          DB_DEPORTES[dep].categorias[cat][eq].push(nombre);
-        }
-      });
-
-      enviarAlSheetDeporte({ tipo: "ALTA_PADRON", deporte: dep, categoria: cat, equipo: eq, jugadores: lineas });
-      document.getElementById('input-padron-masivo').value = '';
-      actualizarVistaActiva();
-      mostrarToast(`${lineas.length} jugadores cargados al equipo`);
-    }
-
-    function agregarGesto() {
-      const input = document.getElementById('input-nuevo-gesto');
-      const gesto = input.value.trim();
-      if (!gesto) return;
-      const { dep } = obtenerFiltroActual();
-      DB_DEPORTES[dep].gestos.push(gesto);
-      input.value = '';
-      actualizarVistaActiva();
-      mostrarToast("Gesto agregado a " + dep);
-    }
-
-    // Envío automático al Google Sheet correspondiente a ese deporte
-    function enviarAlSheetDeporte(payload) {
-      if (!sesionActual || !sesionActual.sheetUrl || sesionActual.sheetUrl.startsWith("URL_")) return;
-      fetch(sesionActual.sheetUrl, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      }).catch(() => {});
-    }
-
-    // Exportar base a CSV para abrir en Excel/Sheets
-    function exportarCSV() {
-      let csv = "Fecha,Deporte,Categoria,Equipo,Jugador,Detalle_Notas\n";
-      DB_EVALUACIONES.forEach(ev => {
-        const det = Object.entries(ev.notas).map(([k,v]) => `${k}:${v}`).join(" | ");
-        csv += `${ev.fecha},${ev.deporte},${ev.categoria},${ev.equipo},"${ev.jugador}","${det}"\n`;
-      });
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Base_Deportes_CiudadIntegrado.csv`;
-      a.click();
-    }
-
-    function switchTab(tabId, btn) {
-      ['evaluacion', 'asistencia', 'analisis', 'padron'].forEach(id => {
-        document.getElementById('tab-' + id).classList.add('hidden');
-      });
-      document.getElementById('tab-' + tabId).classList.remove('hidden');
-      Array.from(document.querySelectorAll('.tab-btn')).forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    }
-
-    function mostrarToast(msg) {
-      const t = document.getElementById('toast');
+    function toast(msg) {
+      const t = $('toast');
       t.textContent = msg;
-      t.style.display = 'block';
-      setTimeout(() => t.style.display = 'none', 2400);
+      t.classList.remove('hidden');
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => t.classList.add('hidden'), 2600);
     }
+
+    // =========================================================================
+    // 4. LOGIN (la sesión queda guardada en el celular)
+    // =========================================================================
+    $('login-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const clave = $('input-pass').value.trim().toLowerCase();
+      if (!CLAVES[clave]) { $('login-error').textContent = 'Clave incorrecta.'; return; }
+      $('login-error').textContent = '';
+      localStorage.setItem('ugi_dep_clave', clave);
+      iniciar(clave);
+    });
+
+    $('btn-salir').addEventListener('click', () => {
+      localStorage.removeItem('ugi_dep_clave');
+      sesion = null;
+      $('input-pass').value = '';
+      ['app-screen', 'app-header', 'estado'].forEach(id => $(id).classList.add('hidden'));
+      $('login-form').classList.remove('hidden');
+    });
+
+    function iniciar(clave) {
+      sesion = { clave, ...CLAVES[clave] };
+      $('login-form').classList.add('hidden');
+      ['app-screen', 'app-header', 'estado'].forEach(id => $(id).classList.remove('hidden'));
+      $('header-sub').textContent = `${sesion.deporte === 'TODOS' ? 'Dirección UGI' : sesion.deporte} · ${sesion.rol}`;
+      $('tab-btn-padron').classList.toggle('hidden', sesion.rol !== 'Coordinación');
+
+      const deps = sesion.deporte === 'TODOS' ? DEPORTES : [sesion.deporte];
+      $('sel-deporte').innerHTML = deps.map(d => `<option>${esc(d)}</option>`).join('');
+      $('wrap-deporte').classList.toggle('hidden', deps.length === 1);
+      $('input-fecha').value = fechaLocal();
+      cambiarTab('evaluacion');
+      cargarDatos();
+    }
+
+    // =========================================================================
+    // 5. CONEXIÓN CON GOOGLE SHEETS (lectura, envío y cola offline)
+    // =========================================================================
+    const dep = () => $('sel-deporte').value;
+    function urlDe(d) {
+      const c = Object.values(CLAVES).find(c => c.deporte === d) || sesion;
+      return c && /^https:\/\//.test(c.sheetUrl) ? c.sheetUrl : null;
+    }
+    const pendientes = () => JSON.parse(localStorage.getItem('ugi_dep_pend') || '[]');
+    const guardarPendientes = p => localStorage.setItem('ugi_dep_pend', JSON.stringify(p));
+    const guardarCache = () => localStorage.setItem('ugi_dep_cache_' + dep(), JSON.stringify(datos));
+
+    function estado(txt, tipo) {
+      const el = $('estado');
+      const n = pendientes().length;
+      el.textContent = txt + (n ? ` · ${n} pendiente${n > 1 ? 's' : ''} de enviar` : '');
+      el.className = tipo;
+    }
+
+    async function postear(url, payload) {
+      // Sin headers custom: el navegador lo manda como text/plain (sin preflight CORS)
+      const r = await fetch(url, { method: 'POST', body: JSON.stringify(payload) });
+      const j = await r.json();
+      if (!j.ok) throw Object.assign(new Error(j.error || 'Error del servidor'), { servidor: true });
+    }
+
+    async function enviarPendientes() {
+      const cola = pendientes();
+      if (!cola.length) return;
+      const quedan = [];
+      for (const item of cola) {
+        try { await postear(item.url, item.payload); }
+        catch (err) { if (!err.servidor) quedan.push(item); }
+      }
+      guardarPendientes(quedan);
+    }
+
+    async function cargarDatos() {
+      const d = dep();
+      datos = JSON.parse(localStorage.getItem('ugi_dep_cache_' + d) || 'null') || vacio();
+      renderTodo();
+      const url = urlDe(d);
+      if (!url) { estado('Modo local: falta conectar el Google Sheet (SCRIPT_URL)', 'warn'); return; }
+      estado('Sincronizando con el Sheet…', 'warn');
+      try {
+        await enviarPendientes();
+        const r = await fetch(`${url}?deporte=${encodeURIComponent(d)}`);
+        const j = await r.json();
+        if (!j.ok) throw new Error(j.error);
+        if (d !== dep()) return; // cambió de deporte mientras cargaba
+        datos = { padron: j.padron || [], evaluaciones: j.evaluaciones || [], asistencia: j.asistencia || [], gestos: j.gestos, email: j.email || '' };
+        guardarCache();
+        estado(`Conectado al Sheet de ${d}`, 'ok');
+      } catch (err) {
+        estado('Sin conexión: se usan los últimos datos guardados', 'warn');
+      }
+      renderTodo();
+    }
+
+    // Aplica el cambio en pantalla al instante (igual que lo hace el Sheet)
+    function aplicarLocal(p) {
+      const mismoGrupo = r => igual(r.categoria, p.categoria) && igual(r.equipo, p.equipo);
+      if (p.tipo === 'EVALUACION') {
+        datos.evaluaciones = datos.evaluaciones.filter(r => !(r.fecha === p.fecha && mismoGrupo(r) && igual(r.jugador, p.jugador)));
+        datos.evaluaciones.push({ fecha: p.fecha, categoria: p.categoria, equipo: p.equipo, jugador: p.jugador, notas: p.notas });
+      } else if (p.tipo === 'ASISTENCIA') {
+        datos.asistencia = datos.asistencia.filter(r => !(r.fecha === p.fecha && mismoGrupo(r)));
+        Object.entries(p.datos).forEach(([jugador, est]) => datos.asistencia.push({ fecha: p.fecha, categoria: p.categoria, equipo: p.equipo, jugador, estado: est }));
+      } else if (p.tipo === 'ALTA_PADRON') {
+        p.jugadores.forEach(j => {
+          if (!datos.padron.some(r => mismoGrupo(r) && igual(r.jugador, j))) datos.padron.push({ categoria: p.categoria, equipo: p.equipo, jugador: j });
+        });
+      } else if (p.tipo === 'BAJA_PADRON') {
+        datos.padron = datos.padron.filter(r => !(mismoGrupo(r) && igual(r.jugador, p.jugador)));
+      } else if (p.tipo === 'GESTOS') {
+        datos.gestos = p.gestos;
+      } else if (p.tipo === 'CONFIG') {
+        datos.email = p.email;
+      }
+    }
+
+    async function enviar(payload, msgOk) {
+      payload.deporte = dep();
+      aplicarLocal(payload);
+      guardarCache();
+      const url = urlDe(payload.deporte);
+      if (!url) { toast(msgOk + ' (solo en este celular)'); return; }
+      try {
+        await postear(url, payload);
+        toast(msgOk);
+        estado(`Conectado al Sheet de ${payload.deporte}`, 'ok');
+      } catch (err) {
+        if (err.servidor) { toast('Error del Sheet: ' + err.message); return; }
+        guardarPendientes([...pendientes(), { url, payload }]);
+        toast(msgOk + ' · se envía al volver la señal');
+        estado('Sin conexión', 'warn');
+      }
+    }
+
+    window.addEventListener('online', () => { if (sesion) enviarPendientes().then(cargarDatos); });
+
+    // =========================================================================
+    // 6. FILTROS EN CASCADA: Deporte > Categoría > Equipo
+    // =========================================================================
+    const gestos = () => [...((datos.gestos && datos.gestos.length) ? datos.gestos : (GESTOS_DEPORTE[dep()] || [])), ...GESTOS_COMUNES];
+    const categorias = () => [...new Set(datos.padron.map(p => p.categoria))].sort(orden);
+    const equipos = cat => [...new Set(datos.padron.filter(p => p.categoria === cat).map(p => p.equipo))].sort(orden);
+    const filtro = () => ({ cat: $('sel-categoria').value, eq: $('sel-equipo').value, fecha: $('input-fecha').value });
+    const enGrupo = r => { const { cat, eq } = filtro(); return r.categoria === cat && r.equipo === eq; };
+    const plantel = () => datos.padron.filter(enGrupo).map(p => p.jugador).sort((a, b) => a.localeCompare(b, 'es'));
+
+    function llenarSelect(sel, opciones, textoVacio) {
+      const previo = sel.value;
+      sel.innerHTML = opciones.length
+        ? opciones.map(o => `<option>${esc(o)}</option>`).join('')
+        : `<option value="">${esc(textoVacio)}</option>`;
+      if (opciones.includes(previo)) sel.value = previo;
+    }
+
+    function renderFiltros() {
+      llenarSelect($('sel-categoria'), categorias(), 'Sin categorías cargadas');
+      llenarSelect($('sel-equipo'), equipos($('sel-categoria').value), '—');
+    }
+
+    function renderTodo() { renderFiltros(); renderVista(); }
+
+    function renderVista() {
+      cerrarPanel();
+      renderEval();
+      renderAsist();
+      renderAnalisis();
+      renderPadron();
+    }
+
+    $('sel-deporte').addEventListener('change', cargarDatos);
+    $('sel-categoria').addEventListener('change', () => { llenarSelect($('sel-equipo'), equipos($('sel-categoria').value), '—'); renderVista(); });
+    $('sel-equipo').addEventListener('change', renderVista);
+    $('input-fecha').addEventListener('change', renderVista);
+    $('sel-periodo').addEventListener('change', renderAnalisis);
+
+    function sinPlantel() {
+      return sesion.rol === 'Coordinación'
+        ? 'No hay jugadores en este equipo. Cargalos en la pestaña Padrón.'
+        : 'No hay jugadores cargados. Pedile a coordinación que cargue el padrón.';
+    }
+
+    // =========================================================================
+    // 7. EVALUAR
+    // =========================================================================
+    function evaluacionDe(jugador, fecha) {
+      return datos.evaluaciones.find(e => enGrupo(e) && e.jugador === jugador && e.fecha === fecha);
+    }
+
+    function renderEval() {
+      const lista = plantel();
+      const { fecha } = filtro();
+      $('lista-eval').innerHTML = lista.length
+        ? lista.map((j, i) => `
+            <button type="button" class="jugador" data-i="${i}" aria-pressed="${j === jugadorActivo}">
+              <span>${esc(j)}</span>${evaluacionDe(j, fecha) ? '<span class="tag">✓ Evaluado</span>' : ''}
+            </button>`).join('')
+        : `<p class="vacio">${sinPlantel()}</p>`;
+    }
+
+    $('lista-eval').addEventListener('click', e => {
+      const b = e.target.closest('.jugador');
+      if (b) abrirPanel(plantel()[b.dataset.i]);
+    });
+
+    function abrirPanel(jugador) {
+      jugadorActivo = jugador;
+      const previa = evaluacionDe(jugador, filtro().fecha);
+      notasTemp = previa ? { ...previa.notas } : {};
+      renderEval();
+      $('jugador-activo').textContent = jugador;
+      $('contenedor-gestos').innerHTML = gestos().map((g, gi) => `
+        <div class="gesto">
+          <div class="gesto-nombre">${esc(g)}${GESTOS_COMUNES.includes(g) ? '<em>UGI</em>' : ''}</div>
+          <div class="notas" role="group" aria-label="${esc(g)}">
+            ${[1, 2, 3, 4, 5].map(n => `<button type="button" class="nota" data-gi="${gi}" data-n="${n}" aria-pressed="${notasTemp[g] === n}">${n}</button>`).join('')}
+          </div>
+        </div>`).join('');
+      $('panel-gestos').classList.remove('hidden');
+      $('panel-gestos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function cerrarPanel() {
+      jugadorActivo = null;
+      $('panel-gestos').classList.add('hidden');
+    }
+
+    $('contenedor-gestos').addEventListener('click', e => {
+      const b = e.target.closest('.nota');
+      if (!b) return;
+      const g = gestos()[b.dataset.gi];
+      notasTemp[g] = Number(b.dataset.n);
+      b.parentElement.querySelectorAll('.nota').forEach(x => x.setAttribute('aria-pressed', x === b));
+    });
+
+    $('btn-guardar-eval').addEventListener('click', () => {
+      const lista = gestos();
+      const notas = Object.fromEntries(Object.entries(notasTemp).filter(([g]) => lista.includes(g)));
+      if (!Object.keys(notas).length) { toast('Puntuá al menos una variable'); return; }
+      const { cat, eq, fecha } = filtro();
+      const actual = jugadorActivo;
+      enviar({ tipo: 'EVALUACION', fecha, categoria: cat, equipo: eq, jugador: actual, notas }, `${actual} evaluado`);
+
+      // Pasa directo al próximo jugador sin evaluar hoy
+      const pl = plantel();
+      const idx = pl.indexOf(actual);
+      const siguiente = [...pl.slice(idx + 1), ...pl.slice(0, idx)].find(j => !evaluacionDe(j, fecha));
+      renderAnalisis();
+      if (siguiente) abrirPanel(siguiente);
+      else { cerrarPanel(); renderEval(); toast('¡Equipo completo evaluado!'); }
+    });
+
+    // =========================================================================
+    // 8. ASISTENCIA
+    // =========================================================================
+    function renderAsist() {
+      const lista = plantel();
+      const { fecha } = filtro();
+      asistTemp = {};
+      datos.asistencia.filter(a => enGrupo(a) && a.fecha === fecha).forEach(a => { asistTemp[a.jugador] = a.estado; });
+      $('lista-asist').innerHTML = lista.length
+        ? lista.map((j, i) => `
+            <div class="asist">
+              <span>${esc(j)}</span>
+              <div class="pat" role="group" aria-label="Asistencia de ${esc(j)}">
+                ${['P', 'A', 'T'].map(e => `<button type="button" data-i="${i}" data-e="${e}" aria-pressed="${asistTemp[j] === e}" title="${{ P: 'Presente', A: 'Ausente', T: 'Tarde' }[e]}">${e}</button>`).join('')}
+              </div>
+            </div>`).join('')
+        : `<p class="vacio">${sinPlantel()}</p>`;
+    }
+
+    $('lista-asist').addEventListener('click', e => {
+      const b = e.target.closest('button[data-e]');
+      if (!b) return;
+      asistTemp[plantel()[b.dataset.i]] = b.dataset.e;
+      b.parentElement.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    });
+
+    $('btn-todos-p').addEventListener('click', () => {
+      plantel().forEach(j => { asistTemp[j] = 'P'; });
+      document.querySelectorAll('#lista-asist button[data-e]').forEach(x => x.setAttribute('aria-pressed', x.dataset.e === 'P'));
+    });
+
+    $('btn-guardar-asist').addEventListener('click', () => {
+      const lista = plantel();
+      if (!lista.length) return;
+      const sinMarcar = lista.filter(j => !asistTemp[j]);
+      if (sinMarcar.length === lista.length) { toast('Marcá la asistencia primero'); return; }
+      if (sinMarcar.length && !confirm(`Hay ${sinMarcar.length} sin marcar. ¿Guardarlos como Ausente?`)) return;
+      const registro = Object.fromEntries(lista.map(j => [j, asistTemp[j] || 'A']));
+      const { cat, eq, fecha } = filtro();
+      enviar({ tipo: 'ASISTENCIA', fecha, categoria: cat, equipo: eq, datos: registro }, 'Asistencia guardada');
+      renderAsist();
+      renderAnalisis();
+    });
+
+    // =========================================================================
+    // 9. ANÁLISIS: promedio, % asistencia, gesto más flojo y alertas
+    // =========================================================================
+    let matrizActual = [];
+
+    function renderAnalisis() {
+      const dias = Number($('sel-periodo').value);
+      const desde = dias ? fechaLocal(dias) : '0000';
+      const evals = datos.evaluaciones.filter(e => enGrupo(e) && e.fecha >= desde);
+      const asist = datos.asistencia.filter(a => enGrupo(a) && a.fecha >= desde);
+      const lista = gestos();
+
+      // Promedio por gesto (gráfico de barras)
+      let suma = 0, cant = 0;
+      const promedios = lista.map(g => {
+        const vals = evals.map(e => e.notas[g]).filter(n => n > 0);
+        suma += vals.reduce((a, b) => a + b, 0); cant += vals.length;
+        return { g, prom: vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0 };
+      });
+      const conDatos = promedios.filter(p => p.prom > 0);
+      const masFlojo = conDatos.length ? conDatos.reduce((a, b) => (b.prom < a.prom ? b : a)).g : null;
+      $('grafico-gestos').innerHTML = promedios.map(({ g, prom }) => {
+        const color = prom >= 3.8 ? 'var(--ok)' : prom >= UMBRAL_NOTA ? 'var(--primary)' : 'var(--bad)';
+        return `
+          <div class="barra">
+            <div class="barra-top ${g === masFlojo ? 'flojo' : ''}">
+              <span>${g === masFlojo ? '▼ ' : ''}${esc(g)}</span>
+              <span>${prom ? prom.toFixed(1) : 'Sin datos'}</span>
+            </div>
+            <div class="barra-bg"><div style="width:${(prom / 5) * 100}%; background:${color};"></div></div>
+          </div>`;
+      }).join('');
+
+      // Matriz por jugador
+      let alertas = 0;
+      matrizActual = plantel().map(jugador => {
+        let s = 0, c = 0;
+        const porGesto = {};
+        evals.filter(e => e.jugador === jugador).forEach(e => Object.entries(e.notas).forEach(([g, n]) => {
+          s += n; c++;
+          (porGesto[g] = porGesto[g] || []).push(n);
+        }));
+        let peor = null, peorProm = 6;
+        Object.entries(porGesto).forEach(([g, ns]) => {
+          const p = ns.reduce((a, b) => a + b, 0) / ns.length;
+          if (p < peorProm) { peorProm = p; peor = g; }
+        });
+        const registros = asist.filter(a => a.jugador === jugador);
+        const presentes = registros.filter(a => a.estado === 'P' || a.estado === 'T').length;
+        const pct = registros.length ? Math.round((presentes / registros.length) * 100) : null;
+        const prom = c ? s / c : null;
+
+        let est = 'v';
+        if ((prom !== null && prom < UMBRAL_NOTA) || (pct !== null && pct < UMBRAL_ASIST)) { est = 'r'; alertas++; }
+        else if (prom === null) est = 'a';
+
+        return { jugador, prom, aTrabajar: peor && peorProm <= 3 ? peor : (prom !== null ? 'Parejo' : '-'), pct, est };
+      }).sort((a, b) => (a.est === 'r' ? 0 : 1) - (b.est === 'r' ? 0 : 1));
+
+      const etiqueta = { v: '✓ Bien', a: '– Sin evaluar', r: '⚠ Seguimiento' };
+      $('tabla-matriz').innerHTML = matrizActual.length
+        ? matrizActual.map(f => `
+            <tr>
+              <td><strong>${esc(f.jugador)}</strong></td>
+              <td>${f.prom !== null ? f.prom.toFixed(1) : '-'}</td>
+              <td style="font-size:0.78rem; color:var(--muted);">${esc(f.aTrabajar)}</td>
+              <td>${f.pct !== null ? f.pct + '%' : '-'}</td>
+              <td><span class="pill ${f.est}">${etiqueta[f.est]}</span></td>
+            </tr>`).join('')
+        : `<tr><td colspan="5" class="vacio">Sin jugadores en este equipo.</td></tr>`;
+
+      const pres = asist.filter(a => a.estado === 'P' || a.estado === 'T').length;
+      $('kpi-promedio').textContent = cant ? (suma / cant).toFixed(1) : '-';
+      $('kpi-asistencia').textContent = asist.length ? Math.round((pres / asist.length) * 100) + '%' : '-';
+      $('kpi-alertas').textContent = alertas;
+    }
+
+    $('btn-csv').addEventListener('click', () => {
+      const { cat, eq } = filtro();
+      const celda = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+      const filas = [['Deporte', 'Categoría', 'Equipo', 'Jugador', 'Promedio', 'A trabajar', '% Asistencia', 'Estado']]
+        .concat(matrizActual.map(f => [dep(), cat, eq, f.jugador, f.prom !== null ? f.prom.toFixed(2).replace('.', ',') : '', f.aTrabajar, f.pct ?? '', { v: 'Bien', a: 'Sin evaluar', r: 'Seguimiento' }[f.est]]));
+      const csv = '\uFEFF' + filas.map(f => f.map(celda).join(';')).join('\r\n');
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+      a.download = `UGI_${dep()}_${cat}_${eq}_${fechaLocal()}.csv`.replace(/\s+/g, '_');
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    // =========================================================================
+    // 10. PADRÓN Y CONFIGURACIÓN (solo Coordinación)
+    // =========================================================================
+    function renderPadron() {
+      if (!sesion || sesion.rol !== 'Coordinación') return;
+      const { cat, eq } = filtro();
+      $('dl-cat').innerHTML = categorias().map(c => `<option value="${esc(c)}">`).join('');
+      $('dl-eq').innerHTML = [...new Set(datos.padron.map(p => p.equipo))].sort(orden).map(e => `<option value="${esc(e)}">`).join('');
+      if (!$('padron-cat').value) $('padron-cat').value = cat;
+      if (!$('padron-eq').value) $('padron-eq').value = eq;
+
+      const lista = plantel();
+      $('lista-padron').innerHTML = lista.length
+        ? lista.map((j, i) => `<div class="item"><span>${esc(j)}</span><button type="button" class="quitar" data-i="${i}">Quitar</button></div>`).join('')
+        : '<p class="vacio">Equipo sin jugadores.</p>';
+
+      $('gestos-dep').textContent = dep();
+      $('lista-gestos-config').innerHTML = gestos().map((g, i) => GESTOS_COMUNES.includes(g)
+        ? `<div class="item"><span>${esc(g)}</span><span class="pill a">UGI</span></div>`
+        : `<div class="item"><span>${esc(g)}</span><button type="button" class="quitar" data-gi="${i}">Quitar</button></div>`).join('');
+
+      $('input-email').value = datos.email || '';
+    }
+
+    function limpiarNombre(linea) {
+      return linea
+        .replace(/^\s*(\d+\s*[.)\-:]\s*|[-•*·]\s*)/, '') // "1. ", "- ", "• "
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    $('form-padron').addEventListener('submit', e => {
+      e.preventDefault();
+      const cat = $('padron-cat').value.trim();
+      const eq = $('padron-eq').value.trim();
+      const jugadores = [...new Set($('padron-lista').value.split('\n').map(limpiarNombre).filter(Boolean))];
+      if (!jugadores.length) { toast('Pegá al menos un jugador'); return; }
+      enviar({ tipo: 'ALTA_PADRON', categoria: cat, equipo: eq, jugadores }, `${jugadores.length} jugadores cargados`);
+      $('padron-lista').value = '';
+      renderFiltros();
+      $('sel-categoria').value = cat;
+      llenarSelect($('sel-equipo'), equipos(cat), '—');
+      $('sel-equipo').value = eq;
+      renderVista();
+    });
+
+    $('lista-padron').addEventListener('click', e => {
+      const b = e.target.closest('.quitar');
+      if (!b) return;
+      const jugador = plantel()[b.dataset.i];
+      if (!confirm(`¿Quitar a ${jugador} del equipo?`)) return;
+      const { cat, eq } = filtro();
+      enviar({ tipo: 'BAJA_PADRON', categoria: cat, equipo: eq, jugador }, `${jugador} quitado`);
+      renderTodo();
+    });
+
+    function guardarGestos(lista, msg) {
+      enviar({ tipo: 'GESTOS', gestos: lista.filter(g => !GESTOS_COMUNES.includes(g)) }, msg);
+      renderVista();
+    }
+
+    $('lista-gestos-config').addEventListener('click', e => {
+      const b = e.target.closest('.quitar');
+      if (!b) return;
+      const lista = gestos();
+      const g = lista[b.dataset.gi];
+      if (!confirm(`¿Quitar "${g}" de las variables de ${dep()}?`)) return;
+      guardarGestos(lista.filter(x => x !== g), 'Variable quitada');
+    });
+
+    $('btn-sumar-gesto').addEventListener('click', () => {
+      const g = $('input-nuevo-gesto').value.replace(/[|:]/g, ' ').trim();
+      if (!g) return;
+      if (gestos().some(x => igual(x, g))) { toast('Esa variable ya existe'); return; }
+      $('input-nuevo-gesto').value = '';
+      guardarGestos([...gestos(), g], 'Variable sumada a ' + dep());
+    });
+
+    $('form-email').addEventListener('submit', e => {
+      e.preventDefault();
+      enviar({ tipo: 'CONFIG', email: $('input-email').value.trim() }, 'Mail guardado');
+    });
+
+    // =========================================================================
+    // 11. PESTAÑAS E INICIO
+    // =========================================================================
+    function cambiarTab(id) {
+      tabActual = id;
+      ['evaluacion', 'asistencia', 'analisis', 'padron'].forEach(t => $('tab-' + t).classList.toggle('hidden', t !== id));
+      document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === id));
+      $('wrap-fecha').classList.toggle('hidden', id === 'analisis' || id === 'padron');
+    }
+    document.querySelector('.tabs').addEventListener('click', e => {
+      const b = e.target.closest('.tab');
+      if (b) cambiarTab(b.dataset.tab);
+    });
+
+    const claveGuardada = localStorage.getItem('ugi_dep_clave');
+    if (claveGuardada && CLAVES[claveGuardada]) iniciar(claveGuardada);
   </script>
 </body>
 </html>
