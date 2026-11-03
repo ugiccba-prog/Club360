@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ciudad Integrado - Gestión Deportiva</title>
+  <style>
+    :root {
+      --primary: #004b87;
+      --primary-light: #e6f0f9;
+      --accent: #00a859;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --bg: #f4f6f9;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #cbd5e1;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 50px; }
+
+    /* Cabecera */
+    header { background: var(--primary); color: var(--white); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    header h1 { font-size: 1.05rem; font-weight: 700; }
+    .badge-rol { background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+    .btn-salir { background: transparent; border: 1px solid rgba(255,255,255,0.5); color: white; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; margin-left: 8px; }
+
+    .container { max-width: 680px; margin: 16px auto; padding: 0 12px; }
+    .card { background: var(--white); border-radius: 12px; padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 14px; }
+
+    /* Login */
+    #login-screen { max-width: 400px; margin: 50px auto; }
+    .form-group { margin-bottom: 14px; }
+    label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.4px; }
+    select, input[type="password"], input[type="text"], input[type="date"], textarea {
+      width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; background: var(--white); color: var(--text);
+    }
+    textarea { resize: vertical; min-height: 110px; font-family: inherit; }
+    .btn-primary { width: 100%; background: var(--primary); color: var(--white); border: none; padding: 14px; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: 0.15s; }
+    .btn-primary:active { transform: scale(0.99); opacity: 0.9; }
+    .btn-secondary { background: #e2e8f0; color: var(--text); border: none; padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+    .error-msg { color: var(--danger); font-size: 0.85rem; margin-top: 8px; display: none; }
+
+    /* Navegación */
+    .nav-tabs { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
+    .tab-btn { flex: 1; white-space: nowrap; padding: 11px 10px; border: none; background: #e2e8f0; color: var(--muted); font-weight: 700; border-radius: 8px; cursor: pointer; font-size: 0.85rem; }
+    .tab-btn.active { background: var(--primary); color: var(--white); }
+
+    /* Grilla de Filtros */
+    .filters-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 480px) { .filters-grid { grid-template-columns: 1fr; } }
+
+    /* Lista de Jugadores (Toma Limpia) */
+    .players-list { display: flex; flex-direction: column; gap: 6px; max-height: 250px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 8px; background: #fafbfc; }
+    .player-item { padding: 12px 14px; border-radius: 8px; border: 1px solid #e2e8f0; background: var(--white); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 0.95rem; }
+    .player-item.selected { background: var(--primary); color: var(--white); border-color: var(--primary); }
+    .status-dot { background: var(--accent); color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.72rem; font-weight: 700; }
+
+    /* Gestos (Limpio en Cancha) */
+    .gesto-row { padding: 12px 0; border-bottom: 1px solid #f1f5f9; display: flex; flex-direction: column; gap: 8px; }
+    .gesto-row:last-child { border-bottom: none; }
+    .gesto-title { font-weight: 600; font-size: 0.95rem; }
+    .score-group { display: flex; gap: 6px; }
+    .score-btn { flex: 1; padding: 12px 0; border: 1px solid var(--border); background: var(--bg); border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; color: var(--text); }
+    .score-btn.active { background: var(--accent); color: var(--white); border-color: var(--accent); }
+
+    /* Asistencia */
+    .asist-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+    .asist-btns { display: flex; gap: 6px; }
+    .asist-btn { padding: 8px 14px; border: 1px solid var(--border); border-radius: 6px; font-weight: 700; cursor: pointer; background: var(--white); }
+    .asist-btn.P.active { background: var(--accent); color: white; border-color: var(--accent); }
+    .asist-btn.A.active { background: var(--danger); color: white; border-color: var(--danger); }
+    .asist-btn.T.active { background: var(--warning); color: white; border-color: var(--warning); }
+
+    /* DASHBOARD DE ANÁLISIS Y MÉTRICAS */
+    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+    .kpi-card { background: var(--white); border-radius: 10px; padding: 14px 10px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.04); border-top: 4px solid var(--primary); }
+    .kpi-val { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin: 4px 0; }
+    .kpi-lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
+
+    /* Gráfico de Barras CSS Puro */
+    .chart-row { margin-bottom: 12px; }
+    .chart-header { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
+    .chart-bar-bg { width: 100%; height: 12px; background: #e2e8f0; border-radius: 6px; overflow: hidden; }
+    .chart-bar-fill { height: 100%; border-radius: 6px; transition: width 0.4s ease; }
+
+    /* Tabla de Decisiones */
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.85rem; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #e2e8f0; }
+    th { background: #f8fafc; color: var(--muted); font-size: 0.75rem; text-transform: uppercase; }
+    .pill { padding: 3px 8px; border-radius: 10px; font-weight: 700; font-size: 0.75rem; display: inline-block; }
+    .pill-green { background: #dcfce7; color: #166534; }
+    .pill-amber { background: #fef3c7; color: #92400e; }
+    .pill-red { background: #fee2e2; color: #991b1b; }
+
+    .hidden { display: none !important; }
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 12px 22px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; display: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  </style>
+</head>
+<body>
+
+  <!-- CABECERA -->
+  <header id="app-header" class="hidden">
+    <div>
+      <h1 id="header-title">Ciudad Integrado</h1>
+    </div>
+    <div style="display: flex; align-items: center;">
+      <span id="role-badge" class="badge-rol">Rol</span>
+      <button class="btn-salir" onclick="logout()">Salir</button>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- 1. LOGIN -->
+    <div id="login-screen" class="card">
+      <h2 style="margin-bottom: 4px; color: var(--primary);">Portal Deportivo</h2>
+      <p style="color: var(--muted); font-size: 0.88rem; margin-bottom: 18px;">Ingresá tu clave de Profe o Coordinación</p>
+      
+      <div class="form-group">
+        <label>Contraseña</label>
+        <input type="password" id="input-pass" placeholder="Ej: hockeycoord o hockeyprofe" onkeypress="if(event.key === 'Enter') login()">
+        <p id="login-error" class="error-msg">Clave incorrecta.</p>
+      </div>
+      <button class="btn-primary" onclick="login()">Entrar</button>
+
+      <div style="margin-top: 18px; font-size: 0.78rem; color: var(--muted); background: #f8fafc; padding: 12px; border-radius: 8px; line-height: 1.5;">
+        <strong>Claves activas para probar:</strong><br>
+        • Hockey: <code>hockeyprofe</code> | <code>hockeycoord</code><br>
+        • Básquet: <code>basquetprofe</code> | <code>basquetcoord</code><br>
+        • Fútbol: <code>futbolprofe</code> | <code>futbolcoord</code><br>
+        • Dirección UGI: <code>adminciudad</code>
+      </div>
+    </div>
+
+    <!-- 2. APP PRINCIPAL -->
+    <div id="app-screen" class="hidden">
+
+      <!-- PESTAÑAS -->
+      <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('evaluacion', this)">1. Evaluar</button>
+        <button class="tab-btn" onclick="switchTab('asistencia', this)">2. Asistencia</button>
+        <button class="tab-btn" onclick="switchTab('analisis', this)">3. Métricas y Gráficos</button>
+        <button id="tab-btn-padron" class="tab-btn hidden" onclick="switchTab('padron', this)">4. Padrón / Config</button>
+      </div>
+
+      <!-- FILTROS GLOBALES: Deporte, Categoría, Equipo -->
+      <div class="card">
+        <div class="filters-grid">
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Deporte</label>
+            <select id="sel-deporte" onchange="cargarCategorias()"></select>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Fecha</label>
+            <input type="date" id="input-fecha">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Categoría</label>
+            <select id="sel-categoria" onchange="cargarEquipos()"></select>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Equipo / Tira</label>
+            <select id="sel-equipo" onchange="actualizarVistaActiva()"></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- APARTADO 1: TOMA DE EVALUACIÓN (100% LIMPIA EN CANCHA) -->
+      <div id="tab-evaluacion">
+        <div class="card">
+          <label>Lista de Jugadores (Tocá un nombre)</label>
+          <div id="lista-jugadores-eval" class="players-list"></div>
+        </div>
+
+        <div id="panel-gestos" class="card hidden">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+            <h3 id="nombre-jugador-activo" style="color: var(--primary); font-size: 1.05rem;">Jugador</h3>
+            <span style="font-size: 0.75rem; color: var(--muted); font-weight:600;">1 (Bajo) a 5 (Óptimo)</span>
+          </div>
+          <div id="contenedor-gestos"></div>
+          <button class="btn-primary" style="margin-top: 14px; background: var(--accent);" onclick="guardarEvaluacion()">Guardar Evaluación</button>
+        </div>
+      </div>
+
+      <!-- APARTADO 2: TOMA DE ASISTENCIA -->
+      <div id="tab-asistencia" class="hidden">
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+            <label style="margin:0;">Asistencia del Equipo</label>
+            <button class="btn-secondary" onclick="marcarTodosPresentes()">Todos Presentes (P)</button>
+          </div>
+          <div id="lista-jugadores-asist"></div>
+          <button class="btn-primary" style="margin-top: 16px;" onclick="guardarAsistencia()">Registrar Asistencia</button>
+        </div>
+      </div>
+
+      <!-- APARTADO 3: BASE DE INFORMACIÓN, GRÁFICOS Y DECISIONES -->
+      <div id="tab-analisis" class="hidden">
+        
+        <!-- KPIs Rápidos -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-lbl">Promedio Equipo</div>
+            <div id="kpi-promedio" class="kpi-val">-</div>
+            <div style="font-size:0.7rem; color:var(--muted);">Sobre 5.0 pts</div>
+          </div>
+          <div class="kpi-card" style="border-top-color: var(--accent);">
+            <div class="kpi-lbl">% Asistencia</div>
+            <div id="kpi-asistencia" class="kpi-val" style="color:var(--accent);">-</div>
+            <div style="font-size:0.7rem; color:var(--muted);">Presentismo</div>
+          </div>
+          <div class="kpi-card" style="border-top-color: var(--warning);">
+            <div class="kpi-lbl">Alertas</div>
+            <div id="kpi-alertas" class="kpi-val" style="color:var(--warning);">0</div>
+            <div style="font-size:0.7rem; color:var(--muted);">Para seguimiento</div>
+          </div>
+        </div>
+
+        <!-- Gráfico de Promedio por Gesto Técnico -->
+        <div class="card">
+          <h3 style="font-size: 0.95rem; color: var(--primary); margin-bottom: 4px;">Rendimiento del Equipo por Gesto Técnico</h3>
+          <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 14px;">Detectá rápido qué gesto reforzar en la semana con este grupo.</p>
+          <div id="grafico-gestos"></div>
+        </div>
+
+        <!-- Matriz de Jugadores (Cruce Evaluación + Asistencia) -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+            <div>
+              <h3 style="font-size: 0.95rem; color: var(--primary);">Matriz Individual para Toma de Decisiones</h3>
+              <p style="font-size: 0.75rem; color: var(--muted);">Cruce de nivel técnico, cantidad de tomas y asistencia</p>
+            </div>
+            <button class="btn-secondary" onclick="exportarCSV()">Bajar Excel/CSV</button>
+          </div>
+          <div style="overflow-x: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Jugador</th>
+                  <th>Prom. Gesto</th>
+                  <th>Punto a trabajar</th>
+                  <th>Asist.</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-matriz-jugadores"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- APARTADO 4: CARGA SIMPLE DE PADRONES (SOLO COORDINACIÓN) -->
+      <div id="tab-padron" class="hidden">
+        <div class="card">
+          <h3 style="font-size: 1rem; color: var(--primary); margin-bottom: 6px;">Carga Masiva de Padrón (Copiar y Pegar)</h3>
+          <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 12px;">
+            Pegá acá la lista de jugadores desde WhatsApp o Excel (un jugador por renglón). Se van a sumar al equipo seleccionado arriba y a tu Google Sheet.
+          </p>
+          <div class="form-group">
+            <textarea id="input-padron-masivo" placeholder="Ejemplo:&#10;Gómez, Juan&#10;Pérez, Mateo&#10;Rodríguez, Lucas"></textarea>
+          </div>
+          <button class="btn-primary" onclick="cargarPadronMasivo()">Cargar Lista al Equipo</button>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size: 1rem; color: var(--primary); margin-bottom: 6px;">Configurar Gestos del Deporte</h3>
+          <p style="font-size: 0.82rem; color: var(--muted); margin-bottom: 12px;">Sumá una nueva variable técnica para evaluar en todas las categorías de este deporte.</p>
+          <div style="display:flex; gap:8px;">
+            <input type="text" id="input-nuevo-gesto" placeholder="Ej: Recepción de revés en movimiento">
+            <button class="btn-primary" style="width:auto; padding:0 20px;" onclick="agregarGesto()">Sumar</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Guardado</div>
+
+  <script>
+    // =========================================================================
+    // 1. CLAVES Y CONEXIÓN A UN GOOGLE SHEET DISTINTO POR DEPORTE
+    // =========================================================================
+    const CLAVES = {
+      "hockeyprofe":  { deporte: "Hockey",  rol: "Profe",        sheetUrl: "URL_APPS_SCRIPT_HOCKEY" },
+      "hockeycoord":  { deporte: "Hockey",  rol: "Coordinación", sheetUrl: "URL_APPS_SCRIPT_HOCKEY" },
+      "basquetprofe": { deporte: "Básquet", rol: "Profe",        sheetUrl: "URL_APPS_SCRIPT_BASQUET" },
+      "basquetcoord": { deporte: "Básquet", rol: "Coordinación", sheetUrl: "URL_APPS_SCRIPT_BASQUET" },
+      "futbolprofe":  { deporte: "Fútbol",  rol: "Profe",        sheetUrl: "URL_APPS_SCRIPT_FUTBOL" },
+      "futbolcoord":  { deporte: "Fútbol",  rol: "Coordinación", sheetUrl: "URL_APPS_SCRIPT_FUTBOL" },
+      "adminciudad":  { deporte: "TODOS",   rol: "Coordinación", sheetUrl: "URL_APPS_SCRIPT_MASTER" }
+    };
+
+    // =========================================================================
+    // 2. PADRÓN Y GESTOS POR DEPORTE (Con datos precargados para que veas métricas)
+    // =========================================================================
+    const DB_DEPORTES = {
+      "Hockey": {
+        gestos: ["Conducción y Control", "Pase y Recepción", "Técnica de Barrida / Push", "Posición y Desplazamiento", "Toma de Decisión"],
+        categorias: {
+          "Sub 12": {
+            "Tira A": ["Martínez, Lucas", "Gómez, Bautista", "Pérez, Joaquín", "López, Santino"],
+            "Tira B": ["Fernández, Mateo", "Díaz, Tomás", "Sánchez, Felipe"]
+          },
+          "Sub 14": {
+            "Tira A": ["Acosta, Nicolás", "Romero, Valentín", "Suárez, Ignacio"]
+          }
+        }
+      },
+      "Básquet": {
+        gestos: ["Dribbling y Manejo", "Mecánica de Tiro", "Pase sobre hombro / pique", "Postura Defensiva", "Finalización en Bandeja"],
+        categorias: {
+          "U13": {
+            "Equipo Azul": ["Silva, Ramiro", "Castro, Julián", "Ortiz, Manuel"],
+            "Equipo Blanco": ["Morales, Facundo", "Núñez, Bruno"]
+          }
+        }
+      },
+      "Fútbol": {
+        gestos: ["Control Orientado", "Pase Corto y Largo", "Conducción en Velocidad", "Perfilación", "Remate"],
+        categorias: {
+          "Infantil 2014": {
+            "Verde": ["Benítez, Thiago", "Medina, Lorenzo", "Herrera, Ciro"]
+          }
+        }
+      }
+    };
+
+    // Base histórica (precargada con ejemplos reales para que veas los gráficos desde el celular)
+    let DB_EVALUACIONES = [
+      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "Martínez, Lucas", notas: { "Conducción y Control": 4, "Pase y Recepción": 4, "Técnica de Barrida / Push": 3, "Posición y Desplazamiento": 5, "Toma de Decisión": 4 } },
+      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "Gómez, Bautista", notas: { "Conducción y Control": 4, "Pase y Recepción": 3, "Técnica de Barrida / Push": 3, "Posición y Desplazamiento": 4, "Toma de Decisión": 3 } },
+      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "Pérez, Joaquín", notas: { "Conducción y Control": 3, "Pase y Recepción": 2, "Técnica de Barrida / Push": 2, "Posición y Desplazamiento": 3, "Toma de Decisión": 2 } },
+      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "López, Santino", notas: { "Conducción y Control": 5, "Pase y Recepción": 4, "Técnica de Barrida / Push": 3, "Posición y Desplazamiento": 4, "Toma de Decisión": 4 } }
+    ];
+
+    let DB_ASISTENCIAS = [
+      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "Martínez, Lucas", estado: "P" },
+      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "Gómez, Bautista", estado: "P" },
+      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "Pérez, Joaquín", estado: "A" },
+      { fecha: "2026-11-01", deporte: "Hockey", categoria: "Sub 12", equipo: "Tira A", jugador: "López, Santino", estado: "P" }
+    ];
+
+    let sesionActual = null;
+    let jugadorActivo = null;
+    let puntajesTemporales = {};
+    let estadoAsistencia = {};
+
+    document.getElementById('input-fecha').valueAsDate = new Date();
+
+    // =========================================================================
+    // 3. LOGIN Y PERMISOS
+    // =========================================================================
+    function login() {
+      const pass = document.getElementById('input-pass').value.trim().toLowerCase();
+      if (CLAVES[pass]) {
+        sesionActual = CLAVES[pass];
+        document.getElementById('login-error').style.display = 'none';
+        iniciarApp();
+      } else {
+        document.getElementById('login-error').style.display = 'block';
+      }
+    }
+
+    function logout() {
+      sesionActual = null;
+      document.getElementById('input-pass').value = '';
+      document.getElementById('app-screen').classList.add('hidden');
+      document.getElementById('app-header').classList.add('hidden');
+      document.getElementById('login-screen').classList.remove('hidden');
+    }
+
+    function iniciarApp() {
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app-header').classList.remove('hidden');
+      document.getElementById('app-screen').classList.remove('hidden');
+      document.getElementById('role-badge').textContent = `${sesionActual.deporte} • ${sesionActual.rol}`;
+
+      const btnPadron = document.getElementById('tab-btn-padron');
+      if (sesionActual.rol === "Coordinación") {
+        btnPadron.classList.remove('hidden');
+      } else {
+        btnPadron.classList.add('hidden');
+      }
+
+      const selDeporte = document.getElementById('sel-deporte');
+      selDeporte.innerHTML = '';
+      const deportes = sesionActual.deporte === "TODOS" ? Object.keys(DB_DEPORTES) : [sesionActual.deporte];
+      deportes.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d; opt.textContent = d;
+        selDeporte.appendChild(opt);
+      });
+      selDeporte.disabled = (deportes.length === 1);
+      cargarCategorias();
+    }
+
+    // =========================================================================
+    // 4. FILTROS EN CASCADA
+    // =========================================================================
+    function cargarCategorias() {
+      const dep = document.getElementById('sel-deporte').value;
+      const selCat = document.getElementById('sel-categoria');
+      selCat.innerHTML = '';
+      Object.keys(DB_DEPORTES[dep].categorias).forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat; opt.textContent = cat;
+        selCat.appendChild(opt);
+      });
+      cargarEquipos();
+    }
+
+    function cargarEquipos() {
+      const dep = document.getElementById('sel-deporte').value;
+      const cat = document.getElementById('sel-categoria').value;
+      const selEq = document.getElementById('sel-equipo');
+      selEq.innerHTML = '';
+      Object.keys(DB_DEPORTES[dep].categorias[cat]).forEach(eq => {
+        const opt = document.createElement('option');
+        opt.value = eq; opt.textContent = eq;
+        selEq.appendChild(opt);
+      });
+      actualizarVistaActiva();
+    }
+
+    function obtenerFiltroActual() {
+      return {
+        dep: document.getElementById('sel-deporte').value,
+        cat: document.getElementById('sel-categoria').value,
+        eq: document.getElementById('sel-equipo').value,
+        fecha: document.getElementById('input-fecha').value
+      };
+    }
+
+    function obtenerPlantelActual() {
+      const { dep, cat, eq } = obtenerFiltroActual();
+      return DB_DEPORTES[dep].categorias[cat][eq] || [];
+    }
+
+    function actualizarVistaActiva() {
+      jugadorActivo = null;
+      document.getElementById('panel-gestos').classList.add('hidden');
+      renderListaEvaluacion();
+      renderListaAsistencia();
+      renderDashboardAnalisis();
+    }
+
+    // =========================================================================
+    // 5. TOMA DE EVALUACIONES LIMPIA
+    // =========================================================================
+    function renderListaEvaluacion() {
+      const plantel = obtenerPlantelActual();
+      const { fecha } = obtenerFiltroActual();
+      const contenedor = document.getElementById('lista-jugadores-eval');
+      contenedor.innerHTML = '';
+
+      plantel.forEach(jugador => {
+        const div = document.createElement('div');
+        const evaluadoHoy = DB_EVALUACIONES.some(e => e.jugador === jugador && e.fecha === fecha);
+        div.className = 'player-item' + (jugadorActivo === jugador ? ' selected' : '');
+        div.innerHTML = `
+          <span>${jugador}</span>
+          ${evaluadoHoy ? '<span class="status-dot">Evaluado</span>' : ''}
+        `;
+        div.onclick = () => seleccionarJugadorParaEvaluar(jugador);
+        contenedor.appendChild(div);
+      });
+    }
+
+    function seleccionarJugadorParaEvaluar(jugador) {
+      jugadorActivo = jugador;
+      puntajesTemporales = {};
+      renderListaEvaluacion();
+
+      document.getElementById('nombre-jugador-activo').textContent = jugador;
+      const { dep } = obtenerFiltroActual();
+      const gestos = DB_DEPORTES[dep].gestos;
+
+      const contGestos = document.getElementById('contenedor-gestos');
+      contGestos.innerHTML = '';
+
+      gestos.forEach((gesto, idx) => {
+        const fila = document.createElement('div');
+        fila.className = 'gesto-row';
+        fila.innerHTML = `
+          <div class="gesto-title">${gesto}</div>
+          <div class="score-group" id="grupo-gesto-${idx}">
+            ${[1, 2, 3, 4, 5].map(nota => `
+              <button type="button" class="score-btn" onclick="asignarNota('${gesto}', ${nota}, ${idx}, this)">${nota}</button>
+            `).join('')}
+          </div>
+        `;
+        contGestos.appendChild(fila);
+      });
+
+      document.getElementById('panel-gestos').classList.remove('hidden');
+    }
+
+    function asignarNota(gesto, nota, idx, btn) {
+      puntajesTemporales[gesto] = nota;
+      const grupo = document.getElementById(`grupo-gesto-${idx}`);
+      Array.from(grupo.children).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function guardarEvaluacion() {
+      const { dep, cat, eq, fecha } = obtenerFiltroActual();
+      const gestos = DB_DEPORTES[dep].gestos;
+
+      if (Object.keys(puntajesTemporales).length < gestos.length) {
+        mostrarToast("Completá todos los gestos");
+        return;
+      }
+
+      const nuevoRegistro = {
+        tipo: "EVALUACION",
+        fecha, deporte: dep, categoria: cat, equipo: eq,
+        jugador: jugadorActivo,
+        notas: { ...puntajesTemporales }
+      };
+
+      DB_EVALUACIONES.push(nuevoRegistro);
+      enviarAlSheetDeporte(nuevoRegistro);
+
+      document.getElementById('panel-gestos').classList.add('hidden');
+      jugadorActivo = null;
+      renderListaEvaluacion();
+      renderDashboardAnalisis();
+      mostrarToast("Evaluación guardada en base");
+    }
+
+    // =========================================================================
+    // 6. ASISTENCIA RÁPIDA
+    // =========================================================================
+    function renderListaAsistencia() {
+      const plantel = obtenerPlantelActual();
+      const contenedor = document.getElementById('lista-jugadores-asist');
+      contenedor.innerHTML = '';
+      estadoAsistencia = {};
+
+      plantel.forEach((jugador, idx) => {
+        const fila = document.createElement('div');
+        fila.className = 'asist-row';
+        fila.innerHTML = `
+          <span style="font-weight:600; font-size:0.92rem;">${jugador}</span>
+          <div class="asist-btns" id="asist-grupo-${idx}">
+            <button class="asist-btn P" onclick="setAsistencia('${jugador}', 'P', ${idx}, this)">P</button>
+            <button class="asist-btn A" onclick="setAsistencia('${jugador}', 'A', ${idx}, this)">A</button>
+            <button class="asist-btn T" onclick="setAsistencia('${jugador}', 'T', ${idx}, this)">T</button>
+          </div>
+        `;
+        contenedor.appendChild(fila);
+      });
+    }
+
+    function setAsistencia(jugador, estado, idx, btn) {
+      estadoAsistencia[jugador] = estado;
+      const grupo = document.getElementById(`asist-grupo-${idx}`);
+      Array.from(grupo.children).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function marcarTodosPresentes() {
+      const plantel = obtenerPlantelActual();
+      plantel.forEach((jugador, idx) => {
+        estadoAsistencia[jugador] = 'P';
+        const grupo = document.getElementById(`asist-grupo-${idx}`);
+        Array.from(grupo.children).forEach(b => b.classList.remove('active'));
+        grupo.children[0].classList.add('active');
+      });
+    }
+
+    function guardarAsistencia() {
+      const { dep, cat, eq, fecha } = obtenerFiltroActual();
+      const entradas = Object.entries(estadoAsistencia);
+      if (entradas.length === 0) {
+        mostrarToast("Marcá la asistencia primero");
+        return;
+      }
+
+      entradas.forEach(([jugador, estado]) => {
+        DB_ASISTENCIAS.push({ fecha, deporte: dep, categoria: cat, equipo: eq, jugador, estado });
+      });
+
+      enviarAlSheetDeporte({ tipo: "ASISTENCIA", fecha, deporte: dep, categoria: cat, equipo: eq, datos: estadoAsistencia });
+      renderDashboardAnalisis();
+      mostrarToast("Asistencia registrada");
+    }
+
+    // =========================================================================
+    // 7. MOTOR DE MÉTRICAS, GRÁFICOS Y TOMA DE DECISIONES
+    // =========================================================================
+    function renderDashboardAnalisis() {
+      const { dep, cat, eq } = obtenerFiltroActual();
+      const plantel = obtenerPlantelActual();
+      const gestosDeporte = DB_DEPORTES[dep].gestos;
+
+      const evalsEquipo = DB_EVALUACIONES.filter(e => e.deporte === dep && e.categoria === cat && e.equipo === eq);
+      const asistEquipo = DB_ASISTENCIAS.filter(a => a.deporte === dep && a.categoria === cat && a.equipo === eq);
+
+      // 1. Calcular promedio por gesto para el gráfico de barras
+      const contGrafico = document.getElementById('grafico-gestos');
+      contGrafico.innerHTML = '';
+      let sumaTotalEquipo = 0;
+      let cantNotasEquipo = 0;
+
+      gestosDeporte.forEach(gesto => {
+        let sumaGesto = 0;
+        let contGesto = 0;
+        evalsEquipo.forEach(ev => {
+          if (ev.notas[gesto]) {
+            sumaGesto += ev.notas[gesto];
+            contGesto++;
+            sumaTotalEquipo += ev.notas[gesto];
+            cantNotasEquipo++;
+          }
+        });
+        const promGesto = contGesto > 0 ? (sumaGesto / contGesto) : 0;
+        const porcentajeBarra = (promGesto / 5) * 100;
+        const colorBarra = promGesto >= 3.8 ? 'var(--accent)' : (promGesto >= 2.8 ? 'var(--primary)' : 'var(--danger)');
+
+        const row = document.createElement('div');
+        row.className = 'chart-row';
+        row.innerHTML = `
+          <div class="chart-header">
+            <span>${gesto}</span>
+            <span>${promGesto > 0 ? promGesto.toFixed(1) + ' / 5' : 'Sin datos'}</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width:${porcentajeBarra}%; background:${colorBarra};"></div>
+          </div>
+        `;
+        contGrafico.appendChild(row);
+      });
+
+      // 2. Matriz por Jugador + Alertas
+      const tbody = document.getElementById('tabla-matriz-jugadores');
+      tbody.innerHTML = '';
+      let alertasCount = 0;
+
+      plantel.forEach(jugador => {
+        const evJugador = evalsEquipo.filter(e => e.jugador === jugador);
+        const asJugador = asistEquipo.filter(a => a.jugador === jugador);
+
+        // Promedio técnico y gesto más flojo
+        let sumaJ = 0, cantJ = 0;
+        let peorGesto = "-";
+        let peorNota = 6;
+
+        evJugador.forEach(ev => {
+          Object.entries(ev.notas).forEach(([g, n]) => {
+            sumaJ += n; cantJ++;
+            if (n < peorNota) { peorNota = n; peorGesto = g; }
+          });
+        });
+
+        const promJ = cantJ > 0 ? (sumaJ / cantJ) : 0;
+        const presentes = asJugador.filter(a => a.estado === 'P' || a.estado === 'T').length;
+        const pctAsist = asJugador.length > 0 ? Math.round((presentes / asJugador.length) * 100) : 100;
+
+        // Regla de decisión: Alerta si promedio < 2.8 o asistencia < 70%
+        let estadoHtml = '<span class="pill pill-green">Óptimo</span>';
+        if (cantJ === 0) {
+          estadoHtml = '<span class="pill pill-amber">Sin evaluar</span>';
+        } else if (promJ < 2.8 || pctAsist < 70) {
+          estadoHtml = '<span class="pill pill-red">Seguimiento</span>';
+          alertasCount++;
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${jugador}</strong></td>
+          <td>${promJ > 0 ? promJ.toFixed(1) : '-'}</td>
+          <td style="font-size:0.78rem; color:var(--muted);">${peorNota <= 3 ? peorGesto : 'Parejo'}</td>
+          <td>${asJugador.length > 0 ? pctAsist + '%' : '-'}</td>
+          <td>${estadoHtml}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // 3. Actualizar KPIs superiores
+      const promGeneral = cantNotasEquipo > 0 ? (sumaTotalEquipo / cantNotasEquipo).toFixed(1) : '-';
+      const totalPresentes = asistEquipo.filter(a => a.estado === 'P' || a.estado === 'T').length;
+      const pctAsistEquipo = asistEquipo.length > 0 ? Math.round((totalPresentes / asistEquipo.length) * 100) + '%' : '-';
+
+      document.getElementById('kpi-promedio').textContent = promGeneral;
+      document.getElementById('kpi-asistencia').textContent = pctAsistEquipo;
+      document.getElementById('kpi-alertas').textContent = alertasCount;
+    }
+
+    // =========================================================================
+    // 8. CARGA MASIVA DE PADRÓN Y CONEXIÓN A SHEETS
+    // =========================================================================
+    function cargarPadronMasivo() {
+      const texto = document.getElementById('input-padron-masivo').value;
+      const lineas = texto.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+      if (lineas.length === 0) {
+        mostrarToast("Pegá al menos un jugador");
+        return;
+      }
+
+      const { dep, cat, eq } = obtenerFiltroActual();
+      lineas.forEach(nombre => {
+        if (!DB_DEPORTES[dep].categorias[cat][eq].includes(nombre)) {
+          DB_DEPORTES[dep].categorias[cat][eq].push(nombre);
+        }
+      });
+
+      enviarAlSheetDeporte({ tipo: "ALTA_PADRON", deporte: dep, categoria: cat, equipo: eq, jugadores: lineas });
+      document.getElementById('input-padron-masivo').value = '';
+      actualizarVistaActiva();
+      mostrarToast(`${lineas.length} jugadores cargados al equipo`);
+    }
+
+    function agregarGesto() {
+      const input = document.getElementById('input-nuevo-gesto');
+      const gesto = input.value.trim();
+      if (!gesto) return;
+      const { dep } = obtenerFiltroActual();
+      DB_DEPORTES[dep].gestos.push(gesto);
+      input.value = '';
+      actualizarVistaActiva();
+      mostrarToast("Gesto agregado a " + dep);
+    }
+
+    // Envío automático al Google Sheet correspondiente a ese deporte
+    function enviarAlSheetDeporte(payload) {
+      if (!sesionActual || !sesionActual.sheetUrl || sesionActual.sheetUrl.startsWith("URL_")) return;
+      fetch(sesionActual.sheetUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    }
+
+    // Exportar base a CSV para abrir en Excel/Sheets
+    function exportarCSV() {
+      let csv = "Fecha,Deporte,Categoria,Equipo,Jugador,Detalle_Notas\n";
+      DB_EVALUACIONES.forEach(ev => {
+        const det = Object.entries(ev.notas).map(([k,v]) => `${k}:${v}`).join(" | ");
+        csv += `${ev.fecha},${ev.deporte},${ev.categoria},${ev.equipo},"${ev.jugador}","${det}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Base_Deportes_CiudadIntegrado.csv`;
+      a.click();
+    }
+
+    function switchTab(tabId, btn) {
+      ['evaluacion', 'asistencia', 'analisis', 'padron'].forEach(id => {
+        document.getElementById('tab-' + id).classList.add('hidden');
+      });
+      document.getElementById('tab-' + tabId).classList.remove('hidden');
+      Array.from(document.querySelectorAll('.tab-btn')).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function mostrarToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => t.style.display = 'none', 2400);
+    }
+  </script>
+</body>
+</html>
