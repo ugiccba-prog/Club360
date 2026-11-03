@@ -310,6 +310,36 @@
       margin-left: 6px;
       vertical-align: middle;
     }
+    .gesto-nombre em.arq {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    /* Selector Jugador de Campo vs Arquero */
+    .rol-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      background: #e2e8f0;
+      padding: 4px;
+      border-radius: 11px;
+      margin-bottom: 12px;
+    }
+    .rol-btn {
+      min-height: 38px;
+      border: none;
+      background: transparent;
+      color: #475569;
+      font-weight: 800;
+      font-size: 0.82rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .rol-btn[aria-pressed="true"] {
+      background: var(--navy);
+      color: var(--white);
+      box-shadow: 0 2px 6px rgba(11, 37, 69, 0.2);
+    }
     /* Control [-] [ input ] [+] */
     .stepper {
       display: inline-flex;
@@ -540,6 +570,10 @@
           <h3 id="jugador-activo"></h3>
           <span class="hint" style="margin:0;">Escala 1 a 5 (escribí o usá − / +)</span>
         </div>
+        <div id="switch-puesto" class="rol-switch hidden" role="group" aria-label="Puesto a evaluar">
+          <button type="button" class="rol-btn" data-puesto="campo" aria-pressed="true">🏃 Jugador de campo</button>
+          <button type="button" class="rol-btn" data-puesto="arquero" aria-pressed="false">🧤 Arquero /a</button>
+        </div>
         <div id="contenedor-gestos"></div>
         <button type="button" class="btn ok" id="btn-guardar-eval" style="margin-top:14px;">Guardar y pasar al siguiente</button>
       </div>
@@ -704,6 +738,42 @@
       "Gimnasia":             ["Flexibilidad", "Fuerza", "Equilibrio", "Roles", "Vertical / medialuna", "Saltos y aterrizaje", "Postura y alineación", "Expresión"],
       "Patín Artístico":      ["Postura y equilibrio", "Patinaje adelante / atrás", "Filos y curvas", "Saltos", "Trompos / giros", "Pasos y figuras", "Expresión y ritmo"]
     };
+    // Ítems específicos de Arquero/a para los deportes que tienen puesto de arco
+    const GESTOS_ARQUERO = {
+      "Hockey sobre Patines": [
+        "Arquero: Posición base y desplazamientos",
+        "Arquero: Bloqueo bajo (guardas y patín)",
+        "Arquero: Uso de guantes y bastón",
+        "Arquero: Achique y mano a mano",
+        "Arquero: Rebotes y recuperación",
+        "Arquero: Lectura y comunicación defensiva"
+      ],
+      "Hockey sobre Césped": [
+        "Arquero: Posición básica y ángulo de achique",
+        "Arquero: Despeje de kickers y guardas (bajo)",
+        "Arquero: Uso de guantes (tiros a media/alta altura)",
+        "Arquero: Salidas en 1 vs 1 y barrida",
+        "Arquero: Defensa de córner corto",
+        "Arquero: Comunicación y orden defensivo"
+      ],
+      "Fútbol": [
+        "Arquero: Posición de base y juego de piernas",
+        "Arquero: Toma de pelota y seguridad de manos",
+        "Arquero: Caídas y vuelos laterales",
+        "Arquero: Achique en 1 vs 1",
+        "Arquero: Juego aéreo y descuelgue de centros",
+        "Arquero: Salida con los pies y saque"
+      ],
+      "Handball": [
+        "Arquero: Posición de base y desplazamientos en el arco",
+        "Arquero: Atajada de lanzamientos de 6m y 9m",
+        "Arquero: Cierre de ángulo desde los extremos",
+        "Arquero: Salida rápida de contraataque (pase largo)",
+        "Arquero: Atajada de penales (7m) y 1 vs 1",
+        "Arquero: Coordinación con el bloqueo defensivo"
+      ]
+    };
+
     const DEPORTES = Object.keys(GESTOS_DEPORTE);
 
     const UMBRAL_NOTA = 2.8;
@@ -716,6 +786,7 @@
     let sesion = null;
     let datos = vacio();
     let jugadorActivo = null;
+    let puestoEval = 'campo';
     let notasTemp = {};
     let asistTemp = {};
     let tabActual = 'evaluacion';
@@ -903,9 +974,15 @@
     window.addEventListener('online', () => { if (sesion) enviarPendientes().then(cargarDatos); });
 
     // =========================================================================
-    // 6. FILTROS EN CASCADA
+    // 6. FILTROS EN CASCADA Y GESTOS (Campo + Arquero en deportes con arco)
     // =========================================================================
-    const gestos = () => [...((datos.gestos && datos.gestos.length) ? datos.gestos : (GESTOS_DEPORTE[dep()] || [])), ...GESTOS_COMUNES];
+    const tieneArquero = () => Boolean(GESTOS_ARQUERO[dep()]);
+    const gestosCampo = () => [...((datos.gestos && datos.gestos.length) ? datos.gestos : (GESTOS_DEPORTE[dep()] || [])), ...GESTOS_COMUNES];
+    const gestosArquero = () => [...(GESTOS_ARQUERO[dep()] || []), ...GESTOS_COMUNES];
+    const gestos = () => (tieneArquero() && puestoEval === 'arquero') ? gestosArquero() : gestosCampo();
+    const gestosAnalisis = () => tieneArquero()
+      ? [...((datos.gestos && datos.gestos.length) ? datos.gestos : (GESTOS_DEPORTE[dep()] || [])), ...(GESTOS_ARQUERO[dep()] || []), ...GESTOS_COMUNES]
+      : gestosCampo();
     const categorias = () => [...new Set(datos.padron.map(p => p.categoria))].sort(orden);
     const equipos = cat => [...new Set(datos.padron.filter(p => p.categoria === cat).map(p => p.equipo))].sort(orden);
     const filtro = () => ({ cat: $('sel-categoria').value, eq: $('sel-equipo').value, fecha: $('input-fecha').value });
@@ -974,15 +1051,33 @@
       jugadorActivo = jugador;
       const previa = evaluacionDe(jugador, filtro().fecha);
       notasTemp = previa ? { ...previa.notas } : {};
+      // Si ya tenía notas de arquero o su nombre indica (Arq), abre directo en modo Arquero
+      const eraArq = Object.keys(notasTemp).some(k => k.startsWith('Arquero:')) || /\b(arq|arquero|arquera|gk)\b/i.test(jugador);
+      puestoEval = (tieneArquero() && eraArq) ? 'arquero' : 'campo';
       renderEval();
       $('jugador-activo').textContent = jugador;
+      $('switch-puesto').classList.toggle('hidden', !tieneArquero());
+      renderFilasGestos();
+      $('panel-gestos').classList.remove('hidden');
+      $('panel-gestos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderFilasGestos() {
+      document.querySelectorAll('#switch-puesto .rol-btn').forEach(b => {
+        b.setAttribute('aria-pressed', String(b.dataset.puesto === puestoEval));
+      });
       $('contenedor-gestos').innerHTML = gestos().map((g, gi) => {
         const val = notasTemp[g];
         const tiene = val !== undefined && val !== null && val !== '';
+        const esArq = g.startsWith('Arquero:');
+        const etiquetaNombre = esArq ? g.replace(/^Arquero:\s*/, '') : g;
+        const badge = GESTOS_COMUNES.includes(g)
+          ? '<em>UGI</em>'
+          : (esArq ? '<em class="arq">ARQUERO</em>' : '');
         return `
         <div class="gesto" data-gi="${gi}">
           <div class="gesto-head">
-            <div class="gesto-nombre">${esc(g)}${GESTOS_COMUNES.includes(g) ? '<em>UGI</em>' : ''}</div>
+            <div class="gesto-nombre">${esc(etiquetaNombre)}${badge}</div>
             <div class="stepper ${tiene ? 'con-valor' : ''}" id="stepper-${gi}">
               <button type="button" class="step-btn" data-step="-0.5" data-gi="${gi}" aria-label="Restar puntaje">−</button>
               <input type="number" class="nota-input" id="nota-input-${gi}" data-gi="${gi}" min="1" max="5" step="0.5" inputmode="decimal" placeholder="-" value="${tiene ? fmtNota(val) : ''}" aria-label="Puntaje ${esc(g)}">
@@ -994,9 +1089,14 @@
           </div>
         </div>`;
       }).join('');
-      $('panel-gestos').classList.remove('hidden');
-      $('panel-gestos').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
+    $('switch-puesto').addEventListener('click', e => {
+      const b = e.target.closest('.rol-btn');
+      if (!b) return;
+      puestoEval = b.dataset.puesto;
+      renderFilasGestos();
+    });
 
     function fijarNotaGesto(gi, valorRaw, actualizarInput = true) {
       const g = gestos()[gi];
@@ -1133,14 +1233,14 @@
       const desde = dias ? fechaLocal(dias) : '0000';
       const evals = datos.evaluaciones.filter(e => enGrupo(e) && e.fecha >= desde);
       const asist = datos.asistencia.filter(a => enGrupo(a) && a.fecha >= desde);
-      const lista = gestos();
+      const lista = gestosAnalisis();
 
       let suma = 0, cant = 0;
       const promedios = lista.map(g => {
         const vals = evals.map(e => e.notas[g]).filter(n => n > 0);
         suma += vals.reduce((a, b) => a + b, 0); cant += vals.length;
         return { g, prom: vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0 };
-      });
+      }).filter(p => !p.g.startsWith('Arquero:') || p.prom > 0);
       const conDatos = promedios.filter(p => p.prom > 0);
       const masFlojo = conDatos.length ? conDatos.reduce((a, b) => (b.prom < a.prom ? b : a)).g : null;
       $('grafico-gestos').innerHTML = promedios.map(({ g, prom }) => {
@@ -1228,9 +1328,12 @@
         : '<p class="vacio">Equipo sin jugadores.</p>';
 
       $('gestos-dep').textContent = dep();
-      $('lista-gestos-config').innerHTML = gestos().map((g, i) => GESTOS_COMUNES.includes(g)
-        ? `<div class="item"><span>${esc(g)}</span><span class="pill a">UGI</span></div>`
-        : `<div class="item"><span>${esc(g)}</span><button type="button" class="quitar" data-gi="${i}">Quitar</button></div>`).join('');
+      const listaConfig = [...gestosCampo(), ...(tieneArquero() ? (GESTOS_ARQUERO[dep()] || []) : [])];
+      $('lista-gestos-config').innerHTML = listaConfig.map((g, i) => {
+        if (GESTOS_COMUNES.includes(g)) return `<div class="item"><span>${esc(g)}</span><span class="pill a">UGI</span></div>`;
+        if (g.startsWith('Arquero:')) return `<div class="item"><span>${esc(g.replace(/^Arquero:\s*/, ''))}</span><span class="pill v">🧤 Arquero</span></div>`;
+        return `<div class="item"><span>${esc(g)}</span><button type="button" class="quitar" data-gi="${i}">Quitar</button></div>`;
+      }).join('');
 
       $('input-email').value = datos.email || '';
     }
@@ -1275,7 +1378,7 @@
     $('lista-gestos-config').addEventListener('click', e => {
       const b = e.target.closest('.quitar');
       if (!b) return;
-      const lista = gestos();
+      const lista = gestosCampo();
       const g = lista[b.dataset.gi];
       if (!confirm(`¿Quitar "${g}" de las variables de ${dep()}?`)) return;
       guardarGestos(lista.filter(x => x !== g), 'Variable quitada');
@@ -1284,9 +1387,10 @@
     $('btn-sumar-gesto').addEventListener('click', () => {
       const g = $('input-nuevo-gesto').value.replace(/[|:]/g, ' ').trim();
       if (!g) return;
-      if (gestos().some(x => igual(x, g))) { toast('Esa variable ya existe'); return; }
+      const lista = gestosCampo();
+      if (lista.some(x => igual(x, g))) { toast('Esa variable ya existe'); return; }
       $('input-nuevo-gesto').value = '';
-      guardarGestos([...gestos(), g], 'Variable sumada a ' + dep());
+      guardarGestos([...lista, g], 'Variable sumada a ' + dep());
     });
 
     $('form-email').addEventListener('submit', e => {
