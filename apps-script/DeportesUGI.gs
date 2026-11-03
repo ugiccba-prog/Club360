@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- * UGI · Ciudad Integrado — Backend de www.ugiccba.com.ar/deportes
+ * UGI · Unidad de Gestión Integral — Backend de www.ugiccba.com.ar/deportes
  * Evaluaciones + Asistencia + Padrón, escribiendo en el Google Sheet de cada
  * deporte (los mismos Excel de la app de asistencia anterior).
  * ============================================================================
@@ -251,7 +251,7 @@ function auditarPlanilla(ss, deporte) {
   var mensaje = 'Hola Coordinador,\n\nEl sistema detectó que estos grupos' + titulo +
     ' NO registraron asistencia en los últimos 7 días:\n\n' +
     sinCargar.map(function (g) { return '• ' + g; }).join('\n') +
-    '\n\nPor favor pasales el aviso a los profes.\n\nClub Ciudad de Buenos Aires - Ciudad Integrado';
+    '\n\nPor favor pasales el aviso a los profes.\n\nClub Ciudad de Buenos Aires - Unidad de Gestión Integral';
 
   MailApp.sendEmail(email, '⚠️ UGI' + titulo + ': grupos sin asistencia esta semana', mensaje);
 }

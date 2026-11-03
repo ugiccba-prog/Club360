@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#0b2545">
-  <title>Ciudad Integrado · Gestión Deportiva C.C.B.A.</title>
+  <title>Unidad de Gestión Integral · Deportes C.C.B.A.</title>
   <link rel="icon" type="image/png" href="escudo-ccba.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -387,24 +387,6 @@
     .stepper.con-valor { border-color: var(--ok); background: #f0fdf4; }
     .stepper.con-valor .nota-input { color: var(--ok); }
 
-    /* Botones rápidos 1 al 5 debajo para tocar directo si prefiere */
-    .notas { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-    .nota {
-      min-height: 38px;
-      border: 1px solid #e2e8f0;
-      background: #f8fafc;
-      border-radius: 9px;
-      font-weight: 700;
-      font-size: 0.88rem;
-      color: #475569;
-      cursor: pointer;
-    }
-    .nota[aria-pressed="true"] {
-      background: var(--navy);
-      color: var(--white);
-      border-color: var(--navy);
-    }
-
     /* ================= ASISTENCIA ================= */
     .asist {
       display: flex;
@@ -496,7 +478,7 @@
     <form id="login-form" class="login-card">
       <img src="escudo-ccba.png" alt="Escudo Club Ciudad de Buenos Aires" class="login-shield">
       <div><span class="login-pill">Club Ciudad de Buenos Aires</span></div>
-      <h2>Ciudad Integrado</h2>
+      <h2>Unidad de Gestión Integral</h2>
       <p class="login-sub">Evaluación técnica y asistencia deportiva</p>
 
       <div class="field">
@@ -519,7 +501,7 @@
     <div class="brand">
       <img src="escudo-ccba.png" alt="C.C.B.A.">
       <div>
-        <h1>Ciudad Integrado</h1>
+        <h1>Unidad de Gestión Integral</h1>
         <small id="header-sub"></small>
       </div>
     </div>
@@ -568,7 +550,7 @@
       <div id="panel-gestos" class="card hidden">
         <div class="spread">
           <h3 id="jugador-activo"></h3>
-          <span class="hint" style="margin:0;">Escala 1 a 5 (escribí o usá − / +)</span>
+          <span class="hint" style="margin:0;">Escala 1 a 10 (escribí o usá − / +)</span>
         </div>
         <div id="switch-puesto" class="rol-switch hidden" role="group" aria-label="Puesto a evaluar">
           <button type="button" class="rol-btn" data-puesto="campo" aria-pressed="true">🏃 Jugador de campo</button>
@@ -605,7 +587,7 @@
         </select>
       </div>
       <div class="kpis">
-        <div class="kpi"><span>Promedio</span><b id="kpi-promedio">-</b><span>sobre 5.0</span></div>
+        <div class="kpi"><span>Promedio</span><b id="kpi-promedio">-</b><span>sobre 10</span></div>
         <div class="kpi kpi-ok"><span>Asistencia</span><b id="kpi-asistencia">-</b><span>presentismo</span></div>
         <div class="kpi kpi-warn"><span>Alertas</span><b id="kpi-alertas">0</b><span>seguimiento</span></div>
       </div>
@@ -618,7 +600,7 @@
         <div class="spread">
           <div>
             <h3>Matriz individual</h3>
-            <p class="hint" style="margin:0;">Alerta si el promedio baja de 2.8 o la asistencia de 70%</p>
+            <p class="hint" style="margin:0;">Alerta si el promedio baja de 6.0 o la asistencia de 70%</p>
           </div>
           <button type="button" class="btn-sec" id="btn-csv">Bajar Excel</button>
         </div>
@@ -776,7 +758,8 @@
 
     const DEPORTES = Object.keys(GESTOS_DEPORTE);
 
-    const UMBRAL_NOTA = 2.8;
+    const MAX_NOTA = 10;
+    const UMBRAL_NOTA = 6.0;
     const UMBRAL_ASIST = 70;
 
     // =========================================================================
@@ -1080,12 +1063,9 @@
             <div class="gesto-nombre">${esc(etiquetaNombre)}${badge}</div>
             <div class="stepper ${tiene ? 'con-valor' : ''}" id="stepper-${gi}">
               <button type="button" class="step-btn" data-step="-0.5" data-gi="${gi}" aria-label="Restar puntaje">−</button>
-              <input type="number" class="nota-input" id="nota-input-${gi}" data-gi="${gi}" min="1" max="5" step="0.5" inputmode="decimal" placeholder="-" value="${tiene ? fmtNota(val) : ''}" aria-label="Puntaje ${esc(g)}">
+              <input type="number" class="nota-input" id="nota-input-${gi}" data-gi="${gi}" min="1" max="10" step="0.5" inputmode="decimal" placeholder="-" value="${tiene ? fmtNota(val) : ''}" aria-label="Puntaje ${esc(g)}">
               <button type="button" class="step-btn" data-step="0.5" data-gi="${gi}" aria-label="Sumar puntaje">+</button>
             </div>
-          </div>
-          <div class="notas" role="group" aria-label="Atajos ${esc(g)}">
-            ${[1, 2, 3, 4, 5].map(n => `<button type="button" class="nota" data-gi="${gi}" data-n="${n}" aria-pressed="${val === n}">${n}</button>`).join('')}
           </div>
         </div>`;
       }).join('');
@@ -1102,21 +1082,18 @@
       const g = gestos()[gi];
       const input = $(`nota-input-${gi}`);
       const stepper = $(`stepper-${gi}`);
-      const fila = stepper.closest('.gesto');
 
       if (valorRaw === '' || valorRaw === null || Number.isNaN(Number(valorRaw))) {
         delete notasTemp[g];
         if (actualizarInput) input.value = '';
         stepper.classList.remove('con-valor');
-        fila.querySelectorAll('.nota').forEach(b => b.setAttribute('aria-pressed', 'false'));
         return;
       }
 
-      let v = Math.max(1, Math.min(5, Math.round(Number(valorRaw) * 10) / 10));
+      let v = Math.max(1, Math.min(MAX_NOTA, Math.round(Number(valorRaw) * 10) / 10));
       notasTemp[g] = v;
       if (actualizarInput) input.value = fmtNota(v);
       stepper.classList.add('con-valor');
-      fila.querySelectorAll('.nota').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.n) === v)));
     }
 
     function cerrarPanel() {
@@ -1124,22 +1101,16 @@
       $('panel-gestos').classList.add('hidden');
     }
 
-    // Click en botones - / + o en los atajos 1..5
+    // Click en botones - / +
     $('contenedor-gestos').addEventListener('click', e => {
       const stepBtn = e.target.closest('.step-btn');
-      if (stepBtn) {
-        const gi = Number(stepBtn.dataset.gi);
-        const delta = Number(stepBtn.dataset.step);
-        const g = gestos()[gi];
-        const actual = notasTemp[g];
-        const nuevo = actual === undefined ? (delta > 0 ? 3 : 3) : Math.max(1, Math.min(5, Math.round((actual + delta) * 10) / 10));
-        fijarNotaGesto(gi, nuevo, true);
-        return;
-      }
-      const b = e.target.closest('.nota');
-      if (b) {
-        fijarNotaGesto(Number(b.dataset.gi), Number(b.dataset.n), true);
-      }
+      if (!stepBtn) return;
+      const gi = Number(stepBtn.dataset.gi);
+      const delta = Number(stepBtn.dataset.step);
+      const g = gestos()[gi];
+      const actual = notasTemp[g];
+      const nuevo = actual === undefined ? 6 : Math.max(1, Math.min(MAX_NOTA, Math.round((actual + delta) * 10) / 10));
+      fijarNotaGesto(gi, nuevo, true);
     });
 
     // Escritura directa en el input numérico
@@ -1244,14 +1215,14 @@
       const conDatos = promedios.filter(p => p.prom > 0);
       const masFlojo = conDatos.length ? conDatos.reduce((a, b) => (b.prom < a.prom ? b : a)).g : null;
       $('grafico-gestos').innerHTML = promedios.map(({ g, prom }) => {
-        const color = prom >= 3.8 ? 'var(--ok)' : prom >= UMBRAL_NOTA ? 'var(--sky)' : 'var(--bad)';
+        const color = prom >= 7.5 ? 'var(--ok)' : prom >= UMBRAL_NOTA ? 'var(--sky)' : 'var(--bad)';
         return `
           <div class="barra">
             <div class="barra-top ${g === masFlojo ? 'flojo' : ''}">
               <span>${g === masFlojo ? '▼ ' : ''}${esc(g)}</span>
-              <span>${prom ? prom.toFixed(1) + ' / 5' : 'Sin datos'}</span>
+              <span>${prom ? prom.toFixed(1) + ' / 10' : 'Sin datos'}</span>
             </div>
-            <div class="barra-bg"><div style="width:${(prom / 5) * 100}%; background:${color};"></div></div>
+            <div class="barra-bg"><div style="width:${(prom / MAX_NOTA) * 100}%; background:${color};"></div></div>
           </div>`;
       }).join('');
 
@@ -1263,7 +1234,7 @@
           s += n; c++;
           (porGesto[g] = porGesto[g] || []).push(n);
         }));
-        let peor = null, peorProm = 6;
+        let peor = null, peorProm = 11;
         Object.entries(porGesto).forEach(([g, ns]) => {
           const p = ns.reduce((a, b) => a + b, 0) / ns.length;
           if (p < peorProm) { peorProm = p; peor = g; }
@@ -1277,7 +1248,7 @@
         if ((prom !== null && prom < UMBRAL_NOTA) || (pct !== null && pct < UMBRAL_ASIST)) { est = 'r'; alertas++; }
         else if (prom === null) est = 'a';
 
-        return { jugador, prom, aTrabajar: peor && peorProm <= 3 ? peor : (prom !== null ? 'Parejo' : '-'), pct, est };
+        return { jugador, prom, aTrabajar: peor && peorProm <= 6 ? peor : (prom !== null ? 'Parejo' : '-'), pct, est };
       }).sort((a, b) => (a.est === 'r' ? 0 : 1) - (b.est === 'r' ? 0 : 1));
 
       const etiqueta = { v: '✓ Óptimo', a: '– Sin evaluar', r: '⚠ Seguimiento' };
