@@ -4,301 +4,659 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#082b49">
-  <title>Ciudad Integrado · Deportes</title>
+  <meta name="theme-color" content="#0b2545">
+  <title>Ciudad Integrado · Gestión Deportiva C.C.B.A.</title>
+  <link rel="icon" type="image/png" href="escudo-ccba.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #082b49;
-      --primary-soft: #e6eef6;
+      --navy: #0b2545;
+      --blue: #1e3a8a;
+      --sky: #2b83c6;
+      --sky-light: #e0f2fe;
+      --sky-border: #bae6fd;
       --ok: #15803d;
+      --ok-soft: #dcfce7;
       --warn: #b45309;
-      --bad: #b91c1c;
-      --bg: #f4f6f9;
-      --text: #1e293b;
+      --warn-soft: #fef3c7;
+      --bad: #dc2626;
+      --bad-soft: #fee2e2;
+      --bg: #f1f5f9;
+      --text: #0f172a;
       --muted: #64748b;
       --border: #cbd5e1;
-      --white: #fff;
+      --white: #ffffff;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.4; padding-bottom: 60px; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+      min-height: 100vh;
+      padding-bottom: 64px;
+      -webkit-font-smoothing: antialiased;
+    }
     button, input, select, textarea { font: inherit; color: inherit; }
-    :focus-visible { outline: 3px solid #2563eb; outline-offset: 2px; }
+    :focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
 
-    header { background: var(--primary); color: var(--white); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 50; }
-    header h1 { font-size: 1rem; font-weight: 700; }
-    header small { display: block; font-size: 0.75rem; opacity: 0.8; font-weight: 500; }
-    .btn-salir { background: transparent; border: 1px solid rgba(255,255,255,0.5); color: var(--white); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; }
-    #estado { font-size: 0.78rem; text-align: center; padding: 6px 12px; color: var(--muted); }
+    /* ================= LOGIN CON ESCUDO C.C.B.A. ================= */
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 16px;
+      background: radial-gradient(circle at top, #1e3a8a 0%, #0b2545 55%, #061529 100%);
+    }
+    .login-card {
+      width: 100%;
+      max-width: 410px;
+      background: var(--white);
+      border-radius: 24px;
+      padding: 28px 24px 26px;
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.12);
+      text-align: center;
+    }
+    .login-shield {
+      width: 86px;
+      height: 102px;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 12px rgba(11, 37, 69, 0.22));
+      margin-bottom: 10px;
+    }
+    .login-pill {
+      display: inline-block;
+      background: var(--sky-light);
+      color: var(--blue);
+      border: 1px solid var(--sky-border);
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .login-card h2 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.3px;
+    }
+    .login-sub {
+      font-size: 0.84rem;
+      color: var(--muted);
+      margin-top: 3px;
+      margin-bottom: 20px;
+    }
+    .login-card .field { text-align: left; margin-bottom: 14px; }
+
+    /* ================= CABECERA PRINCIPAL ================= */
+    header {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      color: var(--white);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 4px 14px rgba(11, 37, 69, 0.18);
+    }
+    .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+    .brand img {
+      width: 38px;
+      height: 44px;
+      object-fit: contain;
+      background: var(--white);
+      padding: 3px;
+      border-radius: 9px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      flex-shrink: 0;
+    }
+    .brand h1 { font-size: 1rem; font-weight: 800; letter-spacing: -0.2px; line-height: 1.2; }
+    .brand small { display: block; font-size: 0.75rem; color: #bae6fd; font-weight: 600; margin-top: 2px; }
+    .btn-salir {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: var(--white);
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 700;
+      transition: background 0.15s;
+    }
+    .btn-salir:hover { background: rgba(255,255,255,0.22); }
+
+    #estado {
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 7px 12px;
+      background: var(--white);
+      border-bottom: 1px solid #e2e8f0;
+      color: var(--muted);
+    }
     #estado.ok::before { content: "● "; color: var(--ok); }
     #estado.warn::before { content: "● "; color: var(--warn); }
 
-    .container { max-width: 640px; margin: 12px auto; padding: 0 12px; }
-    .card { background: var(--white); border-radius: 12px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 12px; }
-    .card h3 { font-size: 0.95rem; color: var(--primary); margin-bottom: 4px; }
+    /* ================= LAYOUT Y TARJETAS ================= */
+    .container { max-width: 680px; margin: 14px auto; padding: 0 12px; }
+    .card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+      border: 1px solid #e2e8f0;
+      margin-bottom: 14px;
+    }
+    .card h3 { font-size: 0.98rem; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
     .hint { font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; }
 
-    label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.3px; }
-    select, input, textarea { width: 100%; min-height: 48px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; background: var(--white); }
+    label {
+      display: block;
+      font-size: 0.73rem;
+      font-weight: 800;
+      color: #475569;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    select, input, textarea {
+      width: 100%;
+      min-height: 48px;
+      padding: 10px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 11px;
+      font-size: 1rem;
+      font-weight: 500;
+      background: #f8fafc;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    select:focus, input:focus, textarea:focus {
+      background: var(--white);
+      border-color: var(--sky);
+    }
     textarea { min-height: 120px; resize: vertical; }
     .field { margin-bottom: 12px; }
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .grid2 .field { margin-bottom: 0; }
 
-    .btn { width: 100%; min-height: 48px; background: var(--primary); color: var(--white); border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
-    .btn:active { opacity: 0.85; }
-    .btn.ok { background: var(--ok); }
-    .btn-sec { min-height: 40px; background: #e2e8f0; border: none; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+    .btn {
+      width: 100%;
+      min-height: 50px;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      color: var(--white);
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.98rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(11, 37, 69, 0.2);
+      transition: transform 0.1s, opacity 0.15s;
+    }
+    .btn:active { transform: scale(0.99); opacity: 0.92; }
+    .btn.ok { background: linear-gradient(135deg, #15803d 0%, #16a34a 100%); box-shadow: 0 4px 12px rgba(21, 128, 61, 0.25); }
+    .btn-sec {
+      min-height: 40px;
+      background: var(--sky-light);
+      color: var(--blue);
+      border: 1px solid var(--sky-border);
+      padding: 8px 13px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
     .row { display: flex; gap: 8px; align-items: center; }
     .row > input { flex: 1; }
-    .row > .btn { width: auto; padding: 0 18px; }
-    .spread { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .row > .btn { width: auto; padding: 0 20px; }
+    .spread { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .error { color: var(--bad); font-size: 0.84rem; font-weight: 600; margin-top: 8px; min-height: 1.2em; }
 
-    /* Login */
-    .login { max-width: 380px; margin: 48px auto; }
-    .login h2 { color: var(--primary); margin-bottom: 2px; }
-    .error { color: var(--bad); font-size: 0.85rem; margin-top: 8px; min-height: 1.2em; }
+    /* ================= PESTAÑAS ================= */
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      background: #e2e8f0;
+      padding: 5px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+    }
+    .tabs.tres { grid-template-columns: repeat(3, 1fr); }
+    .tab {
+      min-height: 42px;
+      padding: 0 8px;
+      border: none;
+      background: transparent;
+      color: #475569;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.84rem;
+      transition: all 0.15s;
+    }
+    .tab[aria-selected="true"] {
+      background: var(--white);
+      color: var(--navy);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.1);
+    }
 
-    /* Pestañas */
-    .tabs { display: flex; gap: 6px; margin-bottom: 12px; overflow-x: auto; }
-    .tab { flex: 1; white-space: nowrap; min-height: 44px; padding: 0 12px; border: none; background: #e2e8f0; color: var(--muted); font-weight: 700; border-radius: 8px; cursor: pointer; font-size: 0.88rem; }
-    .tab[aria-selected="true"] { background: var(--primary); color: var(--white); }
+    /* ================= LISTA DE JUGADORES ================= */
+    .lista { display: flex; flex-direction: column; gap: 7px; }
+    .jugador {
+      min-height: 50px;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1.5px solid #e2e8f0;
+      background: #f8fafc;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      text-align: left;
+      width: 100%;
+      transition: all 0.15s;
+    }
+    .jugador:hover { border-color: var(--sky); background: var(--white); }
+    .jugador[aria-pressed="true"] {
+      background: var(--navy);
+      color: var(--white);
+      border-color: var(--navy);
+      box-shadow: 0 4px 12px rgba(11, 37, 69, 0.2);
+    }
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--ok-soft);
+      color: #166534;
+    }
+    .vacio { color: var(--muted); font-size: 0.88rem; padding: 14px 0; text-align: center; }
 
-    /* Jugadores */
-    .lista { display: flex; flex-direction: column; gap: 6px; }
-    .jugador { min-height: 48px; padding: 10px 14px; border-radius: 8px; border: 1px solid #e2e8f0; background: var(--white); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; text-align: left; width: 100%; }
-    .jugador[aria-pressed="true"] { background: var(--primary); color: var(--white); border-color: var(--primary); }
-    .tag { font-size: 0.72rem; font-weight: 700; padding: 3px 8px; border-radius: 10px; background: #dcfce7; color: #166534; }
-    .vacio { color: var(--muted); font-size: 0.88rem; padding: 12px 0; text-align: center; }
-
-    /* Gestos */
-    .gesto { padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+    /* ================= EVALUACIÓN CON INPUT NUMÉRICO Y + / - ================= */
+    .gesto {
+      padding: 13px 0;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
     .gesto:last-of-type { border-bottom: none; }
-    .gesto-nombre { font-weight: 600; font-size: 0.92rem; margin-bottom: 6px; }
-    .gesto-nombre em { font-style: normal; font-size: 0.7rem; color: var(--muted); font-weight: 600; margin-left: 4px; }
-    .notas { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-    .nota { min-height: 46px; border: 1px solid var(--border); background: var(--bg); border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; }
-    .nota[aria-pressed="true"] { background: var(--ok); color: var(--white); border-color: var(--ok); }
+    .gesto-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .gesto-nombre { font-weight: 700; font-size: 0.93rem; color: var(--text); }
+    .gesto-nombre em {
+      font-style: normal;
+      font-size: 0.66rem;
+      background: var(--sky-light);
+      color: var(--blue);
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 800;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    /* Control [-] [ input ] [+] */
+    .stepper {
+      display: inline-flex;
+      align-items: center;
+      background: #f1f5f9;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 2px;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+    .step-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: var(--white);
+      color: var(--navy);
+      border-radius: 9px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+      user-select: none;
+    }
+    .step-btn:active { background: var(--sky-light); transform: scale(0.95); }
+    .nota-input {
+      width: 62px !important;
+      min-height: 40px !important;
+      height: 40px;
+      padding: 4px 2px !important;
+      border: none !important;
+      background: transparent !important;
+      text-align: center;
+      font-size: 1.08rem !important;
+      font-weight: 800 !important;
+      color: var(--navy);
+      -moz-appearance: textfield;
+    }
+    .nota-input::-webkit-outer-spin-button,
+    .nota-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .stepper.con-valor { border-color: var(--ok); background: #f0fdf4; }
+    .stepper.con-valor .nota-input { color: var(--ok); }
 
-    /* Asistencia */
-    .asist { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
-    .asist span { font-weight: 600; font-size: 0.92rem; }
+    /* Botones rápidos 1 al 5 debajo para tocar directo si prefiere */
+    .notas { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .nota {
+      min-height: 38px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #475569;
+      cursor: pointer;
+    }
+    .nota[aria-pressed="true"] {
+      background: var(--navy);
+      color: var(--white);
+      border-color: var(--navy);
+    }
+
+    /* ================= ASISTENCIA ================= */
+    .asist {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .asist span { font-weight: 700; font-size: 0.93rem; }
     .pat { display: flex; gap: 6px; flex-shrink: 0; }
-    .pat button { width: 46px; min-height: 44px; border: 1px solid var(--border); border-radius: 8px; font-weight: 700; cursor: pointer; background: var(--white); }
+    .pat button {
+      width: 48px;
+      min-height: 44px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      background: #f8fafc;
+    }
     .pat button[aria-pressed="true"][data-e="P"] { background: var(--ok); color: var(--white); border-color: var(--ok); }
     .pat button[aria-pressed="true"][data-e="A"] { background: var(--bad); color: var(--white); border-color: var(--bad); }
     .pat button[aria-pressed="true"][data-e="T"] { background: var(--warn); color: var(--white); border-color: var(--warn); }
 
-    /* Análisis */
-    .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
-    .kpi { background: var(--white); border-radius: 10px; padding: 12px 6px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-    .kpi b { display: block; font-size: 1.5rem; color: var(--primary); }
-    .kpi span { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
-    .barra { margin-bottom: 10px; }
-    .barra-top { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 3px; gap: 8px; }
-    .barra-bg { height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; }
-    .barra-bg div { height: 100%; border-radius: 5px; }
-    .flojo { color: var(--bad); }
-    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-    th, td { text-align: left; padding: 9px 6px; border-bottom: 1px solid #e2e8f0; }
-    th { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; }
-    .pill { padding: 3px 8px; border-radius: 10px; font-weight: 700; font-size: 0.72rem; white-space: nowrap; }
-    .pill.v { background: #dcfce7; color: #166534; }
-    .pill.a { background: #fef3c7; color: #92400e; }
-    .pill.r { background: #fee2e2; color: #991b1b; }
+    /* ================= ANÁLISIS ================= */
+    .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+    .kpi {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 14px 8px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+      border-top: 4px solid var(--navy);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+    .kpi.kpi-ok { border-top-color: var(--ok); }
+    .kpi.kpi-warn { border-top-color: var(--warn); }
+    .kpi b { display: block; font-size: 1.55rem; font-weight: 800; color: var(--navy); margin: 2px 0; }
+    .kpi.kpi-ok b { color: var(--ok); }
+    .kpi.kpi-warn b { color: var(--warn); }
+    .kpi span { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.3px; }
 
-    /* Padrón */
-    .item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; gap: 8px; }
-    .quitar { background: none; border: 1px solid #fecaca; color: var(--bad); border-radius: 6px; padding: 6px 10px; font-size: 0.78rem; cursor: pointer; }
+    .barra { margin-bottom: 11px; }
+    .barra-top { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; gap: 8px; }
+    .barra-bg { height: 11px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+    .barra-bg div { height: 100%; border-radius: 999px; transition: width 0.3s ease; }
+    .flojo { color: var(--bad); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th, td { text-align: left; padding: 10px 6px; border-bottom: 1px solid #e2e8f0; }
+    th { color: var(--muted); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; }
+    .pill { padding: 4px 9px; border-radius: 999px; font-weight: 800; font-size: 0.72rem; white-space: nowrap; }
+    .pill.v { background: var(--ok-soft); color: #166534; }
+    .pill.a { background: var(--warn-soft); color: #92400e; }
+    .pill.r { background: var(--bad-soft); color: #991b1b; }
+
+    /* ================= PADRÓN ================= */
+    .item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; font-weight: 600; gap: 8px; }
+    .quitar { background: #fff1f2; border: 1px solid #fecdd3; color: var(--bad); border-radius: 8px; padding: 6px 11px; font-size: 0.76rem; font-weight: 700; cursor: pointer; }
 
     .hidden { display: none !important; }
     .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: var(--white); padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; z-index: 100; max-width: 90vw; text-align: center; }
-    @media (max-width: 420px) { .grid2 { grid-template-columns: 1fr; } }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--navy);
+      color: var(--white);
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      z-index: 100;
+      max-width: 90vw;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(11, 37, 69, 0.35);
+    }
+    @media (max-width: 440px) {
+      .grid2 { grid-template-columns: 1fr; }
+      .gesto-head { flex-wrap: wrap; }
+    }
   </style>
 </head>
 <body>
 
+  <!-- 1. PANTALLA DE INGRESO (Elegir deporte + contraseña + escudo CCBA) -->
+  <div id="login-screen">
+    <form id="login-form" class="login-card">
+      <img src="escudo-ccba.png" alt="Escudo Club Ciudad de Buenos Aires" class="login-shield">
+      <div><span class="login-pill">Club Ciudad de Buenos Aires</span></div>
+      <h2>Ciudad Integrado</h2>
+      <p class="login-sub">Evaluación técnica y asistencia deportiva</p>
+
+      <div class="field">
+        <label for="login-deporte">1. Elegí tu deporte o área</label>
+        <select id="login-deporte" name="deporte" required></select>
+      </div>
+
+      <div class="field">
+        <label for="input-pass">2. Contraseña de Profe o Coordinación</label>
+        <input type="password" id="input-pass" name="clave" placeholder="Ingresá tu clave..." autocomplete="current-password" autocapitalize="off" spellcheck="false" required>
+        <p id="login-error" class="error" aria-live="polite"></p>
+      </div>
+
+      <button type="submit" class="btn">Entrar al panel</button>
+    </form>
+  </div>
+
+  <!-- 2. CABECERA Y APP PRINCIPAL -->
   <header id="app-header" class="hidden">
-    <h1>Ciudad Integrado<small id="header-sub"></small></h1>
-    <button type="button" class="btn-salir" id="btn-salir">Salir</button>
+    <div class="brand">
+      <img src="escudo-ccba.png" alt="C.C.B.A.">
+      <div>
+        <h1>Ciudad Integrado</h1>
+        <small id="header-sub"></small>
+      </div>
+    </div>
+    <button type="button" class="btn-salir" id="btn-salir">Cambiar / Salir</button>
   </header>
   <div id="estado" class="hidden" role="status"></div>
 
-  <main class="container">
+  <main id="app-screen" class="container hidden">
 
-    <!-- LOGIN -->
-    <form id="login-form" class="card login">
-      <h2>Ciudad Integrado</h2>
-      <p class="hint">Evaluación y asistencia por deporte</p>
-      <div class="field">
-        <label for="input-pass">Clave de profe o coordinación</label>
-        <input type="password" id="input-pass" name="clave" autocomplete="current-password" autocapitalize="off" spellcheck="false" required>
-        <p id="login-error" class="error" aria-live="polite"></p>
-      </div>
-      <button type="submit" class="btn">Entrar</button>
-    </form>
-
-    <!-- APP -->
-    <div id="app-screen" class="hidden">
-
-      <div class="tabs" role="tablist">
-        <button type="button" class="tab" role="tab" data-tab="evaluacion" aria-selected="true">Evaluar</button>
-        <button type="button" class="tab" role="tab" data-tab="asistencia" aria-selected="false">Asistencia</button>
-        <button type="button" class="tab" role="tab" data-tab="analisis" aria-selected="false">Análisis</button>
-        <button type="button" class="tab hidden" role="tab" data-tab="padron" aria-selected="false" id="tab-btn-padron">Padrón</button>
-      </div>
-
-      <!-- FILTROS -->
-      <div class="card">
-        <div class="field" id="wrap-deporte">
-          <label for="sel-deporte">Deporte</label>
-          <select id="sel-deporte"></select>
-        </div>
-        <div class="grid2">
-          <div class="field">
-            <label for="sel-categoria">Categoría</label>
-            <select id="sel-categoria"></select>
-          </div>
-          <div class="field">
-            <label for="sel-equipo">Equipo / Tira</label>
-            <select id="sel-equipo"></select>
-          </div>
-        </div>
-        <div class="field" style="margin:10px 0 0;" id="wrap-fecha">
-          <label for="input-fecha">Fecha</label>
-          <input type="date" id="input-fecha">
-        </div>
-      </div>
-
-      <!-- 1. EVALUAR -->
-      <section id="tab-evaluacion">
-        <div class="card">
-          <h3>Tocá un jugador para evaluarlo</h3>
-          <div id="lista-eval" class="lista"></div>
-        </div>
-        <div id="panel-gestos" class="card hidden">
-          <div class="spread">
-            <h3 id="jugador-activo"></h3>
-            <span class="hint" style="margin:0;">1 bajo · 5 óptimo</span>
-          </div>
-          <div id="contenedor-gestos"></div>
-          <button type="button" class="btn ok" id="btn-guardar-eval" style="margin-top:12px;">Guardar y seguir</button>
-        </div>
-      </section>
-
-      <!-- 2. ASISTENCIA -->
-      <section id="tab-asistencia" class="hidden">
-        <div class="card">
-          <div class="spread">
-            <h3>Lista del día</h3>
-            <button type="button" class="btn-sec" id="btn-todos-p">Todos presentes</button>
-          </div>
-          <div id="lista-asist"></div>
-          <button type="button" class="btn" id="btn-guardar-asist" style="margin-top:14px;">Guardar asistencia</button>
-        </div>
-      </section>
-
-      <!-- 3. ANÁLISIS -->
-      <section id="tab-analisis" class="hidden">
-        <div class="card" style="padding:12px 16px;">
-          <label for="sel-periodo">Período</label>
-          <select id="sel-periodo">
-            <option value="30">Últimos 30 días</option>
-            <option value="90">Últimos 90 días</option>
-            <option value="0">Todo</option>
-          </select>
-        </div>
-        <div class="kpis">
-          <div class="kpi"><span>Promedio</span><b id="kpi-promedio">-</b><span>sobre 5</span></div>
-          <div class="kpi"><span>Asistencia</span><b id="kpi-asistencia">-</b><span>presentismo</span></div>
-          <div class="kpi"><span>Alertas</span><b id="kpi-alertas">0</b><span>seguimiento</span></div>
-        </div>
-        <div class="card">
-          <h3>Rendimiento por gesto</h3>
-          <p class="hint">El más flojo es el que conviene reforzar esta semana.</p>
-          <div id="grafico-gestos"></div>
-        </div>
-        <div class="card">
-          <div class="spread">
-            <div>
-              <h3>Matriz de jugadores</h3>
-              <p class="hint" style="margin:0;">Alerta: promedio &lt; 2.8 o asistencia &lt; 70%</p>
-            </div>
-            <button type="button" class="btn-sec" id="btn-csv">Bajar Excel</button>
-          </div>
-          <div style="overflow-x:auto;">
-            <table>
-              <thead><tr><th>Jugador</th><th>Prom.</th><th>A trabajar</th><th>Asist.</th><th>Estado</th></tr></thead>
-              <tbody id="tabla-matriz"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- 4. PADRÓN (solo Coordinación) -->
-      <section id="tab-padron" class="hidden">
-        <form class="card" id="form-padron">
-          <h3>Carga masiva de jugadores</h3>
-          <p class="hint">Pegá la lista desde WhatsApp o Excel, un jugador por renglón. Si la categoría o el equipo no existen, se crean.</p>
-          <div class="grid2" style="margin-bottom:12px;">
-            <div class="field">
-              <label for="padron-cat">Categoría</label>
-              <input type="text" id="padron-cat" list="dl-cat" required placeholder="Ej: Sub 12">
-            </div>
-            <div class="field">
-              <label for="padron-eq">Equipo / Tira</label>
-              <input type="text" id="padron-eq" list="dl-eq" required placeholder="Ej: Tira A">
-            </div>
-          </div>
-          <datalist id="dl-cat"></datalist>
-          <datalist id="dl-eq"></datalist>
-          <div class="field">
-            <label for="padron-lista">Jugadores</label>
-            <textarea id="padron-lista" required placeholder="Gómez, Juan&#10;Pérez, Mateo&#10;Rodríguez, Lucas"></textarea>
-          </div>
-          <button type="submit" class="btn">Cargar al equipo</button>
-        </form>
-
-        <div class="card">
-          <h3>Plantel del equipo seleccionado</h3>
-          <div id="lista-padron"></div>
-        </div>
-
-        <div class="card">
-          <h3>Variables a evaluar en <span id="gestos-dep"></span></h3>
-          <p class="hint">Las marcadas como "UGI" son comunes a todos los deportes y no se pueden quitar.</p>
-          <div id="lista-gestos-config"></div>
-          <div class="row" style="margin-top:10px;">
-            <label for="input-nuevo-gesto" class="sr">Nueva variable</label>
-            <input type="text" id="input-nuevo-gesto" placeholder="Nueva variable técnica">
-            <button type="button" class="btn" id="btn-sumar-gesto">Sumar</button>
-          </div>
-        </div>
-
-        <form class="card" id="form-email">
-          <h3>Mail del coordinador</h3>
-          <p class="hint">Recibe el aviso de los viernes 9 AM si algún grupo no cargó asistencia en la semana.</p>
-          <div class="row">
-            <label for="input-email" class="sr">Email</label>
-            <input type="email" id="input-email" autocomplete="email" placeholder="coordinador@mail.com">
-            <button type="submit" class="btn">Guardar</button>
-          </div>
-        </form>
-      </section>
+    <div class="tabs" id="nav-tabs" role="tablist">
+      <button type="button" class="tab" role="tab" data-tab="evaluacion" aria-selected="true">Evaluar</button>
+      <button type="button" class="tab" role="tab" data-tab="asistencia" aria-selected="false">Asistencia</button>
+      <button type="button" class="tab" role="tab" data-tab="analisis" aria-selected="false">Análisis</button>
+      <button type="button" class="tab hidden" role="tab" data-tab="padron" aria-selected="false" id="tab-btn-padron">Padrón</button>
     </div>
+
+    <!-- FILTROS -->
+    <div class="card">
+      <div class="field" id="wrap-deporte">
+        <label for="sel-deporte">Deporte</label>
+        <select id="sel-deporte"></select>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label for="sel-categoria">Categoría</label>
+          <select id="sel-categoria"></select>
+        </div>
+        <div class="field">
+          <label for="sel-equipo">Equipo / Tira</label>
+          <select id="sel-equipo"></select>
+        </div>
+      </div>
+      <div class="field" style="margin:10px 0 0;" id="wrap-fecha">
+        <label for="input-fecha">Fecha de la sesión</label>
+        <input type="date" id="input-fecha">
+      </div>
+    </div>
+
+    <!-- 1. EVALUAR -->
+    <section id="tab-evaluacion">
+      <div class="card">
+        <h3>Jugadores del equipo</h3>
+        <p class="hint">Tocá un nombre para cargar o ajustar sus puntuaciones del día.</p>
+        <div id="lista-eval" class="lista"></div>
+      </div>
+      <div id="panel-gestos" class="card hidden">
+        <div class="spread">
+          <h3 id="jugador-activo"></h3>
+          <span class="hint" style="margin:0;">Escala 1 a 5 (escribí o usá − / +)</span>
+        </div>
+        <div id="contenedor-gestos"></div>
+        <button type="button" class="btn ok" id="btn-guardar-eval" style="margin-top:14px;">Guardar y pasar al siguiente</button>
+      </div>
+    </section>
+
+    <!-- 2. ASISTENCIA -->
+    <section id="tab-asistencia" class="hidden">
+      <div class="card">
+        <div class="spread">
+          <div>
+            <h3>Lista de asistencia</h3>
+            <p class="hint" style="margin:0;">P = Presente · A = Ausente · T = Tarde</p>
+          </div>
+          <button type="button" class="btn-sec" id="btn-todos-p">Todos presentes (P)</button>
+        </div>
+        <div id="lista-asist"></div>
+        <button type="button" class="btn" id="btn-guardar-asist" style="margin-top:14px;">Guardar asistencia</button>
+      </div>
+    </section>
+
+    <!-- 3. ANÁLISIS -->
+    <section id="tab-analisis" class="hidden">
+      <div class="card" style="padding:14px 18px;">
+        <label for="sel-periodo">Período de análisis</label>
+        <select id="sel-periodo">
+          <option value="30">Últimos 30 días</option>
+          <option value="90">Últimos 90 días</option>
+          <option value="0">Todo el historial</option>
+        </select>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><span>Promedio</span><b id="kpi-promedio">-</b><span>sobre 5.0</span></div>
+        <div class="kpi kpi-ok"><span>Asistencia</span><b id="kpi-asistencia">-</b><span>presentismo</span></div>
+        <div class="kpi kpi-warn"><span>Alertas</span><b id="kpi-alertas">0</b><span>seguimiento</span></div>
+      </div>
+      <div class="card">
+        <h3>Rendimiento por variable técnica</h3>
+        <p class="hint">La más baja se marca en rojo para reforzar en la semana.</p>
+        <div id="grafico-gestos"></div>
+      </div>
+      <div class="card">
+        <div class="spread">
+          <div>
+            <h3>Matriz individual</h3>
+            <p class="hint" style="margin:0;">Alerta si el promedio baja de 2.8 o la asistencia de 70%</p>
+          </div>
+          <button type="button" class="btn-sec" id="btn-csv">Bajar Excel</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead><tr><th>Jugador</th><th>Prom.</th><th>A trabajar</th><th>Asist.</th><th>Estado</th></tr></thead>
+            <tbody id="tabla-matriz"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. PADRÓN (solo Coordinación) -->
+    <section id="tab-padron" class="hidden">
+      <form class="card" id="form-padron">
+        <h3>Carga masiva de jugadores</h3>
+        <p class="hint">Pegá la lista desde WhatsApp o Excel (un jugador por renglón). Si la categoría o el equipo no existen, se crean automáticamente.</p>
+        <div class="grid2" style="margin-bottom:12px;">
+          <div class="field">
+            <label for="padron-cat">Categoría</label>
+            <input type="text" id="padron-cat" list="dl-cat" required placeholder="Ej: Sub 12">
+          </div>
+          <div class="field">
+            <label for="padron-eq">Equipo / Tira</label>
+            <input type="text" id="padron-eq" list="dl-eq" required placeholder="Ej: Tira A">
+          </div>
+        </div>
+        <datalist id="dl-cat"></datalist>
+        <datalist id="dl-eq"></datalist>
+        <div class="field">
+          <label for="padron-lista">Jugadores (uno por línea)</label>
+          <textarea id="padron-lista" required placeholder="Gómez, Juan&#10;Pérez, Mateo&#10;Rodríguez, Lucas"></textarea>
+        </div>
+        <button type="submit" class="btn">Cargar al equipo</button>
+      </form>
+
+      <div class="card">
+        <h3>Plantel actual del equipo seleccionado</h3>
+        <div id="lista-padron"></div>
+      </div>
+
+      <div class="card">
+        <h3>Variables a evaluar en <span id="gestos-dep"></span></h3>
+        <p class="hint">Las marcadas como "UGI" son transversales a todo el club.</p>
+        <div id="lista-gestos-config"></div>
+        <div class="row" style="margin-top:12px;">
+          <label for="input-nuevo-gesto" class="sr">Nueva variable</label>
+          <input type="text" id="input-nuevo-gesto" placeholder="Sumar nueva variable técnica...">
+          <button type="button" class="btn" id="btn-sumar-gesto">Sumar</button>
+        </div>
+      </div>
+
+      <form class="card" id="form-email">
+        <h3>Mail del coordinador</h3>
+        <p class="hint">Recibe el aviso automático de los viernes 9 AM si algún grupo no registró asistencia en la semana.</p>
+        <div class="row">
+          <label for="input-email" class="sr">Email</label>
+          <input type="email" id="input-email" autocomplete="email" placeholder="coordinador@mail.com">
+          <button type="submit" class="btn">Guardar</button>
+        </div>
+      </form>
+    </section>
   </main>
 
   <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
   <script>
     // =========================================================================
-    // 1. CONEXIÓN: URL del Web App de Apps Script (apps-script/DeportesUGI.gs)
-    //    Un solo script escribe en el Sheet de cada deporte. Si preferís un
-    //    script por planilla, poné su URL propia en el sheetUrl de cada clave.
+    // 1. CONEXIÓN AL WEB APP DE GOOGLE SHEETS (1 hoja por deporte)
     // =========================================================================
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz0VhNzdHKgFfrbHvuCJtLqrLRz9BWKxYxKjQ5CdCNQDiMd38edOmTDnGyTm8OBDeZ6/exec";
 
-    // Claves = mismos PINs de la app de asistencia anterior
     const CLAVES = {
       "1001": { deporte: "Colonia",              rol: "Profe",        sheetUrl: SCRIPT_URL },
       "2001": { deporte: "Colonia",              rol: "Coordinación", sheetUrl: SCRIPT_URL },
@@ -328,9 +686,7 @@
     };
 
     // =========================================================================
-    // 2. VARIABLES DE EVALUACIÓN (criterio unificado UGI)
-    //    Específicas por deporte + comunes a todos. Coordinación puede editar
-    //    las específicas desde Padrón (se guardan en la pestaña "Gestos").
+    // 2. VARIABLES DE EVALUACIÓN POR DEPORTE + TRANSVERSALES UGI
     // =========================================================================
     const GESTOS_COMUNES = ["Actitud y compromiso", "Respeto y convivencia"];
 
@@ -374,6 +730,7 @@
     }
     const orden = (a, b) => String(a).localeCompare(String(b), 'es', { numeric: true });
     const igual = (a, b) => String(a).trim().toLowerCase() === String(b).trim().toLowerCase();
+    const fmtNota = n => Number.isInteger(n) ? String(n) : Number(n).toFixed(1);
 
     function toast(msg) {
       const t = $('toast');
@@ -383,16 +740,38 @@
       toast._t = setTimeout(() => t.classList.add('hidden'), 2600);
     }
 
+    // Poblar selector de deporte en la pantalla de Login
+    $('login-deporte').innerHTML =
+      DEPORTES.map(d => `<option value="${esc(d)}">${esc(d)}</option>`).join('') +
+      `<option value="TODOS">Dirección UGI (Todos los deportes)</option>`;
+
+    const ultimoDep = localStorage.getItem('ugi_dep_elegido');
+    if (ultimoDep && [...DEPORTES, 'TODOS'].includes(ultimoDep)) {
+      $('login-deporte').value = ultimoDep;
+    }
+
     // =========================================================================
-    // 4. LOGIN (la sesión queda guardada en el celular)
+    // 4. LOGIN (valida que la clave corresponda al deporte elegido o sea UGI)
     // =========================================================================
     $('login-form').addEventListener('submit', e => {
       e.preventDefault();
+      const depElegido = $('login-deporte').value;
       const clave = $('input-pass').value.trim().toLowerCase();
-      if (!CLAVES[clave]) { $('login-error').textContent = 'Clave incorrecta.'; return; }
+      const info = CLAVES[clave];
+
+      if (!info) {
+        $('login-error').textContent = 'Contraseña incorrecta.';
+        return;
+      }
+      if (info.deporte !== 'TODOS' && depElegido !== 'TODOS' && info.deporte !== depElegido) {
+        $('login-error').textContent = `Esa clave no corresponde a ${depElegido}.`;
+        return;
+      }
+
       $('login-error').textContent = '';
       localStorage.setItem('ugi_dep_clave', clave);
-      iniciar(clave);
+      localStorage.setItem('ugi_dep_elegido', depElegido);
+      iniciar(clave, depElegido);
     });
 
     $('btn-salir').addEventListener('click', () => {
@@ -400,18 +779,24 @@
       sesion = null;
       $('input-pass').value = '';
       ['app-screen', 'app-header', 'estado'].forEach(id => $(id).classList.add('hidden'));
-      $('login-form').classList.remove('hidden');
+      $('login-screen').classList.remove('hidden');
     });
 
-    function iniciar(clave) {
+    function iniciar(clave, depInicial) {
       sesion = { clave, ...CLAVES[clave] };
-      $('login-form').classList.add('hidden');
+      $('login-screen').classList.add('hidden');
       ['app-screen', 'app-header', 'estado'].forEach(id => $(id).classList.remove('hidden'));
       $('header-sub').textContent = `${sesion.deporte === 'TODOS' ? 'Dirección UGI' : sesion.deporte} · ${sesion.rol}`;
-      $('tab-btn-padron').classList.toggle('hidden', sesion.rol !== 'Coordinación');
+
+      const esCoord = sesion.rol === 'Coordinación';
+      $('tab-btn-padron').classList.toggle('hidden', !esCoord);
+      $('nav-tabs').classList.toggle('tres', !esCoord);
 
       const deps = sesion.deporte === 'TODOS' ? DEPORTES : [sesion.deporte];
       $('sel-deporte').innerHTML = deps.map(d => `<option>${esc(d)}</option>`).join('');
+      if (depInicial && deps.includes(depInicial)) {
+        $('sel-deporte').value = depInicial;
+      }
       $('wrap-deporte').classList.toggle('hidden', deps.length === 1);
       $('input-fecha').value = fechaLocal();
       cambiarTab('evaluacion');
@@ -419,7 +804,7 @@
     }
 
     // =========================================================================
-    // 5. CONEXIÓN CON GOOGLE SHEETS (lectura, envío y cola offline)
+    // 5. CONEXIÓN CON GOOGLE SHEETS
     // =========================================================================
     const dep = () => $('sel-deporte').value;
     function urlDe(d) {
@@ -438,7 +823,6 @@
     }
 
     async function postear(url, payload) {
-      // Sin headers custom: el navegador lo manda como text/plain (sin preflight CORS)
       const r = await fetch(url, { method: 'POST', body: JSON.stringify(payload) });
       const j = await r.json();
       if (!j.ok) throw Object.assign(new Error(j.error || 'Error del servidor'), { servidor: true });
@@ -460,24 +844,23 @@
       datos = JSON.parse(localStorage.getItem('ugi_dep_cache_' + d) || 'null') || vacio();
       renderTodo();
       const url = urlDe(d);
-      if (!url) { estado('Modo local: falta conectar el Google Sheet (SCRIPT_URL)', 'warn'); return; }
-      estado('Sincronizando con el Sheet…', 'warn');
+      if (!url) { estado('Modo local: falta conectar el Google Sheet', 'warn'); return; }
+      estado(`Sincronizando con el Sheet de ${d}…`, 'warn');
       try {
         await enviarPendientes();
         const r = await fetch(`${url}?deporte=${encodeURIComponent(d)}`);
         const j = await r.json();
         if (!j.ok) throw new Error(j.error);
-        if (d !== dep()) return; // cambió de deporte mientras cargaba
+        if (d !== dep()) return;
         datos = { padron: j.padron || [], evaluaciones: j.evaluaciones || [], asistencia: j.asistencia || [], gestos: j.gestos, email: j.email || '' };
         guardarCache();
-        estado(`Conectado al Sheet de ${d}`, 'ok');
+        estado(`Conectado en vivo al Sheet de ${d}`, 'ok');
       } catch (err) {
-        estado('Sin conexión: se usan los últimos datos guardados', 'warn');
+        estado('Sin señal: trabajando con los datos guardados en el teléfono', 'warn');
       }
       renderTodo();
     }
 
-    // Aplica el cambio en pantalla al instante (igual que lo hace el Sheet)
     function aplicarLocal(p) {
       const mismoGrupo = r => igual(r.categoria, p.categoria) && igual(r.equipo, p.equipo);
       if (p.tipo === 'EVALUACION') {
@@ -508,7 +891,7 @@
       try {
         await postear(url, payload);
         toast(msgOk);
-        estado(`Conectado al Sheet de ${payload.deporte}`, 'ok');
+        estado(`Conectado en vivo al Sheet de ${payload.deporte}`, 'ok');
       } catch (err) {
         if (err.servidor) { toast('Error del Sheet: ' + err.message); return; }
         guardarPendientes([...pendientes(), { url, payload }]);
@@ -520,7 +903,7 @@
     window.addEventListener('online', () => { if (sesion) enviarPendientes().then(cargarDatos); });
 
     // =========================================================================
-    // 6. FILTROS EN CASCADA: Deporte > Categoría > Equipo
+    // 6. FILTROS EN CASCADA
     // =========================================================================
     const gestos = () => [...((datos.gestos && datos.gestos.length) ? datos.gestos : (GESTOS_DEPORTE[dep()] || [])), ...GESTOS_COMUNES];
     const categorias = () => [...new Set(datos.padron.map(p => p.categoria))].sort(orden);
@@ -565,7 +948,7 @@
     }
 
     // =========================================================================
-    // 7. EVALUAR
+    // 7. EVALUAR (con input para escribir número, botones - / + y atajos 1 a 5)
     // =========================================================================
     function evaluacionDe(jugador, fecha) {
       return datos.evaluaciones.find(e => enGrupo(e) && e.jugador === jugador && e.fecha === fecha);
@@ -593,15 +976,47 @@
       notasTemp = previa ? { ...previa.notas } : {};
       renderEval();
       $('jugador-activo').textContent = jugador;
-      $('contenedor-gestos').innerHTML = gestos().map((g, gi) => `
-        <div class="gesto">
-          <div class="gesto-nombre">${esc(g)}${GESTOS_COMUNES.includes(g) ? '<em>UGI</em>' : ''}</div>
-          <div class="notas" role="group" aria-label="${esc(g)}">
-            ${[1, 2, 3, 4, 5].map(n => `<button type="button" class="nota" data-gi="${gi}" data-n="${n}" aria-pressed="${notasTemp[g] === n}">${n}</button>`).join('')}
+      $('contenedor-gestos').innerHTML = gestos().map((g, gi) => {
+        const val = notasTemp[g];
+        const tiene = val !== undefined && val !== null && val !== '';
+        return `
+        <div class="gesto" data-gi="${gi}">
+          <div class="gesto-head">
+            <div class="gesto-nombre">${esc(g)}${GESTOS_COMUNES.includes(g) ? '<em>UGI</em>' : ''}</div>
+            <div class="stepper ${tiene ? 'con-valor' : ''}" id="stepper-${gi}">
+              <button type="button" class="step-btn" data-step="-0.5" data-gi="${gi}" aria-label="Restar puntaje">−</button>
+              <input type="number" class="nota-input" id="nota-input-${gi}" data-gi="${gi}" min="1" max="5" step="0.5" inputmode="decimal" placeholder="-" value="${tiene ? fmtNota(val) : ''}" aria-label="Puntaje ${esc(g)}">
+              <button type="button" class="step-btn" data-step="0.5" data-gi="${gi}" aria-label="Sumar puntaje">+</button>
+            </div>
           </div>
-        </div>`).join('');
+          <div class="notas" role="group" aria-label="Atajos ${esc(g)}">
+            ${[1, 2, 3, 4, 5].map(n => `<button type="button" class="nota" data-gi="${gi}" data-n="${n}" aria-pressed="${val === n}">${n}</button>`).join('')}
+          </div>
+        </div>`;
+      }).join('');
       $('panel-gestos').classList.remove('hidden');
       $('panel-gestos').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function fijarNotaGesto(gi, valorRaw, actualizarInput = true) {
+      const g = gestos()[gi];
+      const input = $(`nota-input-${gi}`);
+      const stepper = $(`stepper-${gi}`);
+      const fila = stepper.closest('.gesto');
+
+      if (valorRaw === '' || valorRaw === null || Number.isNaN(Number(valorRaw))) {
+        delete notasTemp[g];
+        if (actualizarInput) input.value = '';
+        stepper.classList.remove('con-valor');
+        fila.querySelectorAll('.nota').forEach(b => b.setAttribute('aria-pressed', 'false'));
+        return;
+      }
+
+      let v = Math.max(1, Math.min(5, Math.round(Number(valorRaw) * 10) / 10));
+      notasTemp[g] = v;
+      if (actualizarInput) input.value = fmtNota(v);
+      stepper.classList.add('con-valor');
+      fila.querySelectorAll('.nota').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.n) === v)));
     }
 
     function cerrarPanel() {
@@ -609,12 +1024,43 @@
       $('panel-gestos').classList.add('hidden');
     }
 
+    // Click en botones - / + o en los atajos 1..5
     $('contenedor-gestos').addEventListener('click', e => {
+      const stepBtn = e.target.closest('.step-btn');
+      if (stepBtn) {
+        const gi = Number(stepBtn.dataset.gi);
+        const delta = Number(stepBtn.dataset.step);
+        const g = gestos()[gi];
+        const actual = notasTemp[g];
+        const nuevo = actual === undefined ? (delta > 0 ? 3 : 3) : Math.max(1, Math.min(5, Math.round((actual + delta) * 10) / 10));
+        fijarNotaGesto(gi, nuevo, true);
+        return;
+      }
       const b = e.target.closest('.nota');
-      if (!b) return;
-      const g = gestos()[b.dataset.gi];
-      notasTemp[g] = Number(b.dataset.n);
-      b.parentElement.querySelectorAll('.nota').forEach(x => x.setAttribute('aria-pressed', x === b));
+      if (b) {
+        fijarNotaGesto(Number(b.dataset.gi), Number(b.dataset.n), true);
+      }
+    });
+
+    // Escritura directa en el input numérico
+    $('contenedor-gestos').addEventListener('input', e => {
+      if (!e.target.classList.contains('nota-input')) return;
+      const gi = Number(e.target.dataset.gi);
+      const raw = e.target.value.replace(',', '.').trim();
+      if (raw === '') { fijarNotaGesto(gi, '', false); return; }
+      const n = Number(raw);
+      if (!Number.isNaN(n)) fijarNotaGesto(gi, n, false);
+    });
+
+    $('contenedor-gestos').addEventListener('change', e => {
+      if (!e.target.classList.contains('nota-input')) return;
+      const gi = Number(e.target.dataset.gi);
+      const raw = e.target.value.replace(',', '.').trim();
+      fijarNotaGesto(gi, raw === '' ? '' : Number(raw), true);
+    });
+
+    $('contenedor-gestos').addEventListener('focusin', e => {
+      if (e.target.classList.contains('nota-input')) e.target.select();
     });
 
     $('btn-guardar-eval').addEventListener('click', () => {
@@ -625,7 +1071,6 @@
       const actual = jugadorActivo;
       enviar({ tipo: 'EVALUACION', fecha, categoria: cat, equipo: eq, jugador: actual, notas }, `${actual} evaluado`);
 
-      // Pasa directo al próximo jugador sin evaluar hoy
       const pl = plantel();
       const idx = pl.indexOf(actual);
       const siguiente = [...pl.slice(idx + 1), ...pl.slice(0, idx)].find(j => !evaluacionDe(j, fecha));
@@ -679,7 +1124,7 @@
     });
 
     // =========================================================================
-    // 9. ANÁLISIS: promedio, % asistencia, gesto más flojo y alertas
+    // 9. ANÁLISIS
     // =========================================================================
     let matrizActual = [];
 
@@ -690,7 +1135,6 @@
       const asist = datos.asistencia.filter(a => enGrupo(a) && a.fecha >= desde);
       const lista = gestos();
 
-      // Promedio por gesto (gráfico de barras)
       let suma = 0, cant = 0;
       const promedios = lista.map(g => {
         const vals = evals.map(e => e.notas[g]).filter(n => n > 0);
@@ -700,18 +1144,17 @@
       const conDatos = promedios.filter(p => p.prom > 0);
       const masFlojo = conDatos.length ? conDatos.reduce((a, b) => (b.prom < a.prom ? b : a)).g : null;
       $('grafico-gestos').innerHTML = promedios.map(({ g, prom }) => {
-        const color = prom >= 3.8 ? 'var(--ok)' : prom >= UMBRAL_NOTA ? 'var(--primary)' : 'var(--bad)';
+        const color = prom >= 3.8 ? 'var(--ok)' : prom >= UMBRAL_NOTA ? 'var(--sky)' : 'var(--bad)';
         return `
           <div class="barra">
             <div class="barra-top ${g === masFlojo ? 'flojo' : ''}">
               <span>${g === masFlojo ? '▼ ' : ''}${esc(g)}</span>
-              <span>${prom ? prom.toFixed(1) : 'Sin datos'}</span>
+              <span>${prom ? prom.toFixed(1) + ' / 5' : 'Sin datos'}</span>
             </div>
             <div class="barra-bg"><div style="width:${(prom / 5) * 100}%; background:${color};"></div></div>
           </div>`;
       }).join('');
 
-      // Matriz por jugador
       let alertas = 0;
       matrizActual = plantel().map(jugador => {
         let s = 0, c = 0;
@@ -737,7 +1180,7 @@
         return { jugador, prom, aTrabajar: peor && peorProm <= 3 ? peor : (prom !== null ? 'Parejo' : '-'), pct, est };
       }).sort((a, b) => (a.est === 'r' ? 0 : 1) - (b.est === 'r' ? 0 : 1));
 
-      const etiqueta = { v: '✓ Bien', a: '– Sin evaluar', r: '⚠ Seguimiento' };
+      const etiqueta = { v: '✓ Óptimo', a: '– Sin evaluar', r: '⚠ Seguimiento' };
       $('tabla-matriz').innerHTML = matrizActual.length
         ? matrizActual.map(f => `
             <tr>
@@ -759,7 +1202,7 @@
       const { cat, eq } = filtro();
       const celda = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
       const filas = [['Deporte', 'Categoría', 'Equipo', 'Jugador', 'Promedio', 'A trabajar', '% Asistencia', 'Estado']]
-        .concat(matrizActual.map(f => [dep(), cat, eq, f.jugador, f.prom !== null ? f.prom.toFixed(2).replace('.', ',') : '', f.aTrabajar, f.pct ?? '', { v: 'Bien', a: 'Sin evaluar', r: 'Seguimiento' }[f.est]]));
+        .concat(matrizActual.map(f => [dep(), cat, eq, f.jugador, f.prom !== null ? f.prom.toFixed(2).replace('.', ',') : '', f.aTrabajar, f.pct ?? '', { v: 'Óptimo', a: 'Sin evaluar', r: 'Seguimiento' }[f.est]]));
       const csv = '\uFEFF' + filas.map(f => f.map(celda).join(';')).join('\r\n');
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
@@ -769,7 +1212,7 @@
     });
 
     // =========================================================================
-    // 10. PADRÓN Y CONFIGURACIÓN (solo Coordinación)
+    // 10. PADRÓN Y CONFIGURACIÓN
     // =========================================================================
     function renderPadron() {
       if (!sesion || sesion.rol !== 'Coordinación') return;
@@ -794,7 +1237,7 @@
 
     function limpiarNombre(linea) {
       return linea
-        .replace(/^\s*(\d+\s*[.)\-:]\s*|[-•*·]\s*)/, '') // "1. ", "- ", "• "
+        .replace(/^\s*(\d+\s*[.)\-:]\s*|[-•*·]\s*)/, '')
         .replace(/\s+/g, ' ')
         .trim();
     }
@@ -866,7 +1309,7 @@
     });
 
     const claveGuardada = localStorage.getItem('ugi_dep_clave');
-    if (claveGuardada && CLAVES[claveGuardada]) iniciar(claveGuardada);
+    if (claveGuardada && CLAVES[claveGuardada]) iniciar(claveGuardada, localStorage.getItem('ugi_dep_elegido'));
   </script>
 </body>
 </html>
