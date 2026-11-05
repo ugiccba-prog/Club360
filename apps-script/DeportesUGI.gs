@@ -107,6 +107,13 @@ var CABECERAS = {
 // --- UTILIDADES ---------------------------------------------------------------
 function abrirSheet(deporte) {
   var id = SHEET_IDS[deporte];
+  // Si no está en el código, busca en las propiedades guardadas automáticamente
+  if (!id) {
+    try {
+      id = PropertiesService.getScriptProperties().getProperty('SHEET_' + deporte) ||
+           PropertiesService.getScriptProperties().getProperty(deporte);
+    } catch (_) {}
+  }
   if (id) return SpreadsheetApp.openById(id);
   var activa = SpreadsheetApp.getActiveSpreadsheet();
   if (activa) return activa;
@@ -411,6 +418,229 @@ function crearSheetCOYFD() {
   Logger.log('========================================================');
 
   return { id: id, url: url };
+}
+
+// --- 5. CREADOR MASIVO DE TODAS LAS PLANILLAS OFICIALES ------------------------
+/**
+ * Crea en tu Google Drive una carpeta organizada llamada:
+ * "📁 UGI · Planillas Oficiales MUNI 360 (Club Ciudad)"
+ * y adentro genera todas las planillas nuevas e independientes por deporte y base formativa,
+ * con sus pestañas y gestos técnicos precargados.
+ *
+ * CÓMO EJECUTARLO:
+ * 1. En script.google.com, seleccioná la función "crearTodasLasPlanillasOficiales" arriba.
+ * 2. Hacé clic en ▶ Ejecutar.
+ * 3. En pocos segundos tendrás una carpeta limpia en tu Google Drive con todas las planillas oficiales.
+ * 4. El script guarda automáticamente todos los IDs nuevos en su memoria interna, por lo que
+ *    Muni 360 empieza a guardar en las nuevas planillas inmediatamente.
+ */
+function crearTodasLasPlanillasOficiales() {
+  var NOMBRE_CARPETA = '📁 UGI · Planillas Oficiales MUNI 360 (Club Ciudad)';
+  var carpetas = DriveApp.getFoldersByName(NOMBRE_CARPETA);
+  var folder = carpetas.hasNext() ? carpetas.next() : DriveApp.createFolder(NOMBRE_CARPETA);
+
+  var ACTIVIDADES = [
+    {
+      clave: 'Colonia',
+      titulo: 'UGI · Colonia de Verano - Planilla Oficial',
+      gestos: ['Participación y entusiasmo', 'Respeto de consignas', 'Trabajo en equipo', 'Coordinación motriz', 'Adaptación al agua', 'Autonomía personal', 'Resolución de conflictos']
+    },
+    {
+      clave: 'COYFD',
+      titulo: 'UGI · COYFD (Iniciación Deportiva) - Planilla Oficial',
+      gestos: ['Coordinación óculo-manual', 'Coordinación óculo-pédica', 'Equilibrio y desplazamientos', 'Giro y salto', 'Cooperación en juego', 'Comprensión de reglas', 'Tolerancia al contacto']
+    },
+    {
+      clave: 'Básquet Caballeros',
+      titulo: 'UGI · Básquet Caballeros - Planilla Oficial',
+      alias: ['Básquet'],
+      gestos: ['Dribbling con ambas manos', 'Mecánica de tiro', 'Bandeja / finalización', 'Pase', 'Postura defensiva', 'Rebote', 'Juego sin pelota', 'Toma de decisión']
+    },
+    {
+      clave: 'Básquet Damas',
+      titulo: 'UGI · Básquet Damas - Planilla Oficial',
+      gestos: ['Dribbling con ambas manos', 'Mecánica de tiro', 'Bandeja / finalización', 'Pase', 'Postura defensiva', 'Rebote', 'Juego sin pelota', 'Toma de decisión']
+    },
+    {
+      clave: 'Cestoball',
+      titulo: 'UGI · Cestoball - Planilla Oficial',
+      gestos: ['Pase y recepción en movimiento', 'Tiro al aro y precisión', 'Desmarque y ocupación de espacios', 'Defensa e intercepción', 'Rebote y recupero', 'Transición rápida', 'Toma de decisión']
+    },
+    {
+      clave: 'Fútbol Caballeros',
+      titulo: 'UGI · Fútbol Caballeros - Planilla Oficial',
+      alias: ['Fútbol'],
+      gestos: ['Control orientado', 'Pase corto', 'Pase largo / cambio de frente', 'Conducción', 'Remate', 'Juego aéreo', 'Marca y recuperación', 'Perfil y lectura de juego']
+    },
+    {
+      clave: 'Fútbol Damas',
+      titulo: 'UGI · Fútbol Damas - Planilla Oficial',
+      gestos: ['Control orientado', 'Pase corto', 'Pase largo / cambio de frente', 'Conducción', 'Remate', 'Juego aéreo', 'Marca y recuperación', 'Perfil y lectura de juego']
+    },
+    {
+      clave: 'Gimnasia Artística',
+      titulo: 'UGI · Gimnasia Artística - Planilla Oficial',
+      alias: ['Gimnasia'],
+      gestos: ['Flexibilidad y movilidad', 'Fuerza postural y core', 'Acrobacia de suelo (roles/vertical/medialuna)', 'Salto y recepción segura', 'Trabajo en aparatos (viga/paralelas)', 'Alineación corporal', 'Memoria coreográfica']
+    },
+    {
+      clave: 'Gimnasia Rítmica',
+      titulo: 'UGI · Gimnasia Rítmica - Planilla Oficial',
+      gestos: ['Manejo técnico de aparato (cuerda/aro/pelota/cinta)', 'Flexibilidad y amplitud articular', 'Equilibrios y giros', 'Saltos rítmicos', 'Musicalidad y ritmo', 'Expresión corporal', 'Coordinación espacio-temporal']
+    },
+    {
+      clave: 'Golf',
+      titulo: 'UGI · Golf - Planilla Oficial',
+      gestos: ['Grip, stance y alineación', 'Full swing (maderas e hierros)', 'Juego corto (approach / chipping)', 'Putting (lectura y control de distancia)', 'Salida de bunker', 'Estrategia de cancha', 'Etiqueta, reglas y ritmo de juego']
+    },
+    {
+      clave: 'Hockey sobre Césped Caballeros',
+      titulo: 'UGI · Hockey sobre Césped Caballeros - Planilla Oficial',
+      alias: ['Hockey sobre Césped'],
+      gestos: ['Conducción (derecha y revés)', 'Pase (push / slap)', 'Recepción', 'Barrida / hit', 'Tackle y marca', 'Ubicación en cancha', 'Toma de decisión']
+    },
+    {
+      clave: 'Hockey sobre Césped Damas',
+      titulo: 'UGI · Hockey sobre Césped Damas - Planilla Oficial',
+      gestos: ['Conducción (derecha y revés)', 'Pase (push / slap)', 'Recepción', 'Barrida / hit', 'Tackle y marca', 'Ubicación en cancha', 'Toma de decisión']
+    },
+    {
+      clave: 'Hockey sobre Patines Caballeros',
+      titulo: 'UGI · Hockey sobre Patines Caballeros - Planilla Oficial',
+      alias: ['Hockey sobre Patines'],
+      gestos: ['Patinaje y equilibrio', 'Frenado y cambios de dirección', 'Conducción de bocha', 'Pase y recepción', 'Tiro al arco', 'Posición defensiva', 'Lectura de juego']
+    },
+    {
+      clave: 'Hockey sobre Patines Damas',
+      titulo: 'UGI · Hockey sobre Patines Damas - Planilla Oficial',
+      gestos: ['Patinaje y equilibrio', 'Frenado y cambios de dirección', 'Conducción de bocha', 'Pase y recepción', 'Tiro al arco', 'Posición defensiva', 'Lectura de juego']
+    },
+    {
+      clave: 'Judo',
+      titulo: 'UGI · Judo - Planilla Oficial',
+      gestos: ['Ukemi (caídas seguras)', 'Kumi-kata (agarres y desplazamientos)', 'Nage-waza (proyecciones de pie)', 'Ne-waza (inmovilizaciones y control en suelo)', 'Equilibrio y desequilibrio (Kuzushi)', 'Transición pie-suelo', 'Autocontrol y etiqueta (Rei)']
+    },
+    {
+      clave: 'Karate',
+      titulo: 'UGI · Karate - Planilla Oficial',
+      gestos: ['Kihon (posiciones y técnicas básicas)', 'Kata (forma, ritmo y foco)', 'Kumite (distancia, timing y marcación)', 'Velocidad y coordinación', 'Control del impacto (Zanshin)', 'Equilibrio y desplazamientos', 'Disciplina y etiqueta (Dojo Kun)']
+    },
+    {
+      clave: 'Natación Artística',
+      titulo: 'UGI · Natación Artística - Planilla Oficial',
+      alias: ['Natación'],
+      gestos: ['Flotación y sculling (propulsión de manos)', 'Figuras y posiciones básicas', 'Control respiratorio y apnea', 'Flexibilidad en el agua', 'Sincronización grupal', 'Musicalidad y cuenta rítmica', 'Resistencia específica']
+    },
+    {
+      clave: 'Patín Artístico',
+      titulo: 'UGI · Patín Artístico - Planilla Oficial',
+      gestos: ['Postura y equilibrio', 'Patinaje adelante y atrás', 'Filos y curvas', 'Saltos y aterrizaje', 'Trompos y giros', 'Trabajo de pies y figuras', 'Expresión y musicalidad']
+    },
+    {
+      clave: 'Pelota Paleta',
+      titulo: 'UGI · Pelota Paleta - Planilla Oficial',
+      gestos: ['Golpe de derecha y revés', 'Lectura de rebote en frontón y pared', 'Desplazamiento y ubicación en cancha', 'Saque y devolución', 'Definición y colocación', 'Coordinación con el compañero', 'Uso de ambas manos']
+    },
+    {
+      clave: 'Handball',
+      titulo: 'UGI · Handball - Planilla Oficial',
+      gestos: ['Pase y recepción en movimiento', 'Ciclo de pasos', 'Lanzamiento (apoyo y suspensión)', 'Bote y fintas', 'Defensa individual y basculación', 'Repliegue defensivo', 'Toma de decisión']
+    },
+    {
+      clave: 'Rugby Caballeros',
+      titulo: 'UGI · Rugby Caballeros - Planilla Oficial',
+      alias: ['Rugby'],
+      gestos: ['Pase', 'Recepción', 'Tackle (técnica segura)', 'Ruck / contacto', 'Apoyo y línea de ventaja', 'Evasión', 'Patada']
+    },
+    {
+      clave: 'Rugby Damas',
+      titulo: 'UGI · Rugby Damas - Planilla Oficial',
+      gestos: ['Pase', 'Recepción', 'Tackle (técnica segura)', 'Ruck / contacto', 'Apoyo y línea de ventaja', 'Evasión', 'Patada']
+    },
+    {
+      clave: 'Tenis',
+      titulo: 'UGI · Tenis - Planilla Oficial',
+      gestos: ['Drive', 'Revés', 'Saque', 'Volea y smash', 'Desplazamiento y apoyos', 'Devolución', 'Consistencia y táctica']
+    },
+    {
+      clave: 'Vóley Caballeros',
+      titulo: 'UGI · Vóley Caballeros - Planilla Oficial',
+      alias: ['Vóley'],
+      gestos: ['Saque', 'Recepción (antebrazos)', 'Armado (dedos)', 'Ataque / remate', 'Bloqueo', 'Defensa y desplazamiento', 'Comunicación en cancha']
+    },
+    {
+      clave: 'Vóley Damas',
+      titulo: 'UGI · Vóley Damas - Planilla Oficial',
+      gestos: ['Saque', 'Recepción (antebrazos)', 'Armado (dedos)', 'Ataque / remate', 'Bloqueo', 'Defensa y desplazamiento', 'Comunicación en cancha']
+    }
+  ];
+
+  var nuevoMapeo = {};
+  var propsParaGuardar = {};
+
+  ACTIVIDADES.forEach(function (act) {
+    var ss = SpreadsheetApp.create(act.titulo);
+    var file = DriveApp.getFileById(ss.getId());
+    folder.addFile(file);
+    try { DriveApp.getRootFolder().removeFile(file); } catch (_) {}
+
+    // Formatear pestañas institucionales
+    hoja(ss, 'Padron');
+    hoja(ss, 'Asistencia');
+    hoja(ss, 'Evaluaciones');
+    hoja(ss, 'Gestos');
+    hoja(ss, 'Config');
+
+    // Cargar gestos específicos del deporte
+    var shG = ss.getSheetByName('Gestos');
+    var filasG = [['Gesto / Variable']].concat(act.gestos.map(function (g) { return [g]; }));
+    shG.getRange(1, 1, filasG.length, 1).setValues(filasG);
+    shG.getRange(1, 1).setFontWeight('bold').setBackground('#082b49').setFontColor('#ffffff');
+
+    // Eliminar 'Hoja 1'
+    var hDef = ss.getSheetByName('Hoja 1') || ss.getSheetByName('Sheet1');
+    if (hDef && ss.getSheets().length > 1) {
+      try { ss.deleteSheet(hDef); } catch (_) {}
+    }
+
+    var id = ss.getId();
+    nuevoMapeo[act.clave] = id;
+    propsParaGuardar[act.clave] = id;
+    propsParaGuardar['SHEET_' + act.clave] = id;
+
+    if (act.alias && act.alias.length) {
+      act.alias.forEach(function (al) {
+        nuevoMapeo[al] = id;
+        propsParaGuardar[al] = id;
+        propsParaGuardar['SHEET_' + al] = id;
+      });
+    }
+  });
+
+  // Guardar en PropertiesService para que el sistema funcione de inmediato
+  PropertiesService.getScriptProperties().setProperties(propsParaGuardar);
+
+  // Formatear bloque para copiar y pegar en SHEET_IDS
+  var lineasCodigo = ['var SHEET_IDS = {'];
+  var clavesOrdenadas = Object.keys(nuevoMapeo).sort();
+  clavesOrdenadas.forEach(function (k, i) {
+    var fin = (i === clavesOrdenadas.length - 1) ? '' : ',';
+    var padding = ' '.repeat(Math.max(1, 35 - k.length));
+    lineasCodigo.push("  '" + k + "':" + padding + "'" + nuevoMapeo[k] + "'" + fin);
+  });
+  lineasCodigo.push('};');
+
+  var codigoCompleto = lineasCodigo.join('\n');
+
+  Logger.log('========================================================================');
+  Logger.log('✅ TODAS LAS PLANILLAS FUERON CREADAS CON ÉXITO EN TU GOOGLE DRIVE');
+  Logger.log('📁 Carpeta: ' + folder.getName() + ' (' + folder.getUrl() + ')');
+  Logger.log('⚡ Los IDs ya quedaron guardados automáticamente en la memoria del Script.');
+  Logger.log('Si querés dejarlos fijados en el archivo DeportesUGI.gs, copiá y pegá esto:');
+  Logger.log('\n' + codigoCompleto);
+  Logger.log('========================================================================');
+
+  return { folderUrl: folder.getUrl(), ids: nuevoMapeo, codigo: codigoCompleto };
 }
 
 /**
