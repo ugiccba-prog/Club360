@@ -59,6 +59,43 @@ var SHEET_IDS = {
   'Patín Artístico':                 '1V4-OO6UwvPYRPojcbIzRgn4fkFmSBc2yD-XynB4q-QM'
 };
 
+// Claves seguras por actividad para Profesores y Coordinación
+var CLAVES_SEGURAS = {
+  'Colonia':                         { profe: 'colonia2025', coord: 'coloniacoord' },
+  'COYFD':                           { profe: 'coyfd2025',   coord: 'coyfdcoord' },
+  'Hockey sobre Patines':            { profe: 'patinesmuni',   coord: 'patinescoord' },
+  'Hockey sobre Patines Caballeros': { profe: 'patinesmuni',   coord: 'patinescoord' },
+  'Hockey sobre Patines Damas':      { profe: 'patinesmuni',   coord: 'patinescoord' },
+  'Hockey sobre Césped':             { profe: 'hockeymuni',    coord: 'hockeycoord' },
+  'Hockey sobre Césped Caballeros':  { profe: 'hockeymuni',    coord: 'hockeycoord' },
+  'Hockey sobre Césped Damas':       { profe: 'hockeymuni',    coord: 'hockeycoord' },
+  'Básquet':                         { profe: 'basquetmuni',   coord: 'basquetcoord' },
+  'Básquet Caballeros':              { profe: 'basquetmuni',   coord: 'basquetcoord' },
+  'Básquet Damas':                   { profe: 'basquetmuni',   coord: 'basquetcoord' },
+  'Cestoball':                       { profe: 'cestomuni',     coord: 'cestocoord' },
+  'Fútbol':                          { profe: 'futbolmuni',    coord: 'futbolcoord' },
+  'Fútbol Caballeros':               { profe: 'futbolmuni',    coord: 'futbolcoord' },
+  'Fútbol Damas':                    { profe: 'futbolmuni',    coord: 'futbolcoord' },
+  'Vóley':                           { profe: 'voleymuni',     coord: 'voleycoord' },
+  'Vóley Caballeros':                { profe: 'voleymuni',     coord: 'voleycoord' },
+  'Vóley Damas':                     { profe: 'voleymuni',     coord: 'voleycoord' },
+  'Rugby':                           { profe: 'rugbymuni',     coord: 'rugbycoord' },
+  'Rugby Caballeros':                { profe: 'rugbymuni',     coord: 'rugbycoord' },
+  'Rugby Damas':                     { profe: 'rugbymuni',     coord: 'rugbycoord' },
+  'Natación':                        { profe: 'natacionmuni',  coord: 'natacioncoord' },
+  'Natación Artística':              { profe: 'natacionmuni',  coord: 'natacioncoord' },
+  'Tenis':                           { profe: 'tenismuni',     coord: 'teniscoord' },
+  'Golf':                            { profe: 'golfmuni',      coord: 'golfcoord' },
+  'Pelota Paleta':                   { profe: 'paletamuni',    coord: 'paletacoord' },
+  'Handball':                        { profe: 'handballmuni',  coord: 'handballcoord' },
+  'Gimnasia':                        { profe: 'gimnasiamuni',  coord: 'gimnasiacoord' },
+  'Gimnasia Artística':              { profe: 'gimnasiamuni',  coord: 'gimnasiacoord' },
+  'Gimnasia Rítmica':                { profe: 'gimnasiamuni',  coord: 'gimnasiacoord' },
+  'Judo':                            { profe: 'judomuni',      coord: 'judocoord' },
+  'Karate':                          { profe: 'karatemuni',    coord: 'karatecoord' },
+  'Patín Artístico':                 { profe: 'patinmuni',     coord: 'patincoord' }
+};
+
 var TZ = 'America/Argentina/Buenos_Aires';
 
 var CABECERAS = {
@@ -119,6 +156,37 @@ function doPost(e) {
   lock.waitLock(20000);
   try {
     var data = JSON.parse(e.postData.contents);
+
+    // 0. AUTENTICACIÓN SEGURA MUNI 360
+    if (data.tipo === 'LOGIN') {
+      var clave = String(data.clave || '').trim().toLowerCase();
+      var deporte = String(data.deporte || '').trim();
+      var celular = String(data.celular || '').trim();
+
+      // Claves maestras UGI (Acceso Total a todos los deportes + Colonia + COYFD)
+      if (clave === 'ugi2025' || clave === 'ugi2026' || clave === 'muni360' || clave === 'adminugi') {
+        return respuesta({ ok: true, rol: 'Dirección UGI', esAdminTotal: true, deporte: deporte, celular: celular, token: Utilities.getUuid() });
+      }
+
+      var reg = CLAVES_SEGURAS[deporte];
+      // Clave de coordinación específica o global
+      if ((reg && clave === reg.coord.toLowerCase()) || (clave === '2001' && deporte === 'Colonia') || (clave === '2002' && deporte === 'COYFD') || clave === 'coordugi') {
+        return respuesta({ ok: true, rol: 'Coordinación', esAdminTotal: false, deporte: deporte, celular: celular, token: Utilities.getUuid() });
+      }
+
+      // Clave de profesor específica, universal o PIN heredado
+      if ((reg && clave === reg.profe.toLowerCase()) ||
+          clave === 'profeugi' || clave === 'muni2025' ||
+          (clave === '1001' && deporte === 'Colonia') ||
+          (clave === '1002' && deporte === 'COYFD') ||
+          clave === deporte.toLowerCase().replace(/\s+/g, '') ||
+          clave === deporte.toLowerCase().replace(/\s+/g, '') + 'muni') {
+        return respuesta({ ok: true, rol: 'Profe', esAdminTotal: false, deporte: deporte, celular: celular, token: Utilities.getUuid() });
+      }
+
+      return respuesta({ ok: false, error: 'Contraseña incorrecta para ' + deporte + '.' });
+    }
+
     var ss = abrirSheet(data.deporte);
     var tz = ss.getSpreadsheetTimeZone();
     var sh;

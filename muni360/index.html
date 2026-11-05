@@ -1,4 +1,3 @@
-L
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,8 +10,7 @@ L
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <!-- Librerías oficiales para Supabase y lectura/descarga de Excel (.xlsx) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Librería oficial para lectura y descarga de planillas Excel (.xlsx) -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
     :root {
@@ -664,18 +662,7 @@ L
         </div>
       </div>
 
-      <!-- Filtros cuando es COLONIA o COYFD (Supabase) -->
-      <div id="filtros-colonia" class="hidden">
-        <div class="spread" style="margin-bottom:4px;">
-          <label for="sel-grupo-supa" style="margin:0;">Grupo / Categoría</label>
-          <div id="acciones-grupo-supa" class="hidden" style="display:flex; gap:6px;">
-            <button type="button" class="btn-sec" id="btn-nuevo-grupo-supa">+ Nuevo grupo</button>
-            <button type="button" class="btn-sec" id="btn-renombrar-grupo-supa">Renombrar</button>
-            <button type="button" class="quitar" id="btn-borrar-grupo-supa">Borrar grupo</button>
-          </div>
-        </div>
-        <select id="sel-grupo-supa"></select>
-      </div>
+      <div id="filtros-colonia" class="hidden"></div>
 
       <div class="field" style="margin:10px 0 0;" id="wrap-fecha">
         <label for="input-fecha">Fecha de la sesión</label>
@@ -905,22 +892,13 @@ L
   <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
   <script>
+    // 1. CONFIGURACIÓN MAESTRA MUNI 360 (100% GOOGLE SHEETS · SIN SUPABASE NI CLAVES EXPUESTAS)
     // =========================================================================
-    // 1. CONFIGURACIÓN MAESTRA MUNI 360 (PENSADA PARA ESCALAR FÁCIL EN EL FUTURO)
-    //    Para agregar un deporte en el futuro, basta con sumar 1 fila acá.
-    // =========================================================================
-    const SUPABASE_URL = 'https://eohxmexldfjfkjdymwlm.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_mtZs0Bn0FXsY57jHiGdFbQ_z1R03p2L';
-    const supa = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-
     const URL_SCRIPT_COLONIA_COYFD = "https://script.google.com/macros/s/AKfycbyocT7bZHmz4Fnd9vEwG7LBjPnheKNfoVM3Iqg0-lcaic65CfjE9tI5Y2Y3hD7D9uCm/exec";
     const URL_SCRIPT_DEPORTES      = "https://script.google.com/macros/s/AKfycbz0VhNzdHKgFfrbHvuCJtLqrLRz9BWKxYxKjQ5CdCNQDiMd38edOmTDnGyTm8OBDeZ6/exec";
     const URL_SCRIPT_PROFES_UGI    = "https://script.google.com/macros/s/AKfycbxH7kZSoKxiHTReWUfhBCN9KOT8Vf7ElFXAiXsxvPwKohi76NciLJzL5diyEMS3oesWYA/exec";
 
-    const CLAVE_MAESTRA_UGI = "ugi2026";
-    const CLAVE_UNIVERSAL_PROFE = "profeugi";
-
-    // Variables transversales UGI (Las 4C + Convivencia) presentes en todos los deportes
+    // Variables transversales UGI (Las 4C + Convivencia)
     const GESTOS_COMUNES_UGI = [
       "Actitud y compromiso (Carácter)",
       "Respeto y convivencia (Conexión)",
@@ -939,39 +917,37 @@ L
     const ARQ_HSC = ["Arquero: Posición básica y ángulo de achique", "Arquero: Despeje de kickers y guardas (bajo)", "Arquero: Uso de guantes (tiros a media/alta altura)", "Arquero: Salidas en 1 vs 1 y barrida", "Arquero: Defensa de córner corto", "Arquero: Comunicación y orden defensivo"];
     const ARQ_FUT = ["Arquero: Posición de base y juego de piernas", "Arquero: Toma de pelota y seguridad de manos", "Arquero: Caídas y vuelos laterales", "Arquero: Achique en 1 vs 1", "Arquero: Juego aéreo y descuelgue de centros", "Arquero: Salida con los pies y saque"];
 
-    // CATÁLOGO OFICIAL DE ACTIVIDADES (22 DEPORTES + COLONIA + COYFD)
+    // CATÁLOGO OFICIAL DE ACTIVIDADES (Sin PINes expuestos en el HTML)
     const CATALOGO_MUNI360 = [
-      // Base Formativa (Motor Supabase + Sheet Colonia/COYFD)
-      { nombre: "Colonia", motor: "supabase", esBase: true, tieneComida: true,  pinProfe: "1001", pinCoord: "2001", gestos: ["Participación y entusiasmo", "Respeto de consignas", "Trabajo en equipo", "Coordinación motriz", "Adaptación al agua", "Autonomía personal", "Resolución de conflictos"] },
-      { nombre: "COYFD",   motor: "supabase", esBase: true, tieneComida: false, pinProfe: "1002", pinCoord: "2002", gestos: ["Coordinación óculo-manual", "Coordinación óculo-pédica", "Equilibrio y desplazamientos", "Giro y salto", "Cooperación en juego", "Comprensión de reglas", "Tolerancia al contacto"] },
+      { nombre: "Colonia", esBase: true, tieneComida: true,  gestos: ["Participación y entusiasmo", "Respeto de consignas", "Trabajo en equipo", "Coordinación motriz", "Adaptación al agua", "Autonomía personal", "Resolución de conflictos"] },
+      { nombre: "COYFD",   esBase: true, tieneComida: false, gestos: ["Coordinación óculo-manual", "Coordinación óculo-pédica", "Equilibrio y desplazamientos", "Giro y salto", "Cooperación en juego", "Comprensión de reglas", "Tolerancia al contacto"] },
 
-      // 22 Deportes Oficiales (Diferenciando Caballeros y Damas donde corresponde)
-      { nombre: "Básquet Caballeros",              motor: "sheets", pinProfe: "1101", pinCoord: "2101", gestos: G_BASQUET },
-      { nombre: "Básquet Damas",                   motor: "sheets", pinProfe: "1102", pinCoord: "2102", gestos: G_BASQUET },
-      { nombre: "Cestoball",                       motor: "sheets", pinProfe: "1103", pinCoord: "2103", gestos: ["Pase y recepción en movimiento", "Tiro al aro y precisión", "Desmarque y ocupación de espacios", "Defensa e intercepción", "Rebote y recupero", "Transición rápida", "Toma de decisión"] },
-      { nombre: "Fútbol Caballeros",               motor: "sheets", pinProfe: "1104", pinCoord: "2104", gestos: G_FUTBOL, arquero: ARQ_FUT },
-      { nombre: "Fútbol Damas",                    motor: "sheets", pinProfe: "1105", pinCoord: "2105", gestos: G_FUTBOL, arquero: ARQ_FUT },
-      { nombre: "Gimnasia Artística",              motor: "sheets", pinProfe: "1106", pinCoord: "2106", gestos: ["Flexibilidad y movilidad", "Fuerza postural y core", "Acrobacia de suelo (roles/vertical/medialuna)", "Salto y recepción segura", "Trabajo en aparatos (viga/paralelas)", "Alineación corporal", "Memoria coreográfica"] },
-      { nombre: "Gimnasia Rítmica",                motor: "sheets", pinProfe: "1107", pinCoord: "2107", gestos: ["Manejo técnico de aparato (cuerda/aro/pelota/cinta)", "Flexibilidad y amplitud articular", "Equilibrios y giros", "Saltos rítmicos", "Musicalidad y ritmo", "Expresión corporal", "Coordinación espacio-temporal"] },
-      { nombre: "Golf",                            motor: "sheets", pinProfe: "1108", pinCoord: "2108", gestos: ["Grip, stance y alineación", "Full swing (maderas e hierros)", "Juego corto (approach / chipping)", "Putting (lectura y control de distancia)", "Salida de bunker", "Estrategia de cancha", "Etiqueta, reglas y ritmo de juego"] },
-      { nombre: "Hockey sobre Césped Caballeros",  motor: "sheets", pinProfe: "1109", pinCoord: "2109", gestos: G_HSC, arquero: ARQ_HSC },
-      { nombre: "Hockey sobre Césped Damas",       motor: "sheets", pinProfe: "1110", pinCoord: "2110", gestos: G_HSC, arquero: ARQ_HSC },
-      { nombre: "Hockey sobre Patines Caballeros", motor: "sheets", pinProfe: "1111", pinCoord: "2111", gestos: G_HSP, arquero: ARQ_HSP },
-      { nombre: "Hockey sobre Patines Damas",      motor: "sheets", pinProfe: "1112", pinCoord: "2112", gestos: G_HSP, arquero: ARQ_HSP },
-      { nombre: "Judo",                            motor: "sheets", pinProfe: "1113", pinCoord: "2113", gestos: ["Ukemi (caídas seguras)", "Kumi-kata (agarres y desplazamientos)", "Nage-waza (proyecciones de pie)", "Ne-waza (inmovilizaciones y control en suelo)", "Equilibrio y desequilibrio (Kuzushi)", "Transición pie-suelo", "Autocontrol y etiqueta (Rei)"] },
-      { nombre: "Karate",                          motor: "sheets", pinProfe: "1114", pinCoord: "2114", gestos: ["Kihon (posiciones y técnicas básicas)", "Kata (forma, ritmo y foco)", "Kumite (distancia, timing y marcación)", "Velocidad y coordinación", "Control del impacto (Zanshin)", "Equilibrio y desplazamientos", "Disciplina y etiqueta (Dojo Kun)"] },
-      { nombre: "Natación Artística",              motor: "sheets", pinProfe: "1115", pinCoord: "2115", gestos: ["Flotación y sculling (propulsión de manos)", "Figuras y posiciones básicas", "Control respiratorio y apnea", "Flexibilidad en el agua", "Sincronización grupal", "Musicalidad y cuenta rítmica", "Resistencia específica"] },
-      { nombre: "Patín Artístico",                 motor: "sheets", pinProfe: "1116", pinCoord: "2116", gestos: ["Postura y equilibrio", "Patinaje adelante y atrás", "Filos y curvas", "Saltos y aterrizaje", "Trompos y giros", " Trabajo de pies y figuras", "Expresión y musicalidad"] },
-      { nombre: "Pelota Paleta",                   motor: "sheets", pinProfe: "1117", pinCoord: "2117", gestos: ["Golpe de derecha y revés", "Lectura de rebote en frontón y pared", "Desplazamiento y ubicación en cancha", "Saque y devolución", "Definición y colocación", "Coordinación con el compañero", "Uso de ambas manos"] },
-      { nombre: "Rugby Caballeros",                motor: "sheets", pinProfe: "1118", pinCoord: "2118", gestos: G_RUGBY },
-      { nombre: "Rugby Damas",                     motor: "sheets", pinProfe: "1119", pinCoord: "2119", gestos: G_RUGBY },
-      { nombre: "Tenis",                           motor: "sheets", pinProfe: "1120", pinCoord: "2120", gestos: ["Drive", "Revés", "Saque", "Volea y smash", "Desplazamiento y apoyos", "Devolución", "Consistencia y táctica"] },
-      { nombre: "Vóley Caballeros",                motor: "sheets", pinProfe: "1121", pinCoord: "2121", gestos: G_VOLEY },
-      { nombre: "Vóley Damas",                     motor: "sheets", pinProfe: "1122", pinCoord: "2122", gestos: G_VOLEY }
+      { nombre: "Básquet Caballeros",              gestos: G_BASQUET },
+      { nombre: "Básquet Damas",                   gestos: G_BASQUET },
+      { nombre: "Cestoball",                       gestos: ["Pase y recepción en movimiento", "Tiro al aro y precisión", "Desmarque y ocupación de espacios", "Defensa e intercepción", "Rebote y recupero", "Transición rápida", "Toma de decisión"] },
+      { nombre: "Fútbol Caballeros",               gestos: G_FUTBOL, arquero: ARQ_FUT },
+      { nombre: "Fútbol Damas",                    gestos: G_FUTBOL, arquero: ARQ_FUT },
+      { nombre: "Gimnasia Artística",              gestos: ["Flexibilidad y movilidad", "Fuerza postural y core", "Acrobacia de suelo (roles/vertical/medialuna)", "Salto y recepción segura", "Trabajo en aparatos (viga/paralelas)", "Alineación corporal", "Memoria coreográfica"] },
+      { nombre: "Gimnasia Rítmica",                gestos: ["Manejo técnico de aparato (cuerda/aro/pelota/cinta)", "Flexibilidad y amplitud articular", "Equilibrios y giros", "Saltos rítmicos", "Musicalidad y ritmo", "Expresión corporal", "Coordinación espacio-temporal"] },
+      { nombre: "Golf",                            gestos: ["Grip, stance y alineación", "Full swing (maderas e hierros)", "Juego corto (approach / chipping)", "Putting (lectura y control de distancia)", "Salida de bunker", "Estrategia de cancha", "Etiqueta, reglas y ritmo de juego"] },
+      { nombre: "Hockey sobre Césped Caballeros",  gestos: G_HSC, arquero: ARQ_HSC },
+      { nombre: "Hockey sobre Césped Damas",       gestos: G_HSC, arquero: ARQ_HSC },
+      { nombre: "Hockey sobre Patines Caballeros", gestos: G_HSP, arquero: ARQ_HSP },
+      { nombre: "Hockey sobre Patines Damas",      gestos: G_HSP, arquero: ARQ_HSP },
+      { nombre: "Judo",                            gestos: ["Ukemi (caídas seguras)", "Kumi-kata (agarres y desplazamientos)", "Nage-waza (proyecciones de pie)", "Ne-waza (inmovilizaciones y control en suelo)", "Equilibrio y desequilibrio (Kuzushi)", "Transición pie-suelo", "Autocontrol y etiqueta (Rei)"] },
+      { nombre: "Karate",                          gestos: ["Kihon (posiciones y técnicas básicas)", "Kata (forma, ritmo y foco)", "Kumite (distancia, timing y marcación)", "Velocidad y coordinación", "Control del impacto (Zanshin)", "Equilibrio y desplazamientos", "Disciplina y etiqueta (Dojo Kun)"] },
+      { nombre: "Natación Artística",              gestos: ["Flotación y sculling (propulsión de manos)", "Figuras y posiciones básicas", "Control respiratorio y apnea", "Flexibilidad en el agua", "Sincronización grupal", "Musicalidad y cuenta rítmica", "Resistencia específica"] },
+      { nombre: "Patín Artístico",                 gestos: ["Postura y equilibrio", "Patinaje adelante y atrás", "Filos y curvas", "Saltos y aterrizaje", "Trompos y giros", "Trabajo de pies y figuras", "Expresión y musicalidad"] },
+      { nombre: "Pelota Paleta",                   gestos: ["Golpe de derecha y revés", "Lectura de rebote en frontón y pared", "Desplazamiento y ubicación en cancha", "Saque y devolución", "Definición y colocación", "Coordinación con el compañero", "Uso de ambas manos"] },
+      { nombre: "Rugby Caballeros",                gestos: G_RUGBY },
+      { nombre: "Rugby Damas",                     gestos: G_RUGBY },
+      { nombre: "Tenis",                           gestos: ["Drive", "Revés", "Saque", "Volea y smash", "Desplazamiento y apoyos", "Devolución", "Consistencia y táctica"] },
+      { nombre: "Vóley Caballeros",                gestos: G_VOLEY },
+      { nombre: "Vóley Damas",                     gestos: G_VOLEY }
     ];
 
     // =========================================================================
-    // 2. BANCO DE 50 VARIANTES METODOLÓGICAS UGI (DE LA APP DE PROFES)
+    // 2. BANCO DE 50 VARIANTES METODOLÓGICAS UGI
     // =========================================================================
     const GUIAS_UGI = {
       "Grupo disperso": [
@@ -1029,7 +1005,7 @@ L
         { subtitulo: "Titular en una palabra", queHacer: "Cierre ágil cuando queda poco tiempo para consolidar la huella del entrenamiento.", ajuste: "Cada subgrupo tiene 10 segundos para elegir una sola palabra que resuma qué trabajaron hoy.", frase: "«En una sola palabra: ¿qué entrenamos hoy acá adentro además de lo físico?»" },
         { subtitulo: "Conexión entrenamiento-partido", queHacer: "Ayudá a que entiendan para qué sirve lo que acaban de practicar.", ajuste: "Preguntale a dos jugadores en qué momento real de la competencia van a usar el ejercicio de hoy.", frase: "«¿En qué situación real del fin de semana nos va a servir esto que entrenamos hoy?»" },
         { subtitulo: "Misión para el próximo entrenamiento", queHacer: "Dejá instalado el foco de continuidad para la sesión siguiente.", ajuste: "Definí junto con el grupo un único objetivo corto para los primeros 10 minutos de la próxima práctica.", frase: "«El próximo entrenamiento arranca exactamente donde terminamos hoy.»" },
-        { subtitulo: "Entrega simbólica de Tarjeta Verde", queHacer: "Cerrá reforzando públicamente los valores de Ciudad Integrado y de la UGI.", ajuste: "Otorgá la mención de Tarjeta Verde del día al jugador o subgrupo que mejor manejó la frustración o ayudó al resto.", frase: "«La Tarjeta Verde de hoy se la lleva quien demostró que se puede entrenar al 100% cuidando al equipo.»" },
+        { subtitulo: "Entrega simbólica de Tarjeta Verde", queHacer: "Cerrá reforzando públicamente los valores formativos del Club y de la UGI.", ajuste: "Otorgá la mención de Tarjeta Verde del día al jugador o subgrupo que mejor manejó la frustración o ayudó al resto.", frase: "«La Tarjeta Verde de hoy se la lleva quien demostró que se puede entrenar al 100% cuidando al equipo.»" },
         { subtitulo: "Lo que me llevo y lo que dejo", queHacer: "Enseñá a limpiar la cabeza antes de volver a casa.", ajuste: "Dos voluntarios dicen algo positivo que se llevan en el bolso y una bronca o error que dejan tirado en la cancha.", frase: "«Los errores de hoy quedan acá para aprender; a casa nos llevamos solo lo que sumó.»" },
         { subtitulo: "Balance en 3 pasos del grupo", queHacer: "Entrená la autocrítica constructiva guiada por los propios deportistas.", ajuste: "El grupo nombra: 1 fortaleza del día, 1 punto flojo a corregir y 1 compromiso de actitud.", frase: "«Armemos el balance nosotros mismos: qué hicimos fuerte y qué hay que ajustar.»" },
         { subtitulo: "Respiración 4-2-6 de vuelta a la calma", queHacer: "Bajá la activación nerviosa antes de que se reencuentren con las familias.", ajuste: "Sentados o elongando, hacen 4 ciclos lentos de inhalar en 4, retener 2 y exhalar en 6 mientras repasás el logro del día.", frase: "«Bajamos pulsaciones un minuto en silencio: gran trabajo hoy, nos vamos en verde.»" }
@@ -1037,7 +1013,7 @@ L
     };
 
     // =========================================================================
-    // 3. ESTADO REACTIVO UNIFICADO
+    // 3. ESTADO REACTIVO UNIFICADO (100% GOOGLE SHEETS + LOCALSTORAGE)
     // =========================================================================
     const $ = id => document.getElementById(id);
     const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -1059,30 +1035,23 @@ L
       toast._t = setTimeout(() => t.classList.add('hidden'), 2800);
     }
 
-    let sesion = null; // { area, rol: 'Profe'|'Coordinación'|'Dirección UGI', profeNombre }
+    let sesion = null;
     let areaActiva = "Básquet Caballeros";
     let tabActual = "asistencia";
 
-    // Estado para Deportes (Google Sheets)
     let datosDeporte = { padron: [], evaluaciones: [], asistencia: [], gestos: null, email: '' };
     let asistTempDep = {};
-    let semTempDep = {}; // { jugador: 'V'|'A'|'R' }
+    let comidaTempDep = {};
+    let semTempDep = {};
     let jugadorActivo = null;
     let puestoEval = 'campo';
     let notasTemp = {};
 
-    // Estado para Colonia y COYFD (Supabase)
-    let gruposSupa = [];
-    let grupoSupaId = null;
-    let alumnosSupa = [];
-    let asistSupa = {}; // { idAlumno: { estado: 'presente'|'ausente'|'tarde', almuerzo: bool, sem: 'V'|'A'|'R' } }
-
-    // Estado Banco UGI
     let situacionUgi = "Grupo disperso";
     let indiceUgi = 0;
 
     // =========================================================================
-    // 4. INICIALIZACIÓN DE PANTALLA LOGIN MUNI 360
+    // 4. INICIALIZACIÓN DE PANTALLA LOGIN MUNI 360 (VALIDACIÓN EN SERVIDOR)
     // =========================================================================
     const deportesSolo = CATALOGO_MUNI360.filter(x => !x.esBase);
     $('login-deporte').innerHTML =
@@ -1117,11 +1086,10 @@ L
 
     marcarSeleccionLogin(areaElegidaLogin);
 
-    // Validación de Login
     $('login-form').addEventListener('submit', async e => {
       e.preventDefault();
       const profe = $('login-profe').value.trim();
-      const clave = $('login-pass').value.trim().toLowerCase();
+      const clave = $('login-pass').value.trim();
 
       if (!areaElegidaLogin) {
         $('login-error').textContent = "Elegí primero un Deporte, Colonia o COYFD.";
@@ -1132,42 +1100,37 @@ L
         return;
       }
 
-      // 1. Clave Maestra Dirección UGI
-      if (clave === CLAVE_MAESTRA_UGI || clave === "argon2026") {
-        iniciarSesion({
-          area: areaElegidaLogin === "TODOS" ? "Básquet Caballeros" : areaElegidaLogin,
-          esAdminTotal: true,
-          rol: "Dirección UGI",
-          profeNombre: profe
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      $('login-error').textContent = "Validando acceso seguro...";
+
+      try {
+        const res = await fetch(URL_SCRIPT_DEPORTES, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            tipo: 'LOGIN',
+            deporte: areaElegidaLogin === "TODOS" ? "Básquet Caballeros" : areaElegidaLogin,
+            clave: clave
+          })
         });
-        return;
-      }
+        const data = await res.json();
 
-      if (areaElegidaLogin === "TODOS") {
-        $('login-error').textContent = "Para entrar a Dirección UGI usá la clave maestra.";
-        return;
-      }
-
-      const cfg = CATALOGO_MUNI360.find(x => x.nombre === areaElegidaLogin);
-      if (!cfg) return;
-
-      // Si es Colonia o COYFD verificamos también si hay PIN personalizado en Supabase
-      let pinProfeValido = cfg.pinProfe;
-      let pinCoordValido = cfg.pinCoord;
-      if (cfg.motor === "supabase" && supa) {
-        try {
-          const { data } = await supa.from('deportes_auth').select('*').eq('deporte', cfg.nombre).maybeSingle();
-          if (data && data.pin) pinProfeValido = String(data.pin).trim();
-          if (data && data.pin_coord) pinCoordValido = String(data.pin_coord).trim();
-        } catch (_) {}
-      }
-
-      if (clave === pinCoordValido.toLowerCase()) {
-        iniciarSesion({ area: cfg.nombre, esAdminTotal: false, rol: "Coordinación", profeNombre: profe });
-      } else if (clave === pinProfeValido.toLowerCase() || clave === CLAVE_UNIVERSAL_PROFE) {
-        iniciarSesion({ area: cfg.nombre, esAdminTotal: false, rol: "Profe", profeNombre: profe });
-      } else {
-        $('login-error').textContent = `Contraseña incorrecta para ${cfg.nombre}.`;
+        if (data && data.ok) {
+          iniciarSesion({
+            area: areaElegidaLogin === "TODOS" ? "Básquet Caballeros" : areaElegidaLogin,
+            esAdminTotal: Boolean(data.esAdminTotal),
+            rol: data.rol || "Profe",
+            profeNombre: profe,
+            token: data.token || ""
+          });
+        } else {
+          $('login-error').textContent = (data && data.error) ? data.error : "Contraseña incorrecta.";
+        }
+      } catch (_) {
+        $('login-error').textContent = "No se pudo verificar con el servidor. Revisá tu señal de internet.";
+      } finally {
+        btn.disabled = false;
       }
     });
 
@@ -1213,14 +1176,11 @@ L
       $('tab-btn-padron').classList.toggle('hidden', !esCoordOAdmin());
       $('nav-tabs').classList.toggle('cuatro', !esCoordOAdmin());
 
-      // Mostrar filtros de Deporte o de Colonia/COYFD
-      const esSupa = cfg.motor === "supabase";
-      $('filtros-deporte').classList.toggle('hidden', esSupa);
-      $('filtros-colonia').classList.toggle('hidden', !esSupa);
-      $('acciones-grupo-supa').classList.toggle('hidden', !esCoordOAdmin());
+      $('filtros-deporte').classList.remove('hidden');
+      $('filtros-colonia').classList.add('hidden');
       $('btn-todos-comida').classList.toggle('hidden', !cfg.tieneComida);
-      $('wrap-padron-eq').classList.toggle('hidden', esSupa);
-      $('card-variables-deporte').classList.toggle('hidden', esSupa);
+      $('wrap-padron-eq').classList.toggle('hidden', Boolean(cfg.esBase));
+      $('card-variables-deporte').classList.remove('hidden');
     }
 
     $('sel-deporte').addEventListener('change', e => {
@@ -1230,141 +1190,9 @@ L
     });
 
     // =========================================================================
-    // 5. CARGA DE DATOS SEGÚN MOTOR (SUPABASE PARA COLONIA/COYFD | SHEETS PARA DEPORTES)
+    // 5. CARGA DE DATOS DESDE GOOGLE SHEETS (UNIFICADO PARA TODOS)
     // =========================================================================
     async function cargarAreaActiva() {
-      const cfg = cfgActual();
-      if (cfg.motor === "supabase") {
-        await cargarGruposSupabase();
-      } else {
-        await cargarDatosDeporteSheets();
-      }
-    }
-
-    // ---------------- MOTOR A: SUPABASE (COLONIA Y COYFD) ----------------
-    async function cargarGruposSupabase(idSeleccionar) {
-      if (!supa) return;
-      $('estado-txt').textContent = `● Conectando con base de ${areaActiva}...`;
-      const { data, error } = await supa
-        .from('grupos')
-        .select('*')
-        .eq('nombre', areaActiva)
-        .order('categoria');
-
-      if (error) {
-        $('estado-txt').textContent = `⚠ Sin señal en ${areaActiva}`;
-        return;
-      }
-      $('estado-txt').textContent = `● Conectado en vivo · ${areaActiva} (Supabase + Sheet)`;
-      gruposSupa = data || [];
-
-      if (gruposSupa.length === 0) {
-        grupoSupaId = null;
-        $('sel-grupo-supa').innerHTML = `<option value="">Sin grupos cargados en ${esc(areaActiva)}</option>`;
-        alumnosSupa = [];
-        renderVistaActiva();
-        return;
-      }
-
-      if (idSeleccionar && gruposSupa.some(g => g.id === idSeleccionar)) {
-        grupoSupaId = idSeleccionar;
-      } else {
-        grupoSupaId = gruposSupa[0].id;
-      }
-
-      $('sel-grupo-supa').innerHTML = gruposSupa
-        .map(g => `<option value="${g.id}">${esc(g.categoria)}</option>`)
-        .join('');
-      $('sel-grupo-supa').value = String(grupoSupaId);
-
-      await cargarAlumnosYAsistSupabase();
-    }
-
-    async function cargarAlumnosYAsistSupabase() {
-      if (!supa || !grupoSupaId) {
-        alumnosSupa = [];
-        asistSupa = {};
-        renderVistaActiva();
-        return;
-      }
-      const fecha = $('input-fecha').value;
-      const cfg = cfgActual();
-
-      const { data: als } = await supa
-        .from('alumnos')
-        .select('*')
-        .eq('grupo_id', grupoSupaId)
-        .eq('activo', true)
-        .order('apellido');
-
-      alumnosSupa = als || [];
-      const ids = alumnosSupa.map(a => a.id);
-      asistSupa = {};
-
-      if (ids.length > 0) {
-        const { data: asistData } = await supa
-          .from('asistencias')
-          .select('*')
-          .eq('fecha', fecha)
-          .in('alumno_id', ids);
-
-        const listaAsist = asistData || [];
-        alumnosSupa.forEach(al => {
-          const ex = listaAsist.find(x => x.alumno_id === al.id);
-          asistSupa[al.id] = {
-            estado: ex ? ex.estado : 'presente',
-            almuerzo: cfg.tieneComida && ex ? Boolean(ex.almuerzo) : false,
-            sem: 'V'
-          };
-        });
-      }
-      // Cargar también cache de evaluaciones formativas de Colonia/COYFD
-      datosDeporte = JSON.parse(localStorage.getItem('muni360_cache_' + areaActiva) || 'null') || { padron: [], evaluaciones: [], asistencia: [], gestos: null, email: '' };
-      renderVistaActiva();
-    }
-
-    $('sel-grupo-supa').addEventListener('change', e => {
-      grupoSupaId = Number(e.target.value);
-      cargarAlumnosYAsistSupabase();
-    });
-
-    // Botones de crear/renombrar/borrar grupo en Colonia y COYFD
-    $('btn-nuevo-grupo-supa').addEventListener('click', async () => {
-      const nombreCat = prompt(`Nombre del nuevo grupo en ${areaActiva} (ej: Grupo 6 años, Turno Mañana):`);
-      if (!nombreCat || !nombreCat.trim()) return;
-      const tipo = areaActiva === 'Colonia' ? 'colonia' : 'deporte';
-      const { data, error } = await supa.from('grupos').insert([{ nombre: areaActiva, categoria: nombreCat.trim(), tipo }]).select().single();
-      if (error) { toast("Error: " + error.message); return; }
-      toast(`Grupo "${data.categoria}" creado`);
-      await cargarGruposSupabase(data.id);
-    });
-
-    $('btn-renombrar-grupo-supa').addEventListener('click', async () => {
-      const grp = gruposSupa.find(g => g.id === grupoSupaId);
-      if (!grp) return;
-      const nuevo = prompt("Nuevo nombre para el grupo:", grp.categoria);
-      if (!nuevo || !nuevo.trim()) return;
-      await supa.from('grupos').update({ categoria: nuevo.trim() }).eq('id', grp.id);
-      toast("Grupo actualizado");
-      await cargarGruposSupabase(grp.id);
-    });
-
-    $('btn-borrar-grupo-supa').addEventListener('click', async () => {
-      const grp = gruposSupa.find(g => g.id === grupoSupaId);
-      if (!grp || !confirm(`¿Eliminar el grupo "${grp.categoria}" y sus alumnos de ${areaActiva}?`)) return;
-      const { data: als } = await supa.from('alumnos').select('id').eq('grupo_id', grp.id);
-      const ids = (als || []).map(a => a.id);
-      if (ids.length) {
-        await supa.from('asistencias').delete().in('alumno_id', ids);
-        await supa.from('alumnos').delete().in('id', ids);
-      }
-      await supa.from('grupos').delete().eq('id', grp.id);
-      toast("Grupo eliminado");
-      await cargarGruposSupabase();
-    });
-
-    // ---------------- MOTOR B: GOOGLE SHEETS (22 DEPORTES) ----------------
-    async function cargarDatosDeporteSheets() {
       const d = areaActiva;
       datosDeporte = JSON.parse(localStorage.getItem('muni360_cache_' + d) || 'null') || { padron: [], evaluaciones: [], asistencia: [], gestos: null, email: '' };
       renderFiltrosDeporte();
@@ -1396,7 +1224,7 @@ L
       return [...new Set(datosDeporte.padron.map(p => p.categoria))].sort(orden);
     }
     function equiposDep(cat) {
-      return [...new Set(datosDeporte.padron.filter(p => p.categoria === cat).map(p => p.equipo))].sort(orden);
+      return [...new Set(datosDeporte.padron.filter(p => p.categoria === cat).map(p => p.equipo || 'General'))].sort(orden);
     }
 
     function renderFiltrosDeporte() {
@@ -1404,150 +1232,103 @@ L
       const prevCat = $('sel-categoria').value;
       $('sel-categoria').innerHTML = cats.length
         ? cats.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('')
-        : `<option value="">Sin categorías cargadas</option>`;
+        : `<option value="">Sin categorías/grupos cargados</option>`;
       if (cats.includes(prevCat)) $('sel-categoria').value = prevCat;
 
       const eqs = equiposDep($('sel-categoria').value);
       const prevEq = $('sel-equipo').value;
       $('sel-equipo').innerHTML = eqs.length
         ? eqs.map(e => `<option value="${esc(e)}">${esc(e)}</option>`).join('')
-        : `<option value="">—</option>`;
+        : `<option value="General">General</option>`;
       if (eqs.includes(prevEq)) $('sel-equipo').value = prevEq;
     }
 
     $('sel-categoria').addEventListener('change', () => {
       const eqs = equiposDep($('sel-categoria').value);
-      $('sel-equipo').innerHTML = eqs.length ? eqs.map(e => `<option value="${esc(e)}">${esc(e)}</option>`).join('') : `<option value="">—</option>`;
+      $('sel-equipo').innerHTML = eqs.length ? eqs.map(e => `<option value="${esc(e)}">${esc(e)}</option>`).join('') : `<option value="General">General</option>`;
       renderVistaActiva();
     });
     $('sel-equipo').addEventListener('change', renderVistaActiva);
-    $('input-fecha').addEventListener('change', () => {
-      if (cfgActual().motor === "supabase") cargarAlumnosYAsistSupabase();
-      else renderVistaActiva();
-    });
+    $('input-fecha').addEventListener('change', renderVistaActiva);
 
     function plantelActualNombres() {
-      const cfg = cfgActual();
-      if (cfg.motor === "supabase") {
-        return alumnosSupa.map(a => `${a.apellido}, ${a.nombre}`);
-      }
       const cat = $('sel-categoria').value;
-      const eq  = $('sel-equipo').value;
+      const eq  = $('sel-equipo').value || 'General';
       return datosDeporte.padron
-        .filter(p => p.categoria === cat && p.equipo === eq)
+        .filter(p => p.categoria === cat && (p.equipo || 'General') === eq)
         .map(p => p.jugador)
         .sort((a, b) => a.localeCompare(b, 'es'));
     }
 
     // =========================================================================
-    // 6. RENDERIZADO DE PESTAÑA 1: ASISTENCIA + COMIDA + SEMÁFORO UGI
+    // 6. PESTAÑA 1: ASISTENCIA + COMIDA (COLONIA) + SEMÁFORO UGI
     // =========================================================================
     function renderAsistencia() {
       const cfg = cfgActual();
       const q = $('buscar-alumno-asist').value.trim().toLowerCase();
       const fecha = $('input-fecha').value;
+      const cat = $('sel-categoria').value;
+      const eq  = $('sel-equipo').value || 'General';
 
-      if (cfg.motor === "supabase") {
-        const grp = gruposSupa.find(g => g.id === grupoSupaId);
-        $('titulo-lista-asist').textContent = `Lista de asistencia · ${grp ? grp.categoria : areaActiva}`;
-        const filtrados = alumnosSupa.filter(a => !q || `${a.apellido}, ${a.nombre}`.toLowerCase().includes(q));
+      $('titulo-lista-asist').textContent = `Lista de asistencia · ${cat || areaActiva} ${!cfg.esBase && eq ? '(' + eq + ')' : ''}`;
+      const lista = plantelActualNombres();
+      asistTempDep = {};
 
-        // KPIs del día
-        const total = alumnosSupa.length;
-        const pres = alumnosSupa.filter(a => {
-          const st = asistSupa[a.id]?.estado || 'presente';
-          return st === 'presente' || st === 'tarde';
-        }).length;
-        const alm = cfg.tieneComida ? alumnosSupa.filter(a => asistSupa[a.id]?.estado !== 'ausente' && asistSupa[a.id]?.almuerzo).length : 0;
-
-        $('kpi-dia-pct').textContent = total ? Math.round((pres / total) * 100) + '%' : '0%';
-        $('kpi-dia-det').textContent = `${pres} de ${total}`;
-        $('kpi-dia-total').textContent = String(total);
-        if (cfg.tieneComida) {
-          $('kpi-dia-lbl2').textContent = '🍴 Comida hoy';
-          $('kpi-dia-val2').textContent = String(alm);
-          $('kpi-dia-sub2').textContent = 'almuerzan en Colonia';
-        } else {
-          $('kpi-dia-lbl2').textContent = '🏃‍♂️ Grupo activo';
-          $('kpi-dia-val2').textContent = grp ? grp.categoria : '-';
-          $('kpi-dia-sub2').textContent = 'COYFD';
-        }
-
-        if (!filtrados.length) {
-          $('lista-asist').innerHTML = `<p class="hint" style="text-align:center; padding:18px 0;">No hay inscriptos cargados en este grupo.</p>`;
-          return;
-        }
-
-        $('lista-asist').innerHTML = filtrados.map(al => {
-          const st = asistSupa[al.id] || { estado: 'presente', almuerzo: false, sem: 'V' };
-          const codeP = st.estado === 'presente' ? 'P' : st.estado === 'ausente' ? 'A' : 'T';
-          return `
-            <div class="asist-row" data-supa-id="${al.id}">
-              <div class="asist-name">${esc(al.apellido)}, ${esc(al.nombre)}</div>
-              <div class="asist-controls">
-                ${cfg.tieneComida ? `<button type="button" class="comida-btn" data-action="comida" aria-pressed="${st.almuerzo && st.estado !== 'ausente'}">🍴 ${st.almuerzo && st.estado !== 'ausente' ? 'Comida' : 'Sin comida'}</button>` : ''}
-                <div class="sem-group" title="Semáforo Conductual UGI">
-                  <button type="button" class="sem-btn" data-sem="V" aria-pressed="${st.sem === 'V'}">🟢</button>
-                  <button type="button" class="sem-btn" data-sem="A" aria-pressed="${st.sem === 'A'}">🟡</button>
-                  <button type="button" class="sem-btn" data-sem="R" aria-pressed="${st.sem === 'R'}">🔴</button>
-                </div>
-                <div class="pat">
-                  <button type="button" data-e="P" aria-pressed="${codeP === 'P'}">P</button>
-                  <button type="button" data-e="A" aria-pressed="${codeP === 'A'}">A</button>
-                  <button type="button" data-e="T" aria-pressed="${codeP === 'T'}">T</button>
-                </div>
-              </div>
-            </div>`;
-        }).join('');
-      } else {
-        // Motor Deportes
-        const cat = $('sel-categoria').value;
-        const eq  = $('sel-equipo').value;
-        $('titulo-lista-asist').textContent = `Lista de asistencia · ${cat || areaActiva} ${eq ? '(' + eq + ')' : ''}`;
-        const lista = plantelActualNombres();
-        asistTempDep = {};
-        datosDeporte.asistencia
-          .filter(a => a.categoria === cat && a.equipo === eq && a.fecha === fecha)
-          .forEach(a => { asistTempDep[a.jugador] = a.estado; });
-
-        lista.forEach(j => {
-          if (!asistTempDep[j]) asistTempDep[j] = 'P';
-          if (!semTempDep[j]) semTempDep[j] = 'V';
+      datosDeporte.asistencia
+        .filter(a => a.categoria === cat && (a.equipo || 'General') === eq && a.fecha === fecha)
+        .forEach(a => {
+          const valor = String(a.estado || 'P');
+          asistTempDep[a.jugador] = valor.charAt(0) || 'P';
+          if (valor.includes('Comida')) comidaTempDep[a.jugador] = true;
         });
 
-        const filtrados = lista.filter(j => !q || j.toLowerCase().includes(q));
-        const pres = lista.filter(j => asistTempDep[j] === 'P' || asistTempDep[j] === 'T').length;
-        const alertasSem = lista.filter(j => semTempDep[j] === 'A' || semTempDep[j] === 'R').length;
+      lista.forEach(j => {
+        if (!asistTempDep[j]) asistTempDep[j] = 'P';
+        if (!semTempDep[j]) semTempDep[j] = 'V';
+        if (comidaTempDep[j] === undefined) comidaTempDep[j] = false;
+      });
 
-        $('kpi-dia-pct').textContent = lista.length ? Math.round((pres / lista.length) * 100) + '%' : '0%';
-        $('kpi-dia-det').textContent = `${pres} de ${lista.length}`;
-        $('kpi-dia-total').textContent = String(lista.length);
+      const filtrados = lista.filter(j => !q || j.toLowerCase().includes(q));
+      const pres = lista.filter(j => asistTempDep[j] === 'P' || asistTempDep[j] === 'T').length;
+      const alertasSem = lista.filter(j => semTempDep[j] === 'A' || semTempDep[j] === 'R').length;
+      const alm = cfg.tieneComida ? lista.filter(j => asistTempDep[j] !== 'A' && comidaTempDep[j]).length : 0;
+
+      $('kpi-dia-pct').textContent = lista.length ? Math.round((pres / lista.length) * 100) + '%' : '0%';
+      $('kpi-dia-det').textContent = `${pres} de ${lista.length}`;
+      $('kpi-dia-total').textContent = String(lista.length);
+
+      if (cfg.tieneComida) {
+        $('kpi-dia-lbl2').textContent = '🍴 Comida hoy';
+        $('kpi-dia-val2').textContent = String(alm);
+        $('kpi-dia-sub2').textContent = 'almuerzan en Colonia';
+      } else {
         $('kpi-dia-lbl2').textContent = '🚦 Semáforo UGI';
         $('kpi-dia-val2').textContent = alertasSem ? `${alertasSem} ⚠` : '100% 🟢';
         $('kpi-dia-sub2').textContent = alertasSem ? 'amarillas/rojas hoy' : 'grupo en verde';
-
-        if (!filtrados.length) {
-          $('lista-asist').innerHTML = `<p class="hint" style="text-align:center; padding:18px 0;">No hay deportistas en este equipo. Cargalos en la pestaña Padrón.</p>`;
-          return;
-        }
-
-        $('lista-asist').innerHTML = filtrados.map(j => `
-          <div class="asist-row" data-jugador="${esc(j)}">
-            <div class="asist-name">${esc(j)}</div>
-            <div class="asist-controls">
-              <div class="sem-group" title="Semáforo Conductual UGI">
-                <button type="button" class="sem-btn" data-sem="V" aria-pressed="${semTempDep[j] === 'V'}">🟢</button>
-                <button type="button" class="sem-btn" data-sem="A" aria-pressed="${semTempDep[j] === 'A'}">🟡</button>
-                <button type="button" class="sem-btn" data-sem="R" aria-pressed="${semTempDep[j] === 'R'}">🔴</button>
-              </div>
-              <div class="pat">
-                <button type="button" data-e="P" aria-pressed="${asistTempDep[j] === 'P'}">P</button>
-                <button type="button" data-e="A" aria-pressed="${asistTempDep[j] === 'A'}">A</button>
-                <button type="button" data-e="T" aria-pressed="${asistTempDep[j] === 'T'}">T</button>
-              </div>
-            </div>
-          </div>`).join('');
       }
+
+      if (!filtrados.length) {
+        $('lista-asist').innerHTML = `<p class="hint" style="text-align:center; padding:18px 0;">No hay inscriptos en este grupo. Cargalos en la pestaña Padrón.</p>`;
+        return;
+      }
+
+      $('lista-asist').innerHTML = filtrados.map(j => `
+        <div class="asist-row" data-jugador="${esc(j)}">
+          <div class="asist-name">${esc(j)}</div>
+          <div class="asist-controls">
+            ${cfg.tieneComida ? `<button type="button" class="comida-btn" data-action="comida" aria-pressed="${comidaTempDep[j] && asistTempDep[j] !== 'A'}">🍴 ${comidaTempDep[j] && asistTempDep[j] !== 'A' ? 'Comida' : 'Sin comida'}</button>` : ''}
+            <div class="sem-group" title="Semáforo Conductual UGI">
+              <button type="button" class="sem-btn" data-sem="V" aria-pressed="${semTempDep[j] === 'V'}">🟢</button>
+              <button type="button" class="sem-btn" data-sem="A" aria-pressed="${semTempDep[j] === 'A'}">🟡</button>
+              <button type="button" class="sem-btn" data-sem="R" aria-pressed="${semTempDep[j] === 'R'}">🔴</button>
+            </div>
+            <div class="pat">
+              <button type="button" data-e="P" aria-pressed="${asistTempDep[j] === 'P'}">P</button>
+              <button type="button" data-e="A" aria-pressed="${asistTempDep[j] === 'A'}">A</button>
+              <button type="button" data-e="T" aria-pressed="${asistTempDep[j] === 'T'}">T</button>
+            </div>
+          </div>
+        </div>`).join('');
     }
 
     $('buscar-alumno-asist').addEventListener('input', renderAsistencia);
@@ -1555,105 +1336,83 @@ L
     $('lista-asist').addEventListener('click', e => {
       const row = e.target.closest('.asist-row');
       if (!row) return;
-      const cfg = cfgActual();
+      const j = row.dataset.jugador;
+      const btnPat = e.target.closest('button[data-e]');
+      const btnCom = e.target.closest('button[data-action="comida"]');
+      const btnSem = e.target.closest('button[data-sem]');
 
-      if (cfg.motor === "supabase") {
-        const id = Number(row.dataset.supaId);
-        const st = asistSupa[id] || { estado: 'presente', almuerzo: false, sem: 'V' };
-        const btnPat = e.target.closest('button[data-e]');
-        const btnCom = e.target.closest('button[data-action="comida"]');
-        const btnSem = e.target.closest('button[data-sem]');
-
-        if (btnPat) {
-          const l = btnPat.dataset.e;
-          st.estado = l === 'P' ? 'presente' : l === 'A' ? 'ausente' : 'tarde';
-          if (st.estado === 'ausente') st.almuerzo = false;
-        } else if (btnCom) {
-          st.almuerzo = !st.almuerzo;
-          if (st.almuerzo && st.estado === 'ausente') st.estado = 'presente';
-        } else if (btnSem) {
-          st.sem = btnSem.dataset.sem;
-        }
-        asistSupa[id] = st;
-        renderAsistencia();
-      } else {
-        const j = row.dataset.jugador;
-        const btnPat = e.target.closest('button[data-e]');
-        const btnSem = e.target.closest('button[data-sem]');
-        if (btnPat) asistTempDep[j] = btnPat.dataset.e;
-        if (btnSem) semTempDep[j] = btnSem.dataset.sem;
-        renderAsistencia();
+      if (btnPat) {
+        asistTempDep[j] = btnPat.dataset.e;
+        if (asistTempDep[j] === 'A') comidaTempDep[j] = false;
+      } else if (btnCom) {
+        comidaTempDep[j] = !comidaTempDep[j];
+        if (comidaTempDep[j] && asistTempDep[j] === 'A') asistTempDep[j] = 'P';
+      } else if (btnSem) {
+        semTempDep[j] = btnSem.dataset.sem;
       }
+      renderAsistencia();
     });
 
     $('btn-todos-p').addEventListener('click', () => {
-      if (cfgActual().motor === "supabase") {
-        alumnosSupa.forEach(a => {
-          asistSupa[a.id] = { ...(asistSupa[a.id] || { almuerzo: false, sem: 'V' }), estado: 'presente' };
-        });
-      } else {
-        plantelActualNombres().forEach(j => { asistTempDep[j] = 'P'; });
-      }
+      plantelActualNombres().forEach(j => { asistTempDep[j] = 'P'; });
       renderAsistencia();
       toast("Todos marcados Presente (P)");
     });
 
     $('btn-todos-comida').addEventListener('click', () => {
-      const activar = alumnosSupa.some(a => asistSupa[a.id]?.estado !== 'ausente' && !asistSupa[a.id]?.almuerzo);
-      alumnosSupa.forEach(a => {
-        const est = asistSupa[a.id]?.estado || 'presente';
-        asistSupa[a.id] = { ...(asistSupa[a.id] || { sem: 'V' }), estado: est, almuerzo: est === 'ausente' ? false : activar };
+      const lista = plantelActualNombres();
+      const activar = lista.some(j => asistTempDep[j] !== 'A' && !comidaTempDep[j]);
+      lista.forEach(j => {
+        comidaTempDep[j] = asistTempDep[j] === 'A' ? false : activar;
       });
       renderAsistencia();
       toast(activar ? "🍴 Comida marcada a todos los presentes" : "Comidas desmarcadas");
     });
 
-    // Guardar asistencia (Supabase + Sheet Colonia/COYFD o Sheet Deportes)
     $('btn-guardar-asist').addEventListener('click', async () => {
       const cfg = cfgActual();
       const fecha = $('input-fecha').value;
       const clima = $('sel-clima-clase').value;
+      const lista = plantelActualNombres();
+      if (!lista.length) return;
 
-      if (cfg.motor === "supabase") {
-        if (!alumnosSupa.length) return;
-        const registros = alumnosSupa.map(al => {
-          const st = asistSupa[al.id] || { estado: 'presente', almuerzo: false };
-          return {
+      const cat = $('sel-categoria').value;
+      const eq  = $('sel-equipo').value || 'General';
+      const registro = {};
+
+      lista.forEach(j => {
+        const est = asistTempDep[j] || 'P';
+        const com = (cfg.tieneComida && est !== 'A' && comidaTempDep[j]) ? ' | 🍴 Comida' : '';
+        const sem = (semTempDep[j] && semTempDep[j] !== 'V') ? ` | Sem:${semTempDep[j]}` : '';
+        registro[j] = `${est}${com}${sem}`;
+      });
+
+      datosDeporte.asistencia = datosDeporte.asistencia.filter(r => !(r.fecha === fecha && r.categoria === cat && (r.equipo || 'General') === eq));
+      Object.entries(registro).forEach(([jugador, estado]) => {
+        datosDeporte.asistencia.push({ fecha, categoria: cat, equipo: eq, jugador, estado });
+      });
+      localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
+
+      try {
+        await fetch(URL_SCRIPT_DEPORTES, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            tipo: 'ASISTENCIA',
+            token: sesion?.token || '',
+            profe: sesion?.profeNombre || '',
+            deporte: areaActiva,
             fecha,
-            alumno_id: al.id,
-            estado: st.estado,
-            almuerzo: cfg.tieneComida && st.estado !== 'ausente' ? Boolean(st.almuerzo) : false
-          };
+            categoria: cat,
+            equipo: eq,
+            datos: registro
+          })
         });
-        const { error } = await supa.from('asistencias').upsert(registros, { onConflict: 'fecha,alumno_id' });
-        if (error) { toast("Error al guardar: " + error.message); return; }
-        toast(`✓ Asistencia de ${areaActiva} guardada`);
-        sincronizarSheetColoniaCoyfd(areaActiva);
-      } else {
-        const lista = plantelActualNombres();
-        if (!lista.length) return;
-        const cat = $('sel-categoria').value;
-        const eq  = $('sel-equipo').value;
-        const registro = Object.fromEntries(lista.map(j => [j, asistTempDep[j] || 'P']));
-
-        datosDeporte.asistencia = datosDeporte.asistencia.filter(r => !(r.fecha === fecha && r.categoria === cat && r.equipo === eq));
-        Object.entries(registro).forEach(([jugador, estado]) => {
-          datosDeporte.asistencia.push({ fecha, categoria: cat, equipo: eq, jugador, estado });
-        });
-        localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
-
-        try {
-          await fetch(URL_SCRIPT_DEPORTES, {
-            method: 'POST',
-            body: JSON.stringify({ tipo: 'ASISTENCIA', deporte: areaActiva, fecha, categoria: cat, equipo: eq, datos: registro })
-          });
-          toast(`✓ Asistencia de ${areaActiva} guardada en el Sheet`);
-        } catch (_) {
-          toast(`✓ Guardada en el dispositivo (se enviará al recuperar señal)`);
-        }
+        toast(`✓ Asistencia de ${areaActiva} guardada en el Sheet`);
+      } catch (_) {
+        toast(`✓ Guardada en el dispositivo (se enviará al recuperar señal)`);
       }
 
-      // Si el profe marcó que la clase estuvo en Fuego o Agua, sugerir ir al Banco UGI
       if (clima === "Fuego") {
         setTimeout(() => {
           if (confirm("🔥 Marcaste clase con exceso de Fuego. ¿Querés abrir una dinámica de cancha de 2 minutos para 'Roce o discusión'?")) {
@@ -1670,24 +1429,6 @@ L
         }, 400);
       }
     });
-
-    async function sincronizarSheetColoniaCoyfd(nombreDeporte) {
-      if (!supa) return;
-      try {
-        const { data: grs } = await supa.from('grupos').select('*').eq('nombre', nombreDeporte).order('categoria');
-        const idsG = (grs || []).map(g => g.id);
-        if (!idsG.length) return;
-        const { data: als } = await supa.from('alumnos').select('*').in('grupo_id', idsG).eq('activo', true).order('apellido');
-        const idsA = (als || []).map(a => a.id);
-        const { data: asis } = idsA.length ? await supa.from('asistencias').select('*').in('alumno_id', idsA).order('fecha') : { data: [] };
-
-        await fetch(URL_SCRIPT_COLONIA_COYFD, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ deporte: nombreDeporte, grupos: grs, alumnos: als, asistencias: asis })
-        });
-      } catch (_) {}
-    }
 
     // =========================================================================
     // 7. PESTAÑA 2: EVALUACIÓN TÉCNICA, ARQUERO Y 4C UGI
@@ -1805,23 +1546,30 @@ L
       if (!Object.keys(notas).length) { toast("Puntuá al menos una variable"); return; }
 
       const fecha = $('input-fecha').value;
-      const cat = cfgActual().motor === "supabase"
-        ? (gruposSupa.find(g => g.id === grupoSupaId)?.categoria || areaActiva)
-        : $('sel-categoria').value;
-      const eq = cfgActual().motor === "supabase" ? "General" : $('sel-equipo').value;
+      const cat = $('sel-categoria').value;
+      const eq  = $('sel-equipo').value || 'General';
 
       datosDeporte.evaluaciones = datosDeporte.evaluaciones.filter(r => !(r.fecha === fecha && r.jugador === jugadorActivo));
       datosDeporte.evaluaciones.push({ fecha, categoria: cat, equipo: eq, jugador: jugadorActivo, notas });
       localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
 
-      if (cfgActual().motor === "sheets") {
-        try {
-          await fetch(URL_SCRIPT_DEPORTES, {
-            method: 'POST',
-            body: JSON.stringify({ tipo: 'EVALUACION', deporte: areaActiva, fecha, categoria: cat, equipo: eq, jugador: jugadorActivo, notas })
-          });
-        } catch (_) {}
-      }
+      try {
+        await fetch(URL_SCRIPT_DEPORTES, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            tipo: 'EVALUACION',
+            token: sesion?.token || '',
+            profe: sesion?.profeNombre || '',
+            deporte: areaActiva,
+            fecha,
+            categoria: cat,
+            equipo: eq,
+            jugador: jugadorActivo,
+            notas
+          })
+        });
+      } catch (_) {}
 
       toast(`✓ ${jugadorActivo} evaluado`);
       const pl = plantelActualNombres();
@@ -1957,12 +1705,9 @@ L
         }));
         const prom = c ? (s / c) : null;
 
-        let pct = 100;
-        if (cfgActual().motor === "sheets") {
-          const regs = datosDeporte.asistencia.filter(a => a.jugador === jugador);
-          const pres = regs.filter(a => a.estado === 'P' || a.estado === 'T').length;
-          pct = regs.length ? Math.round((pres / regs.length) * 100) : null;
-        }
+        const regs = datosDeporte.asistencia.filter(a => a.jugador === jugador);
+        const pres = regs.filter(a => String(a.estado).startsWith('P') || String(a.estado).startsWith('T')).length;
+        const pct = regs.length ? Math.round((pres / regs.length) * 100) : null;
 
         const enAlerta = (prom !== null && prom < 6) || (pct !== null && pct < 70);
         if (enAlerta) alertas++;
@@ -2017,81 +1762,52 @@ L
             </div>`).join('')
         : `<p class="hint">Grupo sin inscriptos.</p>`;
 
-      if (cfgActual().motor === "sheets") {
-        $('padron-cat').value = $('sel-categoria').value || '';
-        $('padron-eq').value  = $('sel-equipo').value || 'A';
-        const gLista = gestosActuales();
-        $('lista-gestos-config').innerHTML = gLista.map(g => `
-          <div class="item">
-            <span>${esc(g)}</span>
-            ${GESTOS_COMUNES_UGI.includes(g) ? '<span class="pill a">4C UGI</span>' : ''}
-          </div>`).join('');
-      } else {
-        const grp = gruposSupa.find(g => g.id === grupoSupaId);
-        $('padron-cat').value = grp ? grp.categoria : '';
-      }
-    }
-
-    function separarApellidoNombre(linea) {
-      const limpia = linea.replace(/^\s*(\d+\s*[.)\-:]\s*|[-•*·]\s*)/, '').replace(/\s+/g, ' ').trim();
-      if (!limpia) return null;
-      if (limpia.includes(',')) {
-        const [ap, ...nom] = limpia.split(',');
-        return { apellido: ap.trim(), nombre: nom.join(' ').trim() || '-' };
-      }
-      const partes = limpia.split(' ');
-      return { apellido: partes[0], nombre: partes.slice(1).join(' ') || '-' };
+      $('padron-cat').value = $('sel-categoria').value || '';
+      $('padron-eq').value  = cfgActual().esBase ? 'General' : ($('sel-equipo').value || 'A');
+      const gLista = gestosActuales();
+      $('lista-gestos-config').innerHTML = gLista.map(g => `
+        <div class="item">
+          <span>${esc(g)}</span>
+          ${GESTOS_COMUNES_UGI.includes(g) ? '<span class="pill a">4C UGI</span>' : ''}
+        </div>`).join('');
     }
 
     $('form-padron').addEventListener('submit', async e => {
       e.preventDefault();
       const cat = $('padron-cat').value.trim();
-      const eq  = $('padron-eq').value.trim() || 'A';
+      const eq  = cfgActual().esBase ? 'General' : ($('padron-eq').value.trim() || 'A');
       const lineas = $('padron-lista').value.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
       if (!cat || !lineas.length) return;
 
-      if (cfgActual().motor === "supabase") {
-        const tipo = areaActiva === 'Colonia' ? 'colonia' : 'deporte';
-        let grp = gruposSupa.find(g => igual(g.categoria, cat));
-        if (!grp) {
-          const { data } = await supa.from('grupos').insert([{ nombre: areaActiva, categoria: cat, tipo }]).select().single();
-          grp = data;
+      const jugadores = [...new Set(lineas)];
+      jugadores.forEach(j => {
+        if (!datosDeporte.padron.some(p => igual(p.categoria, cat) && igual(p.equipo || 'General', eq) && igual(p.jugador, j))) {
+          datosDeporte.padron.push({ categoria: cat, equipo: eq, jugador: j });
         }
-        if (!grp) return;
-        const nuevos = lineas.map(separarApellidoNombre).filter(Boolean).map(x => ({
-          grupo_id: grp.id,
-          apellido: x.apellido,
-          nombre: x.nombre,
-          activo: true
-        }));
-        await supa.from('alumnos').insert(nuevos);
-        $('padron-lista').value = '';
-        toast(`✓ ${nuevos.length} inscriptos cargados en ${cat}`);
-        await cargarGruposSupabase(grp.id);
-      } else {
-        const jugadores = [...new Set(lineas)];
-        jugadores.forEach(j => {
-          if (!datosDeporte.padron.some(p => igual(p.categoria, cat) && igual(p.equipo, eq) && igual(p.jugador, j))) {
-            datosDeporte.padron.push({ categoria: cat, equipo: eq, jugador: j });
-          }
+      });
+      localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
+      $('padron-lista').value = '';
+      renderFiltrosDeporte();
+      $('sel-categoria').value = cat;
+      $('sel-equipo').value = eq;
+      renderVistaActiva();
+      toast(`✓ ${jugadores.length} deportistas cargados en ${cat}`);
+      try {
+        await fetch(URL_SCRIPT_DEPORTES, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            tipo: 'ALTA_PADRON',
+            token: sesion?.token || '',
+            deporte: areaActiva,
+            categoria: cat,
+            equipo: eq,
+            jugadores
+          })
         });
-        localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
-        $('padron-lista').value = '';
-        renderFiltrosDeporte();
-        $('sel-categoria').value = cat;
-        $('sel-equipo').value = eq;
-        renderVistaActiva();
-        toast(`✓ ${jugadores.length} deportistas cargados en ${cat}`);
-        try {
-          await fetch(URL_SCRIPT_DEPORTES, {
-            method: 'POST',
-            body: JSON.stringify({ tipo: 'ALTA_PADRON', deporte: areaActiva, categoria: cat, equipo: eq, jugadores })
-          });
-        } catch (_) {}
-      }
+      } catch (_) {}
     });
 
-    // Subida directa de archivo Excel (.xlsx / .csv)
     $('input-excel-file').addEventListener('change', async e => {
       const file = e.target.files?.[0];
       if (!file || !window.XLSX) return;
@@ -2124,6 +1840,37 @@ L
       toast(`Variable "${nuevo}" sumada a ${areaActiva}`);
     });
 
+    $('lista-padron').addEventListener('click', async e => {
+      const b = e.target.closest('.quitar');
+      if (!b) return;
+      const lista = plantelActualNombres();
+      const jugador = lista[Number(b.dataset.i)];
+      if (!jugador || !confirm(`¿Quitar a ${jugador} del grupo?`)) return;
+      const cat = $('sel-categoria').value;
+      const eq  = cfgActual().esBase ? 'General' : ($('sel-equipo').value || 'General');
+
+      datosDeporte.padron = datosDeporte.padron.filter(p => !(igual(p.categoria, cat) && igual(p.equipo || 'General', eq) && igual(p.jugador, jugador)));
+      localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
+      renderVistaActiva();
+      toast(`✓ ${jugador} quitado del grupo`);
+
+      try {
+        await fetch(URL_SCRIPT_DEPORTES, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            tipo: 'BAJA_PADRON',
+            token: sesion?.token || '',
+            deporte: areaActiva,
+            categoria: cat,
+            equipo: eq,
+            jugador
+          })
+        });
+      } catch (_) {}
+    });
+
+
     // =========================================================================
     // 11. CAMBIO DE PESTAÑAS Y RESTAURACIÓN AUTOMÁTICA DE SESIÓN
     // =========================================================================
@@ -2151,10 +1898,10 @@ L
       if (b) cambiarTab(b.dataset.tab);
     });
 
-    // Si ya había iniciado sesión en el celular, entra directo
     const guardada = localStorage.getItem('muni360_sesion_activa');
     if (guardada) {
       try { iniciarSesion(JSON.parse(guardada)); } catch (_) {}
     }
   </script>
 </body>
+</html>
