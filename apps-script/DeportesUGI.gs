@@ -22,78 +22,72 @@
  * ============================================================================
  */
 
-// Mismos Sheets por deporte que usaba la app de asistencia + alias Muni 360
+// Planillas Oficiales UGI (1 Sheet único e independiente por actividad/rama)
 var SHEET_IDS = {
-  'Colonia':                         '1XVCzrTXXq7cpMSV15rVlx0O-uhFaOs2gS9KHgYCTGkc',
-  'COYFD':                           '1XVCzrTXXq7cpMSV15rVlx0O-uhFaOs2gS9KHgYCTGkc',
-  'Hockey sobre Patines':            '109ntfFXi8DGTXwpZYchCkJ0ofc0abnr8qEMe1IFby8I',
-  'Hockey sobre Patines Caballeros': '109ntfFXi8DGTXwpZYchCkJ0ofc0abnr8qEMe1IFby8I',
-  'Hockey sobre Patines Damas':      '109ntfFXi8DGTXwpZYchCkJ0ofc0abnr8qEMe1IFby8I',
-  'Hockey sobre Césped':             '16vL1zIzeF4tWZkJe41QosvVNU8bJTVdM2m0a9qWs2bI',
-  'Hockey sobre Césped Caballeros':  '16vL1zIzeF4tWZkJe41QosvVNU8bJTVdM2m0a9qWs2bI',
-  'Hockey sobre Césped Damas':       '16vL1zIzeF4tWZkJe41QosvVNU8bJTVdM2m0a9qWs2bI',
-  'Básquet':                         '1JFm28VIHTcOWQ58ph2rKtpOnNeWA9LLr3RF8IKEBoFk',
-  'Básquet Caballeros':              '1JFm28VIHTcOWQ58ph2rKtpOnNeWA9LLr3RF8IKEBoFk',
-  'Básquet Damas':                   '1JFm28VIHTcOWQ58ph2rKtpOnNeWA9LLr3RF8IKEBoFk',
-  'Cestoball':                       '1JFm28VIHTcOWQ58ph2rKtpOnNeWA9LLr3RF8IKEBoFk',
-  'Fútbol':                          '1Jiva_ezTw2qlfTZCFo3XlMAcavWoAz5C7FVzJm987EE',
-  'Fútbol Caballeros':               '1Jiva_ezTw2qlfTZCFo3XlMAcavWoAz5C7FVzJm987EE',
-  'Fútbol Damas':                    '1Jiva_ezTw2qlfTZCFo3XlMAcavWoAz5C7FVzJm987EE',
-  'Vóley':                           '1no8JOKm6HBdVbjALJL2zaRnSrXWH2O02O-ZPZrlU_kU',
-  'Vóley Caballeros':                '1no8JOKm6HBdVbjALJL2zaRnSrXWH2O02O-ZPZrlU_kU',
-  'Vóley Damas':                     '1no8JOKm6HBdVbjALJL2zaRnSrXWH2O02O-ZPZrlU_kU',
-  'Rugby':                           '1XU-OgRu-KQX4prqhd0SFkKSm4Ib_dscf1ig1bQpsbGA',
-  'Rugby Caballeros':                '1XU-OgRu-KQX4prqhd0SFkKSm4Ib_dscf1ig1bQpsbGA',
-  'Rugby Damas':                     '1XU-OgRu-KQX4prqhd0SFkKSm4Ib_dscf1ig1bQpsbGA',
-  'Natación':                        '1UPItmf59MxruW_BHHYosnZpcnHzhg6VcbSFSvIkTEDU',
-  'Natación Artística':              '1UPItmf59MxruW_BHHYosnZpcnHzhg6VcbSFSvIkTEDU',
-  'Tenis':                           '1ECprPSNP7HaI9xCt_PkL7tj99vMSqZYaX4V1h2W11SQ',
-  'Golf':                            '1ECprPSNP7HaI9xCt_PkL7tj99vMSqZYaX4V1h2W11SQ',
-  'Pelota Paleta':                   '1ECprPSNP7HaI9xCt_PkL7tj99vMSqZYaX4V1h2W11SQ',
-  'Handball':                        '132KRNWOd5iY5OEwumbTPMAfVztlkFWEvUvGGMuSBSb8',
-  'Gimnasia':                        '1j8yYiHAGnLmA6vpm6E9NYXIRnTlt8sKq49eXWGi6A6E',
-  'Gimnasia Artística':              '1j8yYiHAGnLmA6vpm6E9NYXIRnTlt8sKq49eXWGi6A6E',
-  'Gimnasia Rítmica':                '1j8yYiHAGnLmA6vpm6E9NYXIRnTlt8sKq49eXWGi6A6E',
-  'Judo':                            '1j8yYiHAGnLmA6vpm6E9NYXIRnTlt8sKq49eXWGi6A6E',
-  'Karate':                          '1j8yYiHAGnLmA6vpm6E9NYXIRnTlt8sKq49eXWGi6A6E',
-  'Patín Artístico':                 '1V4-OO6UwvPYRPojcbIzRgn4fkFmSBc2yD-XynB4q-QM'
+  // Base Formativa
+  'Colonia':                         '1-w0WjJf0YR4zqeWnBVZRecNJly8zxbSAf6rqv4ggsyw',
+  'COYFD':                           '1HsnJHTrtVMCe1IFpHfqUbTEp47oQUs_kPgqkndgln8A',
+
+  // Deportes con ambas ramas (Caballeros y Damas)
+  'Básquet Caballeros':              '1cmiPDyrZd-TAeQ9Z7xToKoYuF3bM0kd1SRbZfDiCnQo',
+  'Básquet Damas':                   '11MLFBdL7waV9QkBW8aVHCLz_OF6TiSrfL9GUc_F17X4',
+  'Fútbol Caballeros':               '1x-z1aP8kp1hh5hRn1_Wki4YyAy0jSnljlcqdqBZUdfw',
+  'Fútbol Damas':                    '1EX8-epHSr4mEs1Oat0AxxsLtT22H1t__MCUf8hgLLkU',
+  'Hockey sobre Césped Caballeros':  '1v7Cf5RNem2ODp7ur89vpIOd-nbM5SW7lt1FaMmSDBhY',
+  'Hockey sobre Césped Damas':       '1xWDEgu0B7ynkpmqsXXGu867iEV8k9SrSsUKLcwfz4V8',
+  'Hockey sobre Patines Caballeros': '1VDefMM_YDCI6R1GN_JLZyVQ_aCy8ffboiyJOKM3OfCE',
+  'Hockey sobre Patines Damas':      '11j0zlHUvxLSTfLmka3gTXyf7HTN6vCdWGFPyxQ7KA8c',
+  'Rugby Caballeros':                '1uyggm-jpLQtviYo7IdGOtq7m_J29jha8NzN-0stdsG0',
+  'Rugby Damas':                     '1IQVLBXgjbM-FVIxZIVN-z2JVHTWUV43xXpUkEBewzy4',
+  'Vóley Caballeros':                '1z77zSAeyQMFSWI50A1Dkq7ub4HJiXFi1pig2ZiJOs_g',
+  'Vóley Damas':                     '1zF5Dm6evdfr8qawSpWvNuZaRr4YajOVznvmhItoGMrc',
+
+  // Disciplinas únicas
+  'Cestoball':                       '1AO-6fLY-32xl3fKcVunjEsj6BenSJx9In9Zbqzp2M90',
+  'Gimnasia Artística':              '1Wi_n5njUWwBN3zKPjQc8mtmFBeyQJfcPaRByVJolQYU',
+  'Gimnasia Rítmica':                '1KChP0LbG_ctR9Sy2o93kkYomPnzGfjb-PCpdLcPQJD8',
+  'Golf':                            '1MapTB4pBetMTX70SgKLe-d5kr56KXodWvIoLsfuBDyg',
+  'Handball':                        '1Uxpf121uhivTs4gT3emOVS0FMemYnhplxsJ7bvmFlDY',
+  'Judo':                            '1n9brmqUDMJJFC_Ao1GBx7KzAal6SvgnJAAERlJtC0IQ',
+  'Karate':                          '16YQrvGLas9wVr3z1wst8HP9dW0t-RvsRHDZwk-v_gOU',
+  'Natación Artística':              '19raBjP5wjh-evu6niJIUXzBLcfg5c2AI963lzsJjEmI',
+  'Patín Artístico':                 '1UCmnBbC13r21rc9aZHHWTqmNvPWNL6TaEI8RwxCB7LQ',
+  'Pelota Paleta':                   '1ZLHCIORGJXO9gGDqLtyMB9Y9ufF7Ihm0dp88dmP3yV2U',
+  'Tenis':                           '1BVc8meP2RZuZOA0BDfyEZ050TAUp3T75tzov2lmi8Io'
 };
 
 // Claves seguras por actividad para Profesores y Coordinación
 var CLAVES_SEGURAS = {
+  // Base Formativa
   'Colonia':                         { profe: 'colonia2025', coord: 'coloniacoord' },
   'COYFD':                           { profe: 'coyfd2025',   coord: 'coyfdcoord' },
-  'Hockey sobre Patines':            { profe: 'patinesmuni',   coord: 'patinescoord' },
-  'Hockey sobre Patines Caballeros': { profe: 'patinesmuni',   coord: 'patinescoord' },
-  'Hockey sobre Patines Damas':      { profe: 'patinesmuni',   coord: 'patinescoord' },
-  'Hockey sobre Césped':             { profe: 'hockeymuni',    coord: 'hockeycoord' },
-  'Hockey sobre Césped Caballeros':  { profe: 'hockeymuni',    coord: 'hockeycoord' },
-  'Hockey sobre Césped Damas':       { profe: 'hockeymuni',    coord: 'hockeycoord' },
-  'Básquet':                         { profe: 'basquetmuni',   coord: 'basquetcoord' },
+
+  // Deportes con ambas ramas
   'Básquet Caballeros':              { profe: 'basquetmuni',   coord: 'basquetcoord' },
   'Básquet Damas':                   { profe: 'basquetmuni',   coord: 'basquetcoord' },
-  'Cestoball':                       { profe: 'cestomuni',     coord: 'cestocoord' },
-  'Fútbol':                          { profe: 'futbolmuni',    coord: 'futbolcoord' },
   'Fútbol Caballeros':               { profe: 'futbolmuni',    coord: 'futbolcoord' },
   'Fútbol Damas':                    { profe: 'futbolmuni',    coord: 'futbolcoord' },
-  'Vóley':                           { profe: 'voleymuni',     coord: 'voleycoord' },
-  'Vóley Caballeros':                { profe: 'voleymuni',     coord: 'voleycoord' },
-  'Vóley Damas':                     { profe: 'voleymuni',     coord: 'voleycoord' },
-  'Rugby':                           { profe: 'rugbymuni',     coord: 'rugbycoord' },
+  'Hockey sobre Césped Caballeros':  { profe: 'hockeymuni',    coord: 'hockeycoord' },
+  'Hockey sobre Césped Damas':       { profe: 'hockeymuni',    coord: 'hockeycoord' },
+  'Hockey sobre Patines Caballeros': { profe: 'patinesmuni',   coord: 'patinescoord' },
+  'Hockey sobre Patines Damas':      { profe: 'patinesmuni',   coord: 'patinescoord' },
   'Rugby Caballeros':                { profe: 'rugbymuni',     coord: 'rugbycoord' },
   'Rugby Damas':                     { profe: 'rugbymuni',     coord: 'rugbycoord' },
-  'Natación':                        { profe: 'natacionmuni',  coord: 'natacioncoord' },
-  'Natación Artística':              { profe: 'natacionmuni',  coord: 'natacioncoord' },
-  'Tenis':                           { profe: 'tenismuni',     coord: 'teniscoord' },
-  'Golf':                            { profe: 'golfmuni',      coord: 'golfcoord' },
-  'Pelota Paleta':                   { profe: 'paletamuni',    coord: 'paletacoord' },
-  'Handball':                        { profe: 'handballmuni',  coord: 'handballcoord' },
-  'Gimnasia':                        { profe: 'gimnasiamuni',  coord: 'gimnasiacoord' },
+  'Vóley Caballeros':                { profe: 'voleymuni',     coord: 'voleycoord' },
+  'Vóley Damas':                     { profe: 'voleymuni',     coord: 'voleycoord' },
+
+  // Disciplinas únicas
+  'Cestoball':                       { profe: 'cestomuni',     coord: 'cestocoord' },
   'Gimnasia Artística':              { profe: 'gimnasiamuni',  coord: 'gimnasiacoord' },
   'Gimnasia Rítmica':                { profe: 'gimnasiamuni',  coord: 'gimnasiacoord' },
+  'Golf':                            { profe: 'golfmuni',      coord: 'golfcoord' },
+  'Handball':                        { profe: 'handballmuni',  coord: 'handballcoord' },
   'Judo':                            { profe: 'judomuni',      coord: 'judocoord' },
   'Karate':                          { profe: 'karatemuni',    coord: 'karatecoord' },
-  'Patín Artístico':                 { profe: 'patinmuni',     coord: 'patincoord' }
+  'Natación Artística':              { profe: 'natacionmuni',  coord: 'natacioncoord' },
+  'Patín Artístico':                 { profe: 'patinmuni',     coord: 'patincoord' },
+  'Pelota Paleta':                   { profe: 'paletamuni',    coord: 'paletacoord' },
+  'Tenis':                           { profe: 'tenismuni',     coord: 'teniscoord' }
 };
 
 var TZ = 'America/Argentina/Buenos_Aires';
@@ -495,7 +489,6 @@ function crearTodasLasPlanillasOficiales() {
     {
       clave: 'Básquet Caballeros',
       titulo: 'UGI · Básquet Caballeros - Planilla Oficial',
-      alias: ['Básquet'],
       gestos: ['Dribbling con ambas manos', 'Mecánica de tiro', 'Bandeja / finalización', 'Pase', 'Postura defensiva', 'Rebote', 'Juego sin pelota', 'Toma de decisión']
     },
     {
@@ -511,7 +504,6 @@ function crearTodasLasPlanillasOficiales() {
     {
       clave: 'Fútbol Caballeros',
       titulo: 'UGI · Fútbol Caballeros - Planilla Oficial',
-      alias: ['Fútbol'],
       gestos: ['Control orientado', 'Pase corto', 'Pase largo / cambio de frente', 'Conducción', 'Remate', 'Juego aéreo', 'Marca y recuperación', 'Perfil y lectura de juego']
     },
     {
@@ -522,7 +514,6 @@ function crearTodasLasPlanillasOficiales() {
     {
       clave: 'Gimnasia Artística',
       titulo: 'UGI · Gimnasia Artística - Planilla Oficial',
-      alias: ['Gimnasia'],
       gestos: ['Flexibilidad y movilidad', 'Fuerza postural y core', 'Acrobacia de suelo (roles/vertical/medialuna)', 'Salto y recepción segura', 'Trabajo en aparatos (viga/paralelas)', 'Alineación corporal', 'Memoria coreográfica']
     },
     {
@@ -538,7 +529,6 @@ function crearTodasLasPlanillasOficiales() {
     {
       clave: 'Hockey sobre Césped Caballeros',
       titulo: 'UGI · Hockey sobre Césped Caballeros - Planilla Oficial',
-      alias: ['Hockey sobre Césped'],
       gestos: ['Conducción (derecha y revés)', 'Pase (push / slap)', 'Recepción', 'Barrida / hit', 'Tackle y marca', 'Ubicación en cancha', 'Toma de decisión']
     },
     {
@@ -549,7 +539,6 @@ function crearTodasLasPlanillasOficiales() {
     {
       clave: 'Hockey sobre Patines Caballeros',
       titulo: 'UGI · Hockey sobre Patines Caballeros - Planilla Oficial',
-      alias: ['Hockey sobre Patines'],
       gestos: ['Patinaje y equilibrio', 'Frenado y cambios de dirección', 'Conducción de bocha', 'Pase y recepción', 'Tiro al arco', 'Posición defensiva', 'Lectura de juego']
     },
     {
@@ -570,7 +559,6 @@ function crearTodasLasPlanillasOficiales() {
     {
       clave: 'Natación Artística',
       titulo: 'UGI · Natación Artística - Planilla Oficial',
-      alias: ['Natación'],
       gestos: ['Flotación y sculling (propulsión de manos)', 'Figuras y posiciones básicas', 'Control respiratorio y apnea', 'Flexibilidad en el agua', 'Sincronización grupal', 'Musicalidad y cuenta rítmica', 'Resistencia específica']
     },
     {
@@ -591,7 +579,6 @@ function crearTodasLasPlanillasOficiales() {
     {
       clave: 'Rugby Caballeros',
       titulo: 'UGI · Rugby Caballeros - Planilla Oficial',
-      alias: ['Rugby'],
       gestos: ['Pase', 'Recepción', 'Tackle (técnica segura)', 'Ruck / contacto', 'Apoyo y línea de ventaja', 'Evasión', 'Patada']
     },
     {
@@ -607,7 +594,6 @@ function crearTodasLasPlanillasOficiales() {
     {
       clave: 'Vóley Caballeros',
       titulo: 'UGI · Vóley Caballeros - Planilla Oficial',
-      alias: ['Vóley'],
       gestos: ['Saque', 'Recepción (antebrazos)', 'Armado (dedos)', 'Ataque / remate', 'Bloqueo', 'Defensa y desplazamiento', 'Comunicación en cancha']
     },
     {
@@ -649,14 +635,6 @@ function crearTodasLasPlanillasOficiales() {
     nuevoMapeo[act.clave] = id;
     propsParaGuardar[act.clave] = id;
     propsParaGuardar['SHEET_' + act.clave] = id;
-
-    if (act.alias && act.alias.length) {
-      act.alias.forEach(function (al) {
-        nuevoMapeo[al] = id;
-        propsParaGuardar[al] = id;
-        propsParaGuardar['SHEET_' + al] = id;
-      });
-    }
   });
 
   // Guardar en PropertiesService para que el sistema funcione de inmediato
