@@ -885,6 +885,62 @@
           <button type="button" class="btn" id="btn-sumar-gesto" style="width:auto; padding:0 18px;">Sumar</button>
         </div>
       </div>
+
+      <!-- 5. ZONA DE PELIGRO: REINICIO DE TEMPORADA Y VACIADO -->
+      <div class="card" id="card-reset-datos" style="border:1px solid #fecaca; background:#fff5f5; margin-top:18px;">
+        <div class="spread">
+          <div>
+            <h3 style="color:var(--bad); display:flex; align-items:center; gap:6px;">
+              <span>⚠️</span> Zona de Peligro y Cierre de Temporada
+            </h3>
+            <p class="hint" style="margin:0; color:#991b1b;">
+              Operaciones de mantenimiento para Coordinación y Dirección UGI.
+            </p>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px; margin-top:14px;">
+          <!-- Opción 1: Pasar de temporada en este deporte -->
+          <div style="padding:12px; background:#fff; border:1px solid #fed7aa; border-radius:8px;">
+            <div style="font-weight:700; font-size:0.92rem; color:#9a3412;">🔄 Pasar de temporada (<span class="txt-area-activa"></span>)</div>
+            <p style="font-size:0.8rem; color:var(--muted); margin:4px 0 10px;">
+              Reinicia a cero el historial de asistencias y evaluaciones. <strong>Mantiene intacto el padrón de deportistas</strong> para iniciar el nuevo ciclo sin reingresar los datos.
+            </p>
+            <button type="button" class="btn" id="btn-reset-temporada-deporte" style="background:#ea580c; color:#fff; font-size:0.84rem; padding:8px 14px; min-height:38px;">
+              🔄 Pasar de temporada en <span class="txt-area-activa"></span>
+            </button>
+          </div>
+
+          <!-- Opción 2: Borrar todo en este deporte -->
+          <div style="padding:12px; background:#fff; border:1px solid #fca5a5; border-radius:8px;">
+            <div style="font-weight:700; font-size:0.92rem; color:var(--bad);">🗑️ Borrar todo (<span class="txt-area-activa"></span>)</div>
+            <p style="font-size:0.8rem; color:var(--muted); margin:4px 0 10px;">
+              Vacía por completo el <strong>padrón, asistencias y evaluaciones</strong> de esta actividad. La planilla quedará limpia desde cero.
+            </p>
+            <button type="button" class="btn" id="btn-reset-todo-deporte" style="background:var(--bad); color:#fff; font-size:0.84rem; padding:8px 14px; min-height:38px;">
+              🗑️ Borrar todo en <span class="txt-area-activa"></span>
+            </button>
+          </div>
+
+          <!-- Opción 3: Operaciones Globales Dirección UGI (Todo el Club) -->
+          <div id="wrap-reset-general" class="hidden" style="padding:12px; background:#eff6ff; border:2px dashed #93c5fd; border-radius:8px;">
+            <div style="font-weight:800; font-size:0.94rem; color:var(--blue); margin-bottom:4px;">
+              🛡️ Operaciones Globales (Dirección UGI · Todo el Club)
+            </div>
+            <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
+              Aplica a las 24 actividades del club de manera simultánea.
+            </p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button type="button" class="btn" id="btn-reset-temporada-general" style="background:#2563eb; color:#fff; font-size:0.84rem; padding:8px 14px; min-height:38px; flex:1;">
+                🔄 Pasar de temporada TODO el club (Conserva padrones)
+              </button>
+              <button type="button" class="btn" id="btn-reset-todo-general" style="background:#991b1b; color:#fff; font-size:0.84rem; padding:8px 14px; min-height:38px; flex:1;">
+                💥 Borrar TODO el club (Todas las planillas a cero)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
   </main>
@@ -1753,6 +1809,8 @@
       const lista = plantelActualNombres();
       $('count-plantel').textContent = String(lista.length);
       $('gestos-dep').textContent = areaActiva;
+      document.querySelectorAll('.txt-area-activa').forEach(el => el.textContent = areaActiva);
+      $('wrap-reset-general').classList.toggle('hidden', !sesion?.esAdminTotal);
 
       $('lista-padron').innerHTML = lista.length
         ? lista.map((j, i) => `
@@ -1868,6 +1926,159 @@
           })
         });
       } catch (_) {}
+    });
+
+    // --- ACCIONES DE REINICIO DE TEMPORADA Y VACIADO DE DATOS ---
+    $('btn-reset-temporada-deporte').addEventListener('click', async () => {
+      const dep = areaActiva;
+      const ok = confirm(`¿Confirmás PASAR DE TEMPORADA en ${dep}?\n\n• Se borrarán las asistencias y evaluaciones para iniciar el nuevo ciclo.\n• El PADRÓN de deportistas se mantendrá intacto.`);
+      if (!ok) return;
+
+      toast(`⏳ Pasando de temporada en ${dep}...`);
+      datosDeporte.asistencia = [];
+      datosDeporte.evaluaciones = [];
+      localStorage.setItem('muni360_cache_' + dep, JSON.stringify(datosDeporte));
+      renderVistaActiva();
+
+      try {
+        const res = await fetch(URL_SCRIPT_DEPORTES, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            tipo: 'RESET_DATOS',
+            modo: 'TEMPORADA',
+            deporte: dep,
+            token: sesion?.token || ''
+          })
+        });
+        const j = await res.json();
+        if (j && j.ok) {
+          toast(`✓ ${dep} pasó de temporada con éxito (Padrón conservado)`);
+        } else {
+          toast(j?.error || 'Aviso: actualizado');
+        }
+      } catch (_) {
+        toast(`✓ Aplicado en el dispositivo`);
+      }
+    });
+
+    $('btn-reset-todo-deporte').addEventListener('click', async () => {
+      const dep = areaActiva;
+      const resp = prompt(`⚠️ ATENCIÓN: Esta acción es irreversible.\n\nVas a BORRAR TODO en ${dep} (Padrón, Asistencias y Evaluaciones).\n\nPara confirmar, escribí BORRAR en mayúsculas:`);
+      if (resp !== 'BORRAR') {
+        if (resp !== null) alert('Operación cancelada: el texto no coincidió.');
+        return;
+      }
+
+      toast(`⏳ Vaciando toda la base de ${dep}...`);
+      datosDeporte.padron = [];
+      datosDeporte.asistencia = [];
+      datosDeporte.evaluaciones = [];
+      localStorage.setItem('muni360_cache_' + dep, JSON.stringify(datosDeporte));
+      renderFiltrosDeporte();
+      renderVistaActiva();
+
+      try {
+        const res = await fetch(URL_SCRIPT_DEPORTES, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            tipo: 'RESET_DATOS',
+            modo: 'TODO',
+            deporte: dep,
+            token: sesion?.token || ''
+          })
+        });
+        const j = await res.json();
+        if (j && j.ok) {
+          toast(`✓ ${dep} ha sido vaciado por completo`);
+        } else {
+          toast(j?.error || 'Aviso: vaciado localmente');
+        }
+      } catch (_) {
+        toast(`✓ Vaciado en el dispositivo`);
+      }
+    });
+
+    $('btn-reset-temporada-general').addEventListener('click', async () => {
+      if (!sesion?.esAdminTotal) return;
+      const resp = prompt(`🛡️ ATENCIÓN DIRECCIÓN UGI:\n\nVas a PASAR DE TEMPORADA EN TODO EL CLUB (24 actividades).\n\n• Se reiniciarán asistencias y evaluaciones en todas las planillas.\n• Los PADRONES de todos los deportes se mantendrán intactos.\n\nPara confirmar, escribí TEMPORADA en mayúsculas:`);
+      if (resp !== 'TEMPORADA') {
+        if (resp !== null) alert('Operación cancelada: el texto no coincidió.');
+        return;
+      }
+
+      toast('⏳ Pasando de temporada en todo el club...');
+      Object.keys(localStorage).filter(k => k.startsWith('muni360_cache_')).forEach(k => {
+        try {
+          const d = JSON.parse(localStorage.getItem(k));
+          if (d) {
+            d.asistencia = [];
+            d.evaluaciones = [];
+            localStorage.setItem(k, JSON.stringify(d));
+          }
+        } catch (_) {}
+      });
+      datosDeporte.asistencia = [];
+      datosDeporte.evaluaciones = [];
+      renderVistaActiva();
+
+      try {
+        const res = await fetch(URL_SCRIPT_DEPORTES, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            tipo: 'RESET_DATOS',
+            modo: 'TEMPORADA',
+            deporte: 'TODOS',
+            token: sesion?.token || ''
+          })
+        });
+        const j = await res.json();
+        if (j && j.ok) {
+          toast(`✓ Todo el club pasó de temporada con éxito`);
+        } else {
+          toast(j?.error || 'Operación enviada');
+        }
+      } catch (_) {
+        toast(`✓ Guardado localmente`);
+      }
+    });
+
+    $('btn-reset-todo-general').addEventListener('click', async () => {
+      if (!sesion?.esAdminTotal) return;
+      const resp = prompt(`🚨 PELIGRO MÁXIMO (DIRECCIÓN UGI):\n\nVas a BORRAR TODAS LAS PLANILLAS DE TODO EL CLUB (Padrón, Asistencias y Evaluaciones de las 24 actividades).\n\nPara confirmar esta acción IRREVERSIBLE, escribí BORRAR TODO en mayúsculas:`);
+      if (resp !== 'BORRAR TODO') {
+        if (resp !== null) alert('Operación cancelada: el texto no coincidió.');
+        return;
+      }
+
+      toast('⏳ Vaciando todas las planillas del club...');
+      Object.keys(localStorage).filter(k => k.startsWith('muni360_cache_')).forEach(k => localStorage.removeItem(k));
+      datosDeporte = { padron: [], evaluaciones: [], asistencia: [], gestos: null, email: '' };
+      renderFiltrosDeporte();
+      renderVistaActiva();
+
+      try {
+        const res = await fetch(URL_SCRIPT_DEPORTES, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            tipo: 'RESET_DATOS',
+            modo: 'TODO',
+            deporte: 'TODOS',
+            token: sesion?.token || ''
+          })
+        });
+        const j = await res.json();
+        if (j && j.ok) {
+          toast(`✓ Se han vaciado todas las planillas del club`);
+        } else {
+          toast(j?.error || 'Operación enviada');
+        }
+      } catch (_) {
+        toast(`✓ Vaciado en el dispositivo`);
+      }
     });
 
 

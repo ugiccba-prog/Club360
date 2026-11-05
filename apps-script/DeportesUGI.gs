@@ -194,6 +194,48 @@ function doPost(e) {
       return respuesta({ ok: false, error: 'Contraseña incorrecta para ' + deporte + '.' });
     }
 
+    // 0.1 REINICIO DE TEMPORADA Y VACIADO DE DATOS (POR DEPORTE O GENERAL)
+    if (data.tipo === 'RESET_DATOS') {
+      var modo = String(data.modo || '').toUpperCase(); // 'TEMPORADA' o 'TODO'
+      var dep = String(data.deporte || '').trim();
+
+      var limpiarFilasHoja = function (ssObj, nombreHoja) {
+        var shObj = ssObj.getSheetByName(nombreHoja);
+        if (shObj && shObj.getLastRow() > 1) {
+          shObj.deleteRows(2, shObj.getLastRow() - 1);
+        }
+      };
+
+      var procesarSs = function (ssObj) {
+        limpiarFilasHoja(ssObj, 'Asistencia');
+        limpiarFilasHoja(ssObj, 'Evaluaciones');
+        if (modo === 'TODO') {
+          limpiarFilasHoja(ssObj, 'Padron');
+        }
+      };
+
+      if (dep === 'TODOS') {
+        var procesados = {};
+        Object.keys(SHEET_IDS).forEach(function (k) {
+          try {
+            var ssObj = abrirSheet(k);
+            var idSs = ssObj.getId();
+            if (!procesados[idSs]) {
+              procesados[idSs] = true;
+              procesarSs(ssObj);
+            }
+          } catch (e) {
+            console.error('Error al resetear ' + k, e);
+          }
+        });
+        return respuesta({ ok: true, mensaje: 'Reinicio general (' + modo + ') completado en todo el club.' });
+      } else {
+        var ssTarget = abrirSheet(dep);
+        procesarSs(ssTarget);
+        return respuesta({ ok: true, mensaje: 'Reinicio (' + modo + ') completado para ' + dep + '.' });
+      }
+    }
+
     var ss = abrirSheet(data.deporte);
     var tz = ss.getSpreadsheetTimeZone();
     var sh;
