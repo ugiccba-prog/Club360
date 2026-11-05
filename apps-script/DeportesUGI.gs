@@ -358,3 +358,102 @@ function crearActivadorViernes() {
     .create();
 }
 
+// --- 4. CREADOR AUTOMÁTICO DE PLANILLAS SEPARADAS (COLONIA Y COYFD) -------------
+/**
+ * Crea automáticamente un Google Sheet nuevo e independiente para COYFD en tu Google Drive
+ * con todas las pestañas ('Padron', 'Asistencia', 'Evaluaciones', 'Gestos', 'Config') formateadas.
+ *
+ * CÓMO EJECUTARLO:
+ * 1. En script.google.com, seleccioná la función "crearSheetCOYFD" en la barra superior.
+ * 2. Hacé clic en ▶ Ejecutar.
+ * 3. En la consola inferior verás el ID generado y el enlace a la nueva planilla.
+ * 4. Copiá ese ID y pegalo en la línea 28 de este archivo (SHEET_IDS['COYFD']).
+ */
+function crearSheetCOYFD() {
+  var ss = SpreadsheetApp.create('UGI · COYFD - Control y Padrón');
+
+  // Inicializar pestañas con cabeceras institucionales
+  hoja(ss, 'Padron');
+  hoja(ss, 'Asistencia');
+  hoja(ss, 'Evaluaciones');
+  hoja(ss, 'Gestos');
+  hoja(ss, 'Config');
+
+  // Gestos específicos para desarrollo motor en COYFD
+  var shG = ss.getSheetByName('Gestos');
+  var gestos = [
+    ['Gesto / Variable'],
+    ['Coordinación óculo-manual'],
+    ['Coordinación óculo-pédica'],
+    ['Equilibrio y desplazamientos'],
+    ['Giro y salto'],
+    ['Cooperación en juego'],
+    ['Comprensión de reglas'],
+    ['Tolerancia al contacto']
+  ];
+  shG.getRange(1, 1, gestos.length, 1).setValues(gestos);
+  shG.getRange(1, 1).setFontWeight('bold').setBackground('#082b49').setFontColor('#ffffff');
+
+  // Eliminar la 'Hoja 1' por defecto si existe
+  var hojaDefecto = ss.getSheetByName('Hoja 1') || ss.getSheetByName('Sheet1');
+  if (hojaDefecto && ss.getSheets().length > 1) {
+    try { ss.deleteSheet(hojaDefecto); } catch (e) {}
+  }
+
+  var id = ss.getId();
+  var url = ss.getUrl();
+
+  Logger.log('========================================================');
+  Logger.log('✅ NUEVA PLANILLA CREADA PARA COYFD:');
+  Logger.log('ID: ' + id);
+  Logger.log('URL: ' + url);
+  Logger.log('Pegá este ID en SHEET_IDS["COYFD"] en DeportesUGI.gs');
+  Logger.log('========================================================');
+
+  return { id: id, url: url };
+}
+
+/**
+ * Crea automáticamente un Google Sheet nuevo e independiente para Colonia en tu Google Drive.
+ */
+function crearSheetColonia() {
+  var ss = SpreadsheetApp.create('UGI · Colonia de Verano - Control y Padrón');
+
+  hoja(ss, 'Padron');
+  hoja(ss, 'Asistencia');
+  hoja(ss, 'Evaluaciones');
+  hoja(ss, 'Gestos');
+  hoja(ss, 'Config');
+
+  var shG = ss.getSheetByName('Gestos');
+  var gestos = [
+    ['Gesto / Variable'],
+    ['Participación y entusiasmo'],
+    ['Respeto de consignas'],
+    ['Trabajo en equipo'],
+    ['Coordinación motriz'],
+    ['Adaptación al agua'],
+    ['Autonomía personal'],
+    ['Resolución de conflictos']
+  ];
+  shG.getRange(1, 1, gestos.length, 1).setValues(gestos);
+  shG.getRange(1, 1).setFontWeight('bold').setBackground('#082b49').setFontColor('#ffffff');
+
+  var hojaDefecto = ss.getSheetByName('Hoja 1') || ss.getSheetByName('Sheet1');
+  if (hojaDefecto && ss.getSheets().length > 1) {
+    try { ss.deleteSheet(hojaDefecto); } catch (e) {}
+  }
+
+  var id = ss.getId();
+  var url = ss.getUrl();
+
+  Logger.log('========================================================');
+  Logger.log('✅ NUEVA PLANILLA CREADA PARA COLONIA:');
+  Logger.log('ID: ' + id);
+  Logger.log('URL: ' + url);
+  Logger.log('Pegá este ID en SHEET_IDS["Colonia"] en DeportesUGI.gs');
+  Logger.log('========================================================');
+
+  return { id: id, url: url };
+}
+
