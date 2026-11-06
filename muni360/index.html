@@ -1349,6 +1349,7 @@
             comidaTempDep[a.jugador] = valor.includes('Comida');
             if (valor.includes('Sem:A')) semTempDep[a.jugador] = 'A';
             else if (valor.includes('Sem:R')) semTempDep[a.jugador] = 'R';
+            else if (valor.includes('Sem:V')) semTempDep[a.jugador] = 'V';
             else semTempDep[a.jugador] = 'V';
           });
       }
@@ -1454,7 +1455,7 @@
       lista.forEach(j => {
         const est = asistTempDep[j] || 'P';
         const com = (cfg.tieneComida && est !== 'A' && comidaTempDep[j]) ? ' | 🍴 Comida' : '';
-        const sem = (semTempDep[j] && semTempDep[j] !== 'V') ? ` | Sem:${semTempDep[j]}` : '';
+        const sem = ` | Sem:${semTempDep[j] || 'V'}`;
         registro[j] = `${est}${com}${sem}`;
       });
 
