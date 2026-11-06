@@ -17,7 +17,7 @@
   
   <!-- OPEN GRAPH / WHATSAPP / REDES -->
   <meta property="og:title" content="UGI | Club Ciudad de Buenos Aires" />
-  <meta property="og:description" content="Unidad de Gestión Integral: formación deportiva, convivencia, neurociencia y portales oficiales para Jugadores y Familias." />
+  <meta property="og:description" content="Unidad de Gestión Integral: formación deportiva, convivencia, valores y portales oficiales para Jugadores y Familias." />
   <meta property="og:image" content="assets/images/logo-header.png" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -104,6 +104,7 @@
     .main-nav a:hover::after { transform: scaleX(1); transform-origin: left; }
     .nav-cta {
       padding: 0.65rem 1.1rem; border: 1px solid currentColor; border-radius: 999px;
+      text-decoration: none;
       transition: background 180ms ease, color 180ms ease;
     }
     .nav-cta:hover { color: white; background: var(--navy); }
@@ -244,8 +245,9 @@
     .tarjeta {
       background: var(--paper); padding: 2.5rem; border-radius: var(--radius);
       border: 1px solid var(--line); box-shadow: 0 4px 12px rgba(8, 43, 73, 0.05); color: var(--ink);
-      box-sizing: border-box; max-width: 100%;
+      box-sizing: border-box; max-width: 100%; display: flex; flex-direction: column; justify-content: space-between;
     }
+    .tarjeta a { text-decoration: none !important; }
     .tarjeta h3 { color: var(--navy); font-family: var(--display); font-weight: 700; letter-spacing: -0.02em; font-size: 1.8rem; margin: 0 0 1rem; overflow-wrap: break-word; word-break: break-word; }
     
     .proximamente-badge {
@@ -485,7 +487,7 @@
       </div>
       <div class="purpose-body reveal">
         <p class="purpose-statement">La UGI es un órgano técnico transversal que une <strong>educación, conducta y deporte inclusivo</strong> en la base formativa del Club Ciudad.</p>
-        <p>Dejamos atrás la improvisación para aplicar herramientas de neurociencia y arquitectura conductual. Así, deportistas, familias y formadores comparten criterios claros y conviven en sintonía.</p>
+        <p>Acompañamos a deportistas, familias y entrenadores con criterios claros de convivencia, respeto mutuo y disfrute en cada entrenamiento y competencia.</p>
       </div>
       <div class="principles" aria-label="Principios de la UGI">
         <article class="principle reveal"><span>Escuchar</span><p>Entender el contexto antes de actuar.</p></article>
@@ -534,11 +536,11 @@
           <div class="program-index">03</div>
           <div class="program-art mind-art" aria-hidden="true">
             <div class="brain"><span></span><span></span><span></span><span></span><span></span></div><div class="pulse-line"></div>
-            <span class="art-caption">Cuerpo + cerebro</span>
+            <span class="art-caption">Cuerpo + mente</span>
           </div>
           <div class="program-copy">
             <p class="card-kicker">Rendimiento</p><h3>Entrenamiento mental</h3>
-            <p>Herramientas de neurociencia aplicada al deporte para entrenar la atención, gestionar emociones y responder bajo presión.</p>
+            <p>Ejercicios prácticos para entrenar la concentración, la toma de decisiones, la calma y el manejo de la presión en el juego.</p>
             
             <a href="pages/entrenamiento-mental.html" style="display: inline-block; margin-top: 1rem; color: var(--sky-dark); font-weight: 700; text-decoration: none;">Ver más info &rarr;</a>
             
@@ -577,25 +579,28 @@
       </div>
       <div class="tarjetas-grid">
         <article class="tarjeta reveal">
-          <div style="font-size: 2rem; margin-bottom: 0.75rem;">🧠</div>
-          <span style="font-size: 0.65rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sky-dark); display: block; margin-bottom: 0.4rem;">Deportistas</span>
-          <h3>Jugadores y Jugadoras</h3>
-          <p>Gimnasio mental interactivo, toma de decisiones, check-in emocional con el semáforo y neurociencia aplicada al rendimiento deportivo.</p>
-          <a href="pages/jugadores.html" class="nav-cta" style="display: inline-block; margin-top: 1.5rem; background: var(--navy); color: white; border: 1px solid var(--navy);">Ingresar al Portal &rarr;</a>
+          <div>
+            <span style="font-size: 0.68rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sky-dark); display: block; margin-bottom: 0.5rem;">Deportistas</span>
+            <h3>Jugadores y Jugadoras</h3>
+            <p>Concentración, toma de decisiones en cancha, check-in emocional con el Semáforo UGI y guías de desarrollo integral.</p>
+          </div>
+          <a href="pages/jugadores.html" class="nav-cta" style="display: inline-block; margin-top: 1.5rem; background: var(--navy); color: white; border: 1px solid var(--navy); text-decoration: none !important;">Ingresar al Portal &rarr;</a>
         </article>
         <article class="tarjeta reveal">
-          <div style="font-size: 2rem; margin-bottom: 0.75rem;">🤝</div>
-          <span style="font-size: 0.65rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sky-dark); display: block; margin-bottom: 0.4rem;">Familias y Socios</span>
-          <h3>Familias</h3>
-          <p>Herramientas para alentar sin presionar, pautas de convivencia positiva, talleres formativos y la guía práctica descargable "El Otro Equipo".</p>
-          <a href="pages/familias.html" class="nav-cta" style="display: inline-block; margin-top: 1.5rem; background: var(--navy); color: white; border: 1px solid var(--navy);">Ingresar al Portal &rarr;</a>
+          <div>
+            <span style="font-size: 0.68rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sky-dark); display: block; margin-bottom: 0.5rem;">Familias y Socios</span>
+            <h3>Familias</h3>
+            <p>Pautas para acompañar el crecimiento de los chicos, convivencia en los partidos, talleres y la guía práctica "El Otro Equipo".</p>
+          </div>
+          <a href="pages/familias.html" class="nav-cta" style="display: inline-block; margin-top: 1.5rem; background: var(--navy); color: white; border: 1px solid var(--navy); text-decoration: none !important;">Ingresar al Portal &rarr;</a>
         </article>
         <article class="tarjeta reveal">
-          <div style="font-size: 2rem; margin-bottom: 0.75rem;">📋</div>
-          <span style="font-size: 0.65rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sky-dark); display: block; margin-bottom: 0.4rem;">Cuerpo Técnico</span>
-          <h3>Profesores y Entrenadores</h3>
-          <p>Plataforma Muni 360 para asistencia y evaluaciones formativas, planillas técnicas oficiales y marco metodológico institucional.</p>
-          <a href="muni360/index.html" class="nav-cta" style="display: inline-block; margin-top: 1.5rem; background: var(--navy); color: white; border: 1px solid var(--navy);">Ingresar a Muni 360 &rarr;</a>
+          <div>
+            <span style="font-size: 0.68rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--sky-dark); display: block; margin-bottom: 0.5rem;">Cuerpo Técnico</span>
+            <h3>Profesores y Entrenadores</h3>
+            <p>Plataforma Muni 360 para asistencia en cancha, seguimiento pedagógico, evaluaciones formativas y planillas oficiales.</p>
+          </div>
+          <a href="muni360/index.html" class="nav-cta" style="display: inline-block; margin-top: 1.5rem; background: var(--navy); color: white; border: 1px solid var(--navy); text-decoration: none !important;">Ingresar a Muni 360 &rarr;</a>
         </article>
       </div>
     </section>
