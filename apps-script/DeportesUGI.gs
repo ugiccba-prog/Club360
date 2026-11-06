@@ -1,8 +1,9 @@
 /**
  * ============================================================================
- * UGI · Unidad de Gestión Integral — Backend de www.ugiccba.com.ar/deportes
- * Evaluaciones + Asistencia + Padrón, escribiendo en el Google Sheet de cada
- * deporte (los mismos Excel de la app de asistencia anterior).
+ * UGI · Unidad de Gestión Integral — Backend Maestro de MUNI 360
+ * URL de producción: https://www.ugiccba.com.ar/muni360
+ * Maneja las 25 disciplinas oficiales (Colonia, COYFD y los 23 deportes/ramas).
+ * Asistencia + Evaluaciones + Padrón + Copia de Seguridad + Cierre de Temporada.
  * ============================================================================
  * INSTALACIÓN RECOMENDADA (1 solo script para los 12 deportes):
  *  1. script.google.com > Nuevo proyecto > pegar este archivo completo.
