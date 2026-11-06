@@ -24,36 +24,31 @@
 
 // Planillas Oficiales UGI (1 Sheet único e independiente por actividad/rama)
 var SHEET_IDS = {
-  // Base Formativa
-  'Colonia':                         '1-w0WjJf0YR4zqeWnBVZRecNJly8zxbSAf6rqv4ggsyw',
-  'COYFD':                           '1HsnJHTrtVMCe1IFpHfqUbTEp47oQUs_kPgqkndgln8A',
-
-  // Deportes con ambas ramas (Caballeros y Damas)
-  'Básquet Caballeros':              '1cmiPDyrZd-TAeQ9Z7xToKoYuF3bM0kd1SRbZfDiCnQo',
-  'Básquet Damas':                   '11MLFBdL7waV9QkBW8aVHCLz_OF6TiSrfL9GUc_F17X4',
-  'Fútbol Caballeros':               '1x-z1aP8kp1hh5hRn1_Wki4YyAy0jSnljlcqdqBZUdfw',
-  'Fútbol Damas':                    '1EX8-epHSr4mEs1Oat0AxxsLtT22H1t__MCUf8hgLLkU',
-  'Hockey sobre Césped Caballeros':  '1v7Cf5RNem2ODp7ur89vpIOd-nbM5SW7lt1FaMmSDBhY',
-  'Hockey sobre Césped Damas':       '1xWDEgu0B7ynkpmqsXXGu867iEV8k9SrSsUKLcwfz4V8',
-  'Hockey sobre Patines Caballeros': '1VDefMM_YDCI6R1GN_JLZyVQ_aCy8ffboiyJOKM3OfCE',
-  'Hockey sobre Patines Damas':      '11j0zlHUvxLSTfLmka3gTXyf7HTN6vCdWGFPyxQ7KA8c',
-  'Rugby Caballeros':                '1uyggm-jpLQtviYo7IdGOtq7m_J29jha8NzN-0stdsG0',
-  'Rugby Damas':                     '1IQVLBXgjbM-FVIxZIVN-z2JVHTWUV43xXpUkEBewzy4',
-  'Vóley Caballeros':                '1z77zSAeyQMFSWI50A1Dkq7ub4HJiXFi1pig2ZiJOs_g',
-  'Vóley Damas':                     '1zF5Dm6evdfr8qawSpWvNuZaRr4YajOVznvmhItoGMrc',
-
-  // Disciplinas únicas
-  'Cestoball':                       '1AO-6fLY-32xl3fKcVunjEsj6BenSJx9In9Zbqzp2M90',
-  'Gimnasia Artística':              '1Wi_n5njUWwBN3zKPjQc8mtmFBeyQJfcPaRByVJolQYU',
-  'Gimnasia Rítmica':                '1KChP0LbG_ctR9Sy2o93kkYomPnzGfjb-PCpdLcPQJD8',
-  'Golf':                            '1MapTB4pBetMTX70SgKLe-d5kr56KXodWvIoLsfuBDyg',
-  'Handball':                        '1Uxpf121uhivTs4gT3emOVS0FMemYnhplxsJ7bvmFlDY',
-  'Judo':                            '1n9brmqUDMJJFC_Ao1GBx7KzAal6SvgnJAAERlJtC0IQ',
-  'Karate':                          '16YQrvGLas9wVr3z1wst8HP9dW0t-RvsRHDZwk-v_gOU',
-  'Natación Artística':              '19raBjP5wjh-evu6niJIUXzBLcfg5c2AI963lzsJjEmI',
-  'Patín Artístico':                 '1UCmnBbC13r21rc9aZHHWTqmNvPWNL6TaEI8RwxCB7LQ',
-  'Pelota Paleta':                   '1ZLHCIORGJXO9gGDqLtyMB9Y9ufF7Ihm0dp88dmP3yV2U',
-  'Tenis':                           '1BVc8meP2RZuZOA0BDfyEZ050TAUp3T75tzov2lmi8Io'
+  'Básquet Caballeros':                 '1atZz7i-cxBzLfKZeoKLgVo_n0W2S3xtd4K4T6nUHZUo',
+  'Básquet Damas':                      '1YNoY2uEymXVN0yA4vt13MNk1jeRjj5704ENGi_RpD1g',
+  'COYFD':                              '1NVb5u-a0KceaMH17_JibsMvMt5gBfOLy2G7hAdmkjnk',
+  'Cestoball':                          '1sXraAlu-ffUONjIlDxCrYqVcT3nKh_cKdDsWZqPzDDs',
+  'Colonia':                            '1i_c6Gmk8P2DftBRMo1PmqJ4SITAVs4hWn42-KXGkuyA',
+  'Fútbol Caballeros':                  '1hhkJdJNfCGoH2Of1D9krWmyftPg6KyyjXZbNHP-_ZNQ',
+  'Fútbol Damas':                       '12merM9tSeYivBDAskXvghB253DTdTEbLHyVS45hbEa0',
+  'Gimnasia Artística':                 '1IvqhYgaE3gZLQJZulkrcUayZ6lB6jczKXNEAiqKuEcY',
+  'Gimnasia Rítmica':                   '1aGBE83lkn7TCjWlCINnRe0fzY2JGN9503d-05NL8rWE',
+  'Golf':                               '1AptU0IPt589WqMoQp7KH8-iLIlLX70YmQezqTL9AspU',
+  'Handball':                           '1sX1qXGmhclyWNQ9emya5HvPdS0p6F5JOormRMLV9nqM',
+  'Hockey sobre Césped Caballeros':     '1dtjk_YnaUJYtm91TnDV4siKlRQor2ogf0_wrSmn27GI',
+  'Hockey sobre Césped Damas':          '1E5DTN9IPlZ0vN4XYFNfgzwru9snsQ2WnUCTbvqdx4Jc',
+  'Hockey sobre Patines Caballeros':    '1cd90Dt44mS8avP5G83cRJLgU3fNt_EQrSHNTgV9Xd-w',
+  'Hockey sobre Patines Damas':         '1oW0zu6OfgQj2A2Qsk8mb4f2v4O3qg4zRfjTiho-FMYY',
+  'Judo':                               '1Mp-HI_aPV-RMrycPREMbc9SlbcJvt-DDbb1C-poL4V4',
+  'Karate':                             '1bTl33vW7OkGMyyI1DAugog_P0AnfiDgLpGX-nm8xsX0',
+  'Natación Artística':                 '1MlLH8Tt8377db07WuusSvtMH9PxtArWmMvNE9nm5HCA',
+  'Patín Artístico':                    '1z3reK28Tz4f_2Xfp39BOkW2A_vD5fjfmi0F0kEx9DNI',
+  'Pelota Paleta':                      '14pa7-NPaSvyn5YpxxsfPOSUKaymJxSXQv_V-dlrPcno',
+  'Rugby Caballeros':                   '1QvGvPADaFIuo1befSR-MYtAiEHmwDRR_AaFQm3Qa5Mc',
+  'Rugby Damas':                        '1hqTHOhJPfhW2i-9QvFIqvB-L8KFKNWM1q0WOQIAgYYc',
+  'Tenis':                              '10-O7S6yDlOIofDs1Eb0nNd4bwqjWNPRjWqBB9URfrP0',
+  'Vóley Caballeros':                   '1RuAkEXIHGErXaq36y4zT-6YT-fupYGElej8z4uAJDf8',
+  'Vóley Damas':                        '1A4I4Eg_OcLXowIJImP8nwMSHyyN9OHwTLQZrJYbxHgE'
 };
 
 // Claves seguras por actividad para Profesores y Coordinación
