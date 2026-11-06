@@ -50,35 +50,35 @@ var SHEET_IDS = {
 // 2. CLAVES SEGURAS POR ACTIVIDAD (Soporta las 3 claves universales muni360 / coordugi / profeugi, claves por deporte y PINes)
 var CLAVES_SEGURAS = {
   // Base Formativa
-  'Colonia':                         { profe: 'colonia2025', coord: 'coloniacoord', pinProfe: '1001', pinCoord: '2001' },
-  'COYFD':                           { profe: 'coyfd2025',   coord: 'coyfdcoord',   pinProfe: '1002', pinCoord: '2002' },
+  'Colonia':                         { profe: 'coloniamuni', altProfe: 'colonia2025', coord: 'coloniacoord', pinProfe: '1001', pinCoord: '2001' },
+  'COYFD':                           { profe: 'coyfdmuni',   altProfe: 'coyfd2025',   coord: 'coyfdcoord',   pinProfe: '1002', pinCoord: '2002' },
 
   // Deportes con ambas ramas (Caballeros y Damas)
   'Básquet Caballeros':              { profe: 'basquetmuni', coord: 'basquetcoord', pinProfe: '1101', pinCoord: '2101' },
   'Básquet Damas':                   { profe: 'basquetmuni', coord: 'basquetcoord', pinProfe: '1102', pinCoord: '2102' },
-  'Fútbol Caballeros':               { profe: 'futbolmuni',  coord: 'futbolcoord',  pinProfe: '1104', pinCoord: '2104' },
-  'Fútbol Damas':                    { profe: 'futbolmuni',  coord: 'futbolcoord',  pinProfe: '1105', pinCoord: '2105' },
-  'Hockey sobre Césped Caballeros':  { profe: 'hockeymuni',  coord: 'hockeycoord',  pinProfe: '1109', pinCoord: '2109' },
-  'Hockey sobre Césped Damas':       { profe: 'hockeymuni',  coord: 'hockeycoord',  pinProfe: '1110', pinCoord: '2110' },
-  'Hockey sobre Patines Caballeros': { profe: 'patinesmuni', coord: 'patinescoord', pinProfe: '1111', pinCoord: '2111' },
-  'Hockey sobre Patines Damas':      { profe: 'patinesmuni', coord: 'patinescoord', pinProfe: '1112', pinCoord: '2112' },
-  'Rugby Caballeros':                { profe: 'rugbymuni',   coord: 'rugbycoord',   pinProfe: '1118', pinCoord: '2118' },
-  'Rugby Damas':                     { profe: 'rugbymuni',   coord: 'rugbycoord',   pinProfe: '1119', pinCoord: '2119' },
-  'Vóley Caballeros':                { profe: 'voleymuni',   coord: 'voleycoord',   pinProfe: '1121', pinCoord: '2121' },
-  'Vóley Damas':                     { profe: 'voleymuni',   coord: 'voleycoord',   pinProfe: '1122', pinCoord: '2122' },
+  'Fútbol Caballeros':               { profe: 'futbolmuni',  coord: 'futbolcoord',  pinProfe: '1301', altPinP: '1104', pinCoord: '2301', altPinC: '2104' },
+  'Fútbol Damas':                    { profe: 'futbolmuni',  coord: 'futbolcoord',  pinProfe: '1302', altPinP: '1105', pinCoord: '2302', altPinC: '2105' },
+  'Hockey sobre Césped Caballeros':  { profe: 'hockeycespedmuni', altProfe: 'hockeymuni', coord: 'hockeycespedcoord', altCoord: 'hockeycoord', pinProfe: '1701', altPinP: '1109', pinCoord: '2701', altPinC: '2109' },
+  'Hockey sobre Césped Damas':       { profe: 'hockeycespedmuni', altProfe: 'hockeymuni', coord: 'hockeycespedcoord', altCoord: 'hockeycoord', pinProfe: '1702', altPinP: '1110', pinCoord: '2702', altPinC: '2110' },
+  'Hockey sobre Patines Caballeros': { profe: 'hockeypatinesmuni', altProfe: 'patinesmuni', coord: 'hockeypatinescoord', altCoord: 'patinescoord', pinProfe: '1801', altPinP: '1111', pinCoord: '2801', altPinC: '2111' },
+  'Hockey sobre Patines Damas':      { profe: 'hockeypatinesmuni', altProfe: 'patinesmuni', coord: 'hockeypatinescoord', altCoord: 'patinescoord', pinProfe: '1802', altPinP: '1112', pinCoord: '2802', altPinC: '2112' },
+  'Rugby Caballeros':                { profe: 'rugbymuni',   coord: 'rugbycoord',   pinProfe: '3501', altPinP: '1118', pinCoord: '4501', altPinC: '2118' },
+  'Rugby Damas':                     { profe: 'rugbymuni',   coord: 'rugbycoord',   pinProfe: '3502', altPinP: '1119', pinCoord: '4502', altPinC: '2119' },
+  'Vóley Caballeros':                { profe: 'voleymuni',   coord: 'voleycoord',   pinProfe: '3701', altPinP: '1121', pinCoord: '4701', altPinC: '2121' },
+  'Vóley Damas':                     { profe: 'voleymuni',   coord: 'voleycoord',   pinProfe: '3702', altPinP: '1122', pinCoord: '4702', altPinC: '2122' },
 
   // Disciplinas únicas
-  'Cestoball':                       { profe: 'cestomuni',     coord: 'cestocoord',     pinProfe: '1103', pinCoord: '2103' },
-  'Gimnasia Artística':              { profe: 'gimnasiamuni',  coord: 'gimnasiacoord',  pinProfe: '1106', pinCoord: '2106' },
-  'Gimnasia Rítmica':                { profe: 'gimnasiamuni',  coord: 'gimnasiacoord',  pinProfe: '1107', pinCoord: '2107' },
-  'Golf':                            { profe: 'golfmuni',      coord: 'golfcoord',      pinProfe: '1108', pinCoord: '2108' },
-  'Handball':                        { profe: 'handballmuni',  coord: 'handballcoord',  pinProfe: '1123', pinCoord: '2123' },
-  'Judo':                            { profe: 'judomuni',      coord: 'judocoord',      pinProfe: '1113', pinCoord: '2113' },
-  'Karate':                          { profe: 'karatemuni',    coord: 'karatecoord',    pinProfe: '1114', pinCoord: '2114' },
-  'Natación Artística':              { profe: 'natacionmuni',  coord: 'natacioncoord',  pinProfe: '1115', pinCoord: '2115' },
-  'Patín Artístico':                 { profe: 'patinmuni',     coord: 'patincoord',     pinProfe: '1116', pinCoord: '2116' },
-  'Pelota Paleta':                   { profe: 'paletamuni',    coord: 'paletacoord',    pinProfe: '1117', pinCoord: '2117' },
-  'Tenis':                           { profe: 'tenismuni',     coord: 'teniscoord',     pinProfe: '1120', pinCoord: '2120' }
+  'Cestoball':                       { profe: 'cestomuni',     coord: 'cestocoord',     pinProfe: '1200', altPinP: '1103', pinCoord: '2200', altPinC: '2103' },
+  'Gimnasia Artística':              { profe: 'gimnasiamuni',  coord: 'gimnasiacoord',  pinProfe: '1401', altPinP: '1106', pinCoord: '2401', altPinC: '2106' },
+  'Gimnasia Rítmica':                { profe: 'gimnasiamuni',  coord: 'gimnasiacoord',  pinProfe: '1402', altPinP: '1107', pinCoord: '2402', altPinC: '2107' },
+  'Golf':                            { profe: 'golfmuni',      coord: 'golfcoord',      pinProfe: '1500', altPinP: '1108', pinCoord: '2500', altPinC: '2108' },
+  'Handball':                        { profe: 'handballmuni',  coord: 'handballcoord',  pinProfe: '1600', altPinP: '1123', pinCoord: '2600', altPinC: '2123' },
+  'Judo':                            { profe: 'judomuni',      coord: 'judocoord',      pinProfe: '1900', altPinP: '1113', pinCoord: '2900', altPinC: '2113' },
+  'Karate':                          { profe: 'karatemuni',    coord: 'karatecoord',    pinProfe: '3100', altPinP: '1114', pinCoord: '4100', altPinC: '2114' },
+  'Natación Artística':              { profe: 'natacionmuni',  coord: 'natacioncoord',  pinProfe: '3201', altPinP: '1115', pinCoord: '4201', altPinC: '2115' },
+  'Patín Artístico':                 { profe: 'patinmuni',     coord: 'patincoord',     pinProfe: '3300', altPinP: '1116', pinCoord: '4300', altPinC: '2116' },
+  'Pelota Paleta':                   { profe: 'paletamuni',    coord: 'paletacoord',    pinProfe: '3400', altPinP: '1117', pinCoord: '4400', altPinC: '2117' },
+  'Tenis':                           { profe: 'tenismuni',     coord: 'teniscoord',     pinProfe: '3600', altPinP: '1120', pinCoord: '4600', altPinC: '2120' }
 };
 
 var TZ = 'America/Argentina/Buenos_Aires';
@@ -197,7 +197,7 @@ function doPost(e) {
       var reg = CLAVES_SEGURAS[deporte];
 
       // 2. Coordinación: Clave del deporte (ej: basquetcoord), PIN (2101) o universal (coordugi)
-      if ((reg && (clave === reg.coord.toLowerCase() || clave === reg.pinCoord)) || clave === 'coordugi') {
+      if ((reg && (clave === reg.coord.toLowerCase() || (reg.altCoord && clave === reg.altCoord.toLowerCase()) || clave === reg.pinCoord || (reg.altPinC && clave === reg.altPinC))) || clave === 'coordugi') {
         return respuesta({
           ok: true,
           rol: 'Coordinación',
@@ -209,7 +209,7 @@ function doPost(e) {
       }
 
       // 3. Profesores: Clave del deporte (ej: basquetmuni), PIN (1101) o universal (profeugi)
-      if ((reg && (clave === reg.profe.toLowerCase() || clave === reg.pinProfe)) || clave === 'profeugi') {
+      if ((reg && (clave === reg.profe.toLowerCase() || (reg.altProfe && clave === reg.altProfe.toLowerCase()) || clave === reg.pinProfe || (reg.altPinP && clave === reg.altPinP))) || clave === 'profeugi') {
         return respuesta({
           ok: true,
           rol: 'Profe',
