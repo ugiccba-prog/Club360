@@ -1,60 +1,60 @@
 # 🏆 UGI - Unidad de Gestión Integral 
 ### Club Ciudad de Buenos Aires
 
-Este es el repositorio oficial del sitio web de la **UGI**, un órgano técnico transversal del **Club Ciudad de Buenos Aires** dedicado a la formación integral, la convivencia deportiva y la neurociencia aplicada al rendimiento.
+Repositorio oficial del sitio web de la **UGI (Unidad de Gestión Integral)** del **Club Ciudad de Buenos Aires**, plataforma transversal dedicada a la formación integral, la convivencia deportiva y el desarrollo de deportistas, familias y entrenadores.
 
-> "El entrenamiento que no se ve también se entrena."
+> *"El entrenamiento que no se ve también se entrena."*
 
-## 🎯 Objetivo del Proyecto
-Centralizar y profesionalizar el acceso a herramientas pedagógicas y conductuales para deportistas, familias y formadores del club. El sitio funciona como una plataforma de recursos interactivos y formación continua.
+---
 
-## 🚀 Características del Sitio
-- **Diseño Institucional:** Estética alineada con la identidad del Club Ciudad (Navy & Sky Blue).
-- **Responsive Design:** Optimizado para notebooks, tablets y dispositivos móviles.
-- **Secciones Educativas:** 
-    - **Semáforo de la UGI:** Guía visual de autorregulación y convivencia.
-    - **Entrenamiento Mental:** Recursos de neurociencia aplicada al deporte.
-    - **Ciudad Integrado:** Espacio dedicado a la inclusión y pertenencia.
-- **Interactividad:** Integración de juegos didácticos (Educaplay) y material de lectura dinámico (Canva).
-- **Portal de Capacitaciones:** Acceso segmentado para Profesores, Familias y Jugadores.
+## 🎯 Objetivo de la Plataforma
+Centralizar los recursos pedagógicos, las herramientas de convivencia y el sistema unificado de gestión de cancha del Club Ciudad de Buenos Aires, garantizando un marco formativo compartido entre deportistas, familias y cuerpo técnico.
 
-## 🛠️ Tecnologías Utilizadas
-- **Frontend:** HTML5 semántico y CSS3 moderno (Custom Properties / Flexbox / Grid).
-- **Interactividad:** JavaScript Vanilla (Intersection Observer para animaciones de revelado).
-- **Recursos Externos:** 
-    - Embeds de Canva (Material de lectura).
-    - Embeds de Educaplay (Dinámicas de juego).
-    - Google Forms (Registro de capacitaciones).
+---
 
-## 📂 Estructura del Repositorio
-- `index.html`: Punto de entrada principal y landing page integral.
-- `pages/`: Páginas públicas agrupadas por contenido.
-- `apps/training/`: Aplicaciones interactivas de entrenamiento.
-  `reaccion.html` es la app de reacción con cámara, una sola para celular y
-  escritorio: se adapta al tamaño de pantalla. `index.html` y `mobile.html`
-  quedaron como redirecciones para no romper links viejos.
-  `vision.html` es el test de visión periférica (doble tarea con destello y
-  máscara, y escalera adaptativa que busca el umbral en milisegundos).
-  Los juegos (`stroop.html`, `reaccion.html`, `vision.html`) comparten
-  `apps/training/ugi-envio.js`: ahí está la URL del Apps Script, el perfil del
-  jugador y la cola offline. Cualquier juego nuevo de esta carpeta tiene que
-  cargarlo con `<script src="./ugi-envio.js"></script>` antes de su propio script.
-- `assets/images/`: Logos, favicon e imágenes editoriales.
-- `assets/styles/`: Hojas de estilo compartidas del sitio.
-- `assets/scripts/`: JavaScript compartido del sitio.
-- `apps-script/Codigo.gs`: el Apps Script que guarda los resultados en la
-  planilla y devuelve el top 10 de la tabla de posiciones. Incluye arriba los
-  pasos para implementarlo; al final hay que pegar la URL `/exec` en
-  `apps/training/ugi-envio.js`.
-- `assets/scripts/ranking.js`: tabla de posiciones del portal de jugadores.
-- `CNAME`: Configuración del dominio de GitHub Pages.
+## 🏛️ Ecosistema y Estructura del Sitio
 
-Las páginas y aplicaciones nuevas deben enlazarse desde sus carpetas organizadas. Las
-copias HTML en la raíz y `training-app/` son redirecciones de compatibilidad para
-conservar las URLs publicadas anteriormente.
+### 1. Portada y Portales Públicos
+* **`index.html`**: Portada principal institucional, con presentación del propósito, programas y acceso a los portales formativos.
+* **`pages/jugadores.html`**: Portal de Jugadores con Gimnasio Mental, toma de decisiones, check-in emocional con el Semáforo UGI y guías de desarrollo formativo.
+* **`pages/familias.html`**: Portal de Familias con pautas de convivencia deportiva, recomendaciones para acompañar sin presionar y descarga de la guía *"El Otro Equipo"*.
+* **`pages/`**:
+  * `semaforo-ugi.html`: Guía visual de autorregulación y convivencia en cancha.
+  * `deportehijos.html`: El rol de los adultos en el proceso deportivo formativo.
+  * `entrenamiento-mental.html`: Manejo de emociones, calma bajo presión y liderazgo (Escuela de Capitanes).
+  * `ciudad-integrado.html`: Programa de inclusión, deporte adaptado y pertenencia institucional.
 
-## 🔧 Instalación y Desarrollo Local
-Si deseas visualizar el proyecto localmente:
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/ugiccba-prog/ugiccba-site.git
+### 2. Gestión Deportiva: Muni 360
+* **`muni360/index.html`**: Plataforma unificada de gestión deportiva para el cuerpo técnico (25 disciplinas activas: Colonia, COYFD y las 23 ramas y deportes del club).
+  * Registro de Asistencia en vivo (con opción de comedor en Colonia).
+  * Evaluaciones técnicas y pedagógicas con gestos específicos por disciplina.
+  * Carga y administración del Padrón de deportistas.
+  * Banco de 50 variantes metodológicas UGI para entrenamientos.
+  * Herramientas de Dirección UGI: Cierre de temporada y vaciado de planillas por rol.
+
+### 3. Aplicaciones Interactivas
+* **`apps/training/`**: Módulos interactivos de entrenamiento cognitivo para deportistas:
+  * `reaccion.html`: Test de tiempo de reacción e inhibición motriz.
+  * `stroop.html`: Test de atención selectiva y agilidad mental.
+  * `vision.html`: Test de visión periférica y atención dividida.
+* **`ansiedad/index.html`**: Zona de respiración guiada, foco y autorregulación emocional.
+* **`hockeysc/index.html`**: Plataforma de Selectividad de Menores para Hockey CCBA.
+
+---
+
+## ⚙️ Backend (Google Apps Script)
+
+Ubicado en la carpeta **`apps-script/`**:
+* **`DeportesUGI.gs`**: Backend maestro de **Muni 360**. Conecta con las 25 planillas Google Sheets oficiales en Drive, valida roles con tokens temporales (`CacheService`), gestiona asistencias/evaluaciones y ejecuta de forma autónoma:
+  * Copia de seguridad semanal automática en la carpeta `_BACKUP_SEMANAL_UGI` de Google Drive.
+  * Auditoría de asistencias cada viernes a las 9 AM con alertas por correo a los coordinadores.
+* **`Codigo.gs`**: Backend de persistencia y tabla de posiciones de los juegos cognitivos (`apps/training/`).
+* **`HockeySelectividad.gs`**: Backend de gestión para la selectividad de hockey.
+
+---
+
+## 🎨 Identidad Visual y Tecnologías
+* **Paleta Oficial:** Azul Marino (`#082b49`), Celeste Institucional (`#59bde9`) y Fondo Papel (`#fffdf8`).
+* **Tipografías:** *Outfit* (títulos de gran impacto) y *Plus Jakarta Sans* (lectura nítida y moderna).
+* **Tecnología:** HTML5 semántico, CSS3 nativo y JavaScript Vanilla sin dependencias pesadas.
+* **Hosting:** GitHub Pages con dominio propio configurado en `CNAME` (`www.ugiccba.com.ar`).
