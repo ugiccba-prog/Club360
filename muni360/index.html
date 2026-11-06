@@ -1257,7 +1257,7 @@
 
       $('estado-txt').textContent = `● Sincronizando con el Sheet de ${d}...`;
       try {
-        const r = await fetch(`${URL_SCRIPT_DEPORTES}?deporte=${encodeURIComponent(d)}`);
+        const r = await fetch(`${URL_SCRIPT_DEPORTES}?deporte=${encodeURIComponent(d)}&token=${encodeURIComponent(sesion?.token || '')}`);
         const j = await r.json();
         if (j && j.ok && d === areaActiva) {
           datosDeporte = {
@@ -1271,6 +1271,9 @@
           $('estado-txt').textContent = `● Conectado en vivo al Sheet de ${d}`;
           renderFiltrosDeporte();
           renderVistaActiva();
+        } else if (j && !j.ok && j.error && (j.error.includes('autorizada') || j.error.includes('vencida'))) {
+          $('estado-txt').textContent = `⚠ Sesión expirada. Volvé a ingresar tu clave.`;
+          toast('Tu sesión ha expirado por seguridad. Volvé a ingresar.');
         }
       } catch (_) {
         $('estado-txt').textContent = `⚠ Modo offline: usando datos guardados en el dispositivo (${d})`;

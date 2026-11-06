@@ -151,6 +151,26 @@ function respuesta(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
 
+// --- GESTIÓN DE SESIONES Y TOKENS SEGUROS (CacheService) -----------------------
+// Genera un token único válido por 6 horas (21600 seg, límite máximo de CacheService)
+function emitirToken(rol, area) {
+  var token = 'tok_' + Utilities.getUuid();
+  CacheService.getScriptCache().put(token, JSON.stringify({ rol: rol, area: area }), 21600);
+  return token;
+}
+
+// Verifica si el token existe y sigue vigente en la memoria del servidor
+function tokenValido(token) {
+  if (!token) return null;
+  var raw = CacheService.getScriptCache().get(String(token));
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch (_) {
+    return null;
+  }
+}
+
 // --- 1. RECIBE LOS DATOS DESDE LA WEB -----------------------------------------
 function doPost(e) {
   var lock = LockService.getScriptLock();
@@ -158,7 +178,7 @@ function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
 
-    // 0. AUTENTICACIÓN SEGURA MUNI 360
+    // 0. AUTENTICACIÓN SEGURA MUNI 360 (Emite token temporal en servidor)
     if (data.tipo === 'LOGIN') {
       var clave = String(data.clave || '').trim().toLowerCase();
       var deporte = String(data.deporte || '').trim();
@@ -166,13 +186,27 @@ function doPost(e) {
 
       // Claves maestras UGI (Acceso Total a todos los deportes + Colonia + COYFD)
       if (clave === 'ugi2025' || clave === 'ugi2026' || clave === 'muni360' || clave === 'adminugi') {
-        return respuesta({ ok: true, rol: 'Dirección UGI', esAdminTotal: true, deporte: deporte, celular: celular, token: Utilities.getUuid() });
+        return respuesta({
+          ok: true,
+          rol: 'Dirección UGI',
+          esAdminTotal: true,
+          deporte: deporte,
+          celular: celular,
+          token: emitirToken('Dirección UGI', 'TODOS')
+        });
       }
 
       var reg = CLAVES_SEGURAS[deporte];
       // Clave de coordinación específica o global
       if ((reg && clave === reg.coord.toLowerCase()) || (clave === '2001' && deporte === 'Colonia') || (clave === '2002' && deporte === 'COYFD') || clave === 'coordugi') {
-        return respuesta({ ok: true, rol: 'Coordinación', esAdminTotal: false, deporte: deporte, celular: celular, token: Utilities.getUuid() });
+        return respuesta({
+          ok: true,
+          rol: 'Coordinación',
+          esAdminTotal: false,
+          deporte: deporte,
+          celular: celular,
+          token: emitirToken('Coordinación', deporte)
+        });
       }
 
       // Clave de profesor específica, universal o PIN heredado
@@ -182,16 +216,37 @@ function doPost(e) {
           (clave === '1002' && deporte === 'COYFD') ||
           clave === deporte.toLowerCase().replace(/\s+/g, '') ||
           clave === deporte.toLowerCase().replace(/\s+/g, '') + 'muni') {
-        return respuesta({ ok: true, rol: 'Profe', esAdminTotal: false, deporte: deporte, celular: celular, token: Utilities.getUuid() });
+        return respuesta({
+          ok: true,
+          rol: 'Profe',
+          esAdminTotal: false,
+          deporte: deporte,
+          celular: celular,
+          token: emitirToken('Profe', deporte)
+        });
       }
 
       return respuesta({ ok: false, error: 'Contraseña incorrecta para ' + deporte + '.' });
     }
 
+    // CANDADO DE ESCRITURA: Rebota cualquier intento de guardar o modificar sin token válido
+    var sesionToken = tokenValido(data.token);
+    if (!sesionToken) {
+      return respuesta({ ok: false, error: 'Sesión vencida o no autorizada. Por favor volvé a ingresar tu clave.' });
+    }
+
     // 0.1 REINICIO DE TEMPORADA Y VACIADO DE DATOS (POR DEPORTE O GENERAL)
     if (data.tipo === 'RESET_DATOS') {
+      if (sesionToken.rol !== 'Dirección UGI' && sesionToken.rol !== 'Coordinación') {
+        return respuesta({ ok: false, error: 'No tenés permisos de coordinación para reiniciar datos.' });
+      }
+
       var modo = String(data.modo || '').toUpperCase(); // 'TEMPORADA' o 'TODO'
       var dep = String(data.deporte || '').trim();
+
+      if (dep === 'TODOS' && sesionToken.rol !== 'Dirección UGI') {
+        return respuesta({ ok: false, error: 'Solo Dirección UGI puede reiniciar todo el club.' });
+      }
 
       var limpiarFilasHoja = function (ssObj, nombreHoja) {
         var shObj = ssObj.getSheetByName(nombreHoja);
@@ -304,6 +359,12 @@ function doGet(e) {
     var deporte = e && e.parameter && e.parameter.deporte;
     if (!deporte) return respuesta({ ok: true, mensaje: 'Backend UGI Deportes activo.' });
 
+    // CANDADO DE LECTURA: Nadie puede descargar las listas ni padrones sin token válido
+    var token = e && e.parameter && e.parameter.token;
+    if (!tokenValido(token)) {
+      return respuesta({ ok: false, error: 'Sesión no autorizada o vencida.' });
+    }
+
     var ss = abrirSheet(deporte);
     var tz = ss.getSpreadsheetTimeZone();
     var delDeporte = function (r, col) { return !r[col] || mismo(r[col], deporte); };
@@ -343,8 +404,15 @@ function doGet(e) {
   }
 }
 
-// --- 3. AUDITORÍA AUTOMÁTICA DE ASISTENCIA (VIERNES 9 AM) ----------------------
+// --- 3. AUDITORÍA AUTOMÁTICA DE ASISTENCIA Y BACKUP (VIERNES 9 AM) -------------
 function verificarAsistenciaSemanal() {
+  // Ejecuta la copia de seguridad semanal de todas las planillas del club
+  try {
+    realizarBackupSemanal();
+  } catch (errBackup) {
+    console.error('Error al realizar backup semanal: ' + errBackup);
+  }
+
   var deportes = Object.keys(SHEET_IDS);
   if (deportes.length === 0) {
     auditarPlanilla(SpreadsheetApp.getActiveSpreadsheet(), '');
@@ -454,6 +522,54 @@ function crearSheetCOYFD() {
   Logger.log('========================================================');
 
   return { id: id, url: url };
+}
+
+// --- 6. COPIA DE SEGURIDAD AUTOMÁTICA SEMANAL EN GOOGLE DRIVE ------------------
+/**
+ * Crea o utiliza la carpeta "_BACKUP_SEMANAL_UGI" en Google Drive y guarda
+ * una copia fechada de cada una de las planillas oficiales.
+ * Corre automáticamente todos los viernes junto con la auditoría de las 9 AM.
+ */
+function realizarBackupSemanal() {
+  var nombreCarpeta = '_BACKUP_SEMANAL_UGI';
+  var iter = DriveApp.getFoldersByName(nombreCarpeta);
+  var carpetaBackup = iter.hasNext() ? iter.next() : DriveApp.createFolder(nombreCarpeta);
+  var fechaHoy = Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd');
+
+  var idsCopiados = {};
+
+  // 1. Copia todas las planillas definidas en SHEET_IDS
+  Object.keys(SHEET_IDS).forEach(function (dep) {
+    var id = SHEET_IDS[dep];
+    if (!id || idsCopiados[id]) return;
+    idsCopiados[id] = true;
+    try {
+      var archivo = DriveApp.getFileById(id);
+      archivo.makeCopy('BACKUP_' + fechaHoy + '_' + archivo.getName(), carpetaBackup);
+    } catch (e) {
+      console.error('Error backup ' + dep + ' (' + id + '): ' + e);
+    }
+  });
+
+  // 2. Copia también planillas dinámicas guardadas en PropertiesService
+  try {
+    var props = PropertiesService.getScriptProperties().getProperties();
+    Object.keys(props).forEach(function (k) {
+      var id = props[k];
+      if (!id || idsCopiados[id] || typeof id !== 'string' || id.length < 20) return;
+      idsCopiados[id] = true;
+      try {
+        var archivo = DriveApp.getFileById(id);
+        archivo.makeCopy('BACKUP_' + fechaHoy + '_' + archivo.getName(), carpetaBackup);
+      } catch (_) {}
+    });
+  } catch (_) {}
+
+  Logger.log('========================================================');
+  Logger.log('✅ BACKUP SEMANAL FINALIZADO CON ÉXITO');
+  Logger.log('Carpeta: ' + nombreCarpeta + ' (' + carpetaBackup.getUrl() + ')');
+  Logger.log('Fecha: ' + fechaHoy);
+  Logger.log('========================================================');
 }
 
 // --- 5. CREADOR MASIVO DE TODAS LAS PLANILLAS OFICIALES ------------------------
