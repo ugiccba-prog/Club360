@@ -597,6 +597,11 @@
 
       <p id="login-error" class="error" aria-live="polite"></p>
       <button type="submit" class="btn">Entrar a Muni 360</button>
+      <div style="text-align:center; margin-top:14px;">
+        <button type="button" onclick="cargarDemoVideoUGI()" style="background:none; border:none; color:var(--muted); font-size:0.75rem; cursor:pointer; text-decoration:underline;">
+          🎭 Cargar modelo de prueba (reunión / video)
+        </button>
+      </div>
     </form>
   </div>
 
@@ -1212,6 +1217,7 @@
 
     $('btn-salir').addEventListener('click', () => {
       localStorage.removeItem('muni360_sesion_activa');
+      localStorage.removeItem('muni360_modo_demo');
       sesion = null;
       $('login-pass').value = "";
       ['app-header', 'barra-estado', 'app-screen'].forEach(id => $(id).classList.add('hidden'));
@@ -1254,6 +1260,12 @@
       datosDeporte = JSON.parse(localStorage.getItem('muni360_cache_' + d) || 'null') || { padron: [], evaluaciones: [], asistencia: [], gestos: null, email: '' };
       renderFiltrosDeporte();
       renderVistaActiva();
+
+      if (localStorage.getItem('muni360_modo_demo') === '1') {
+        $('estado-txt').innerHTML = `🎭 <strong>MODO DEMO ACTIVO</strong> (Datos de muestra para video/reunión)`;
+        $('estado-acciones').innerHTML = `<button type="button" class="btn-sec" style="font-size:0.75rem; padding:3px 10px; background:#fff; color:#c62828; border-color:#e17c6b;" onclick="salirModoDemo()">✕ Salir de Demo</button>`;
+        return;
+      }
 
       $('estado-txt').textContent = `● Sincronizando con el Sheet de ${d}...`;
       try {
@@ -1465,6 +1477,11 @@
       });
       localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
 
+      if (localStorage.getItem('muni360_modo_demo') === '1') {
+        toast(`✓ Demo: Asistencia guardada (modo presentación)`);
+        return;
+      }
+
       try {
         await fetch(URL_SCRIPT_DEPORTES, {
           method: 'POST',
@@ -1625,23 +1642,25 @@
       datosDeporte.evaluaciones.push({ fecha, categoria: cat, equipo: eq, jugador: jugadorActivo, notas });
       localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
 
-      try {
-        await fetch(URL_SCRIPT_DEPORTES, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            tipo: 'EVALUACION',
-            token: sesion?.token || '',
-            profe: sesion?.profeNombre || '',
-            deporte: areaActiva,
-            fecha,
-            categoria: cat,
-            equipo: eq,
-            jugador: jugadorActivo,
-            notas
-          })
-        });
-      } catch (_) {}
+      if (localStorage.getItem('muni360_modo_demo') !== '1') {
+        try {
+          await fetch(URL_SCRIPT_DEPORTES, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              tipo: 'EVALUACION',
+              token: sesion?.token || '',
+              profe: sesion?.profeNombre || '',
+              deporte: areaActiva,
+              fecha,
+              categoria: cat,
+              equipo: eq,
+              jugador: jugadorActivo,
+              notas
+            })
+          });
+        } catch (_) {}
+      }
 
       toast(`✓ ${jugadorActivo} evaluado`);
       const pl = plantelActualNombres();
@@ -2124,6 +2143,77 @@
       const b = e.target.closest('.tab');
       if (b) cambiarTab(b.dataset.tab);
     });
+
+    // =========================================================================
+    // 12. MODO DEMO / PRESENTACIÓN PARA VIDEOS Y REUNIONES
+    // =========================================================================
+    window.cargarDemoVideoUGI = function() {
+      const dep = "Básquet Caballeros";
+      const cat = "Sub-12 Demo";
+      const eq  = "A";
+      const hoy = fechaLocal(0);
+
+      const demoData = {
+        padron: [
+          { categoria: cat, equipo: eq, jugador: "Acosta, Mateo (🧩 DUA)" },
+          { categoria: cat, equipo: eq, jugador: "Benítez, Tomás" },
+          { categoria: cat, equipo: eq, jugador: "Domínguez, Lucas" },
+          { categoria: cat, equipo: eq, jugador: "Fernández, Joaquín" },
+          { categoria: cat, equipo: eq, jugador: "Gómez, Bautista" },
+          { categoria: cat, equipo: eq, jugador: "López, Santino" },
+          { categoria: cat, equipo: eq, jugador: "Martínez, Valentino" }
+        ],
+        asistencia: [
+          { fecha: hoy, categoria: cat, equipo: eq, jugador: "Acosta, Mateo (🧩 DUA)", estado: "P | Sem:V" },
+          { fecha: hoy, categoria: cat, equipo: eq, jugador: "Benítez, Tomás", estado: "P | Sem:A" },
+          { fecha: hoy, categoria: cat, equipo: eq, jugador: "Domínguez, Lucas", estado: "A" },
+          { fecha: hoy, categoria: cat, equipo: eq, jugador: "Fernández, Joaquín", estado: "P | Sem:V" },
+          { fecha: hoy, categoria: cat, equipo: eq, jugador: "Gómez, Bautista", estado: "T | Sem:R" },
+          { fecha: hoy, categoria: cat, equipo: eq, jugador: "López, Santino", estado: "P | Sem:V" },
+          { fecha: hoy, categoria: cat, equipo: eq, jugador: "Martínez, Valentino", estado: "P | Sem:V" }
+        ],
+        evaluaciones: [
+          {
+            fecha: hoy, categoria: cat, equipo: eq, jugador: "Acosta, Mateo (🧩 DUA)",
+            notas: { "Dribbling con ambas manos": 8, "Pase": 8.5, "Toma de decisión": 7.5, "Actitud y compromiso (Carácter)": 9.5, "Respeto y convivencia (Conexión)": 9, "Tolerancia al error y frustración (Confianza)": 8 }
+          },
+          {
+            fecha: hoy, categoria: cat, equipo: eq, jugador: "Benítez, Tomás",
+            notas: { "Dribbling con ambas manos": 7, "Pase": 6.5, "Toma de decisión": 6, "Actitud y compromiso (Carácter)": 6, "Respeto y convivencia (Conexión)": 6.5, "Tolerancia al error y frustración (Confianza)": 5 }
+          },
+          {
+            fecha: hoy, categoria: cat, equipo: eq, jugador: "Gómez, Bautista",
+            notas: { "Dribbling con ambas manos": 5.5, "Pase": 5, "Toma de decisión": 5, "Actitud y compromiso (Carácter)": 5, "Respeto y convivencia (Conexión)": 5.5, "Tolerancia al error y frustración (Confianza)": 4.5 }
+          },
+          {
+            fecha: hoy, categoria: cat, equipo: eq, jugador: "Fernández, Joaquín",
+            notas: { "Dribbling con ambas manos": 8.5, "Pase": 8, "Toma de decisión": 8.5, "Actitud y compromiso (Carácter)": 9, "Respeto y convivencia (Conexión)": 9, "Tolerancia al error y frustración (Confianza)": 8.5 }
+          }
+        ],
+        gestos: null,
+        email: "ugi@ccba.com.ar"
+      };
+
+      localStorage.setItem('muni360_modo_demo', '1');
+      localStorage.setItem('muni360_cache_' + dep, JSON.stringify(demoData));
+      localStorage.setItem('muni360_sesion_activa', JSON.stringify({
+        area: dep, esAdminTotal: true, rol: "Dirección UGI", profeNombre: "Juan Machado"
+      }));
+      location.href = location.pathname;
+    };
+
+    window.salirModoDemo = function() {
+      localStorage.removeItem('muni360_modo_demo');
+      localStorage.removeItem('muni360_cache_Básquet Caballeros');
+      localStorage.removeItem('muni360_sesion_activa');
+      location.href = location.pathname;
+    };
+
+    if (new URLSearchParams(location.search).get('demo') === '1' || location.hash === '#demo') {
+      if (localStorage.getItem('muni360_modo_demo') !== '1') {
+        window.cargarDemoVideoUGI();
+      }
+    }
 
     const guardada = localStorage.getItem('muni360_sesion_activa');
     if (guardada) {
