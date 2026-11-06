@@ -1159,6 +1159,11 @@
       const profe = $('login-profe').value.trim();
       const clave = $('login-pass').value.trim();
 
+      if (clave.toLowerCase() === 'demo1234') {
+        window.cargarDemoVideoUGI('demo1234');
+        return;
+      }
+
       if (!areaElegidaLogin) {
         $('login-error').textContent = "Elegí primero un Deporte, Colonia o COYFD.";
         return;
@@ -2174,7 +2179,20 @@
     // =========================================================================
     // 12. MODO DEMO / PRESENTACIÓN PARA VIDEOS Y REUNIONES
     // =========================================================================
-    window.cargarDemoVideoUGI = function() {
+    window.cargarDemoVideoUGI = function(passIngresada) {
+      let pass = passIngresada || $('login-pass').value.trim();
+      if (!pass || pass.toLowerCase() !== "demo1234") {
+        const pedida = prompt("Ingresá la contraseña para acceder al Modo Demo:");
+        if (pedida === null) return;
+        pass = pedida.trim();
+      }
+      if (pass.toLowerCase() !== "demo1234") {
+        $('login-error').textContent = "Contraseña de demo incorrecta.";
+        toast("Contraseña de demo incorrecta.");
+        return;
+      }
+      $('login-error').textContent = "";
+
       const dep = "Básquet Caballeros";
       const cat = "Sub-12 Demo";
       const eq  = "A";
@@ -2242,8 +2260,9 @@
       toast("Modo Demo finalizado");
     };
 
-    if (new URLSearchParams(location.search).get('demo') === '1' || location.hash === '#demo') {
-      window.cargarDemoVideoUGI();
+    const demoParam = new URLSearchParams(location.search).get('demo') || (location.hash === '#demo1234' ? 'demo1234' : null);
+    if (demoParam === '1' || demoParam === 'demo1234') {
+      window.cargarDemoVideoUGI('demo1234');
     } else {
       const guardada = localStorage.getItem('muni360_sesion_activa');
       if (guardada) {
