@@ -32,6 +32,7 @@
       --border: #cbd5e1;
       --white: #ffffff;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -96,7 +97,6 @@
       margin-top: 2px;
       margin-bottom: 16px;
     }
-    /* Botones gemelos destacados para Colonia y COYFD */
     .base-cards {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -181,7 +181,6 @@
       font-weight: 700;
       white-space: nowrap;
     }
-
     #barra-estado {
       font-size: 0.75rem;
       font-weight: 600;
@@ -195,7 +194,6 @@
       flex-wrap: wrap;
       gap: 8px;
     }
-
     .container { max-width: 820px; margin: 14px auto; padding: 0 12px; }
     .card {
       background: var(--white);
@@ -207,7 +205,6 @@
     }
     .card h3 { font-size: 0.98rem; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
     .hint { font-size: 0.79rem; color: var(--muted); margin-bottom: 12px; }
-
     label {
       display: block;
       font-size: 0.71rem;
@@ -233,7 +230,6 @@
     .field { margin-bottom: 11px; text-align: left; }
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-
     .btn {
       width: 100%;
       min-height: 48px;
@@ -302,7 +298,7 @@
       box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
     }
 
-    /* ================= FILAS DE ASISTENCIA + SEMÁFORO + COMIDA ================= */
+    /* ================= FILAS DE ASISTENCIA + SEMÁFORO + COMIDA + DUA ================= */
     .asist-row {
       display: flex;
       justify-content: space-between;
@@ -329,7 +325,6 @@
     .pat button[aria-pressed="true"][data-e="A"] { background: var(--bad); color: var(--white); border-color: var(--bad); }
     .pat button[aria-pressed="true"][data-e="T"] { background: var(--warn); color: var(--white); border-color: var(--warn); }
 
-    /* Semáforo rápido 1 toque */
     .sem-group { display: flex; gap: 3px; background: #f1f5f9; padding: 3px; border-radius: 9px; }
     .sem-btn {
       width: 28px;
@@ -360,6 +355,101 @@
       border-color: #fb923c;
     }
 
+    /* Botones e Interfaz del Pasaporte DUA y Legajo Privado */
+    .btn-dua-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #7dd3fc;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .btn-dua-badge:hover { background: #bae6fd; }
+    .btn-dua-edit {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      color: #0369a1;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-legajo-dni {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      color: #0b2545;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-legajo-dni.con-dni {
+      background: #f0fdf4;
+      border-color: #86efac;
+      color: #166534;
+    }
+    .legajo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .legajo-stat {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 8px;
+      text-align: center;
+    }
+    .legajo-stat b { display: block; font-size: 1.1rem; color: var(--navy); }
+    .legajo-stat span { font-size: 0.65rem; text-transform: uppercase; color: var(--muted); font-weight: 800; }
+
+    .dua-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 37, 69, 0.62);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 200;
+      backdrop-filter: blur(3px);
+    }
+    .dua-modal-card {
+      background: #fff;
+      width: 100%;
+      max-width: 440px;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+      border-top: 6px solid #00a8e8;
+    }
+    .dua-item-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 11px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      font-size: 0.86rem;
+    }
+    .dua-item-box strong {
+      display: block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      color: #0b2545;
+      letter-spacing: 0.4px;
+      margin-bottom: 3px;
+    }
+
     /* ================= EVALUACIÓN DEPORTIVA Y STEPPER ================= */
     .lista { display: flex; flex-direction: column; gap: 6px; }
     .jugador {
@@ -377,7 +467,6 @@
     }
     .jugador[aria-pressed="true"] { background: var(--navy); color: var(--white); border-color: var(--navy); }
     .tag { font-size: 0.7rem; font-weight: 800; padding: 3px 9px; border-radius: 999px; background: var(--ok-soft); color: #166534; }
-
     .rol-switch {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -398,7 +487,6 @@
       cursor: pointer;
     }
     .rol-btn[aria-pressed="true"] { background: var(--navy); color: var(--white); }
-
     .gesto {
       padding: 10px 0;
       border-bottom: 1px solid #f1f5f9;
@@ -453,7 +541,7 @@
     }
     .stepper.con-valor { border-color: var(--ok); background: #f0fdf4; }
 
-    /* ================= BANCO UGI (PROFES) ================= */
+    /* ================= BANCO UGI (PROFES) + PLANIFICADOR EXPRESS DUA ================= */
     .grid-situaciones {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -510,12 +598,10 @@
     .kpi.kpi-warn { border-top-color: var(--warn); }
     .kpi b { display: block; font-size: 1.4rem; font-weight: 900; color: var(--navy); }
     .kpi span { font-size: 0.66rem; color: var(--muted); text-transform: uppercase; font-weight: 800; }
-
     .barra { margin-bottom: 9px; }
     .barra-top { display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 700; margin-bottom: 3px; }
     .barra-bg { height: 10px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
     .barra-bg div { height: 100%; border-radius: 999px; }
-
     table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
     th, td { text-align: left; padding: 9px 6px; border-bottom: 1px solid #e2e8f0; }
     th { color: var(--muted); font-size: 0.68rem; font-weight: 800; text-transform: uppercase; }
@@ -523,8 +609,7 @@
     .pill.v { background: var(--ok-soft); color: #166534; }
     .pill.a { background: var(--warn-soft); color: #92400e; }
     .pill.r { background: var(--bad-soft); color: #991b1b; }
-
-    .item { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; font-weight: 600; }
+    .item { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; font-weight: 600; flex-wrap: wrap; gap: 6px; }
     .quitar { background: #fff1f2; border: 1px solid #fecdd3; color: var(--bad); border-radius: 8px; padding: 5px 10px; font-size: 0.74rem; font-weight: 700; cursor: pointer; }
 
     .toast {
@@ -594,20 +679,13 @@
           <input type="password" id="login-pass" placeholder="Clave..." autocomplete="current-password" required>
         </div>
       </div>
-      <div style="font-size:0.75rem; color:var(--muted); margin-bottom:10px; line-height:1.4;">
-        Claves de acceso: Dirección UGI (<code>muni360</code>) · Coordinación (<code>coordugi</code>) · Profes (<code>profeugi</code>)
-      </div>
 
       <p id="login-error" class="error" aria-live="polite"></p>
       <button type="submit" class="btn">Entrar a Muni 360</button>
-
-      <div style="text-align:center; margin-top:16px; padding-top:14px; border-top:1px dashed #cbd5e1;">
-        <button type="button" id="btn-entrar-demo" onclick="cargarDemoVideoUGI()" class="btn-sec" style="width:100%; justify-content:center; background:#f0fdf4; color:#15803d; border-color:#86efac; padding:10px 14px; font-size:0.88rem; min-height:44px; border-radius:10px;">
-          🎭 Entrar con Modelo de Prueba (Reunión / Video)
+      <div style="text-align:center; margin-top:14px;">
+        <button type="button" onclick="cargarDemoVideoUGI()" style="background:none; border:none; color:var(--muted); font-size:0.75rem; cursor:pointer; text-decoration:underline;">
+          🎬 Cargar modelo de prueba (reunión / video)
         </button>
-        <div style="font-size:0.72rem; color:var(--muted); margin-top:5px;">
-          Carga 7 deportistas con notas y asistencias de muestra. No altera las planillas reales.
-        </div>
       </div>
     </form>
   </div>
@@ -662,7 +740,6 @@
         <select id="sel-deporte"></select>
       </div>
 
-      <!-- Filtros cuando es DEPORTE -->
       <div id="filtros-deporte" class="grid2">
         <div class="field" style="margin:0;">
           <label for="sel-categoria">Categoría</label>
@@ -688,7 +765,7 @@
     <section id="tab-asistencia">
       <div class="kpis" id="kpis-asist-dia">
         <div class="kpi kpi-ok"><span>Presentismo hoy</span><b id="kpi-dia-pct">0%</b><span id="kpi-dia-det">0 de 0</span></div>
-        <div class="kpi kpi-warn" id="kpi-dia-box2"><span id="kpi-dia-lbl2">🟢 Semáforo</span><b id="kpi-dia-val2">0</b><span id="kpi-dia-sub2">destacados hoy</span></div>
+        <div class="kpi kpi-warn" id="kpi-dia-box2"><span id="kpi-dia-lbl2">🚦 Semáforo</span><b id="kpi-dia-val2">0</b><span id="kpi-dia-sub2">destacados hoy</span></div>
         <div class="kpi"><span>Inscriptos</span><b id="kpi-dia-total">0</b><span>en el grupo</span></div>
       </div>
 
@@ -696,7 +773,7 @@
         <div class="spread">
           <div>
             <h3 id="titulo-lista-asist">Lista de asistencia</h3>
-            <p class="hint" style="margin:0;" id="sub-lista-asist">P = Presente · A = Ausente · T = Tarde · 🟢🟡🔴 = Semáforo UGI</p>
+            <p class="hint" style="margin:0;" id="sub-lista-asist">P = Presente · A = Ausente · T = Tarde · 🟢🟡🔴 = Semáforo UGI · 🧩 = Apoyo DUA</p>
           </div>
           <div style="display:flex; gap:6px; flex-wrap:wrap;">
             <button type="button" class="btn-sec" id="btn-todos-p">Todos Presentes (P)</button>
@@ -714,8 +791,8 @@
             <div>
               <label for="sel-puntos-ciudad">🏆 Termómetro Puntos Ciudad hoy</label>
               <select id="sel-puntos-ciudad" style="min-height:40px; font-size:0.86rem;">
-                <option value="+5">✅ Cumplieron meta grupal (+5 Puntos Ciudad)</option>
-                <option value="+10">🌟 Meta + Tarjeta Verde grupal (+10 Puntos)</option>
+                <option value="+5">⭐ Cumplieron meta grupal (+5 Puntos Ciudad)</option>
+                <option value="+10">🟢 Meta + Tarjeta Verde grupal (+10 Puntos)</option>
                 <option value="0">➖ Sin puntos extra hoy (0)</option>
               </select>
             </div>
@@ -735,7 +812,7 @@
     </section>
 
     <!-- ===================================================================
-         PESTAÑA 2: EVALUAR (TÉCNICA + ARQUERO + LAS 4C UGI)
+         PESTAÑA 2: EVALUAR (TÉCNICA + ARQUERO + LAS 4C UGI + TARJETA VERDE)
          =================================================================== -->
     <section id="tab-evaluacion" class="hidden">
       <div class="card">
@@ -754,12 +831,18 @@
           <button type="button" class="rol-btn" data-puesto="arquero" aria-pressed="false">🧤 Arquero/a</button>
         </div>
         <div id="contenedor-gestos"></div>
-        <button type="button" class="btn ok" id="btn-guardar-eval" style="margin-top:14px;">Guardar y pasar al siguiente</button>
+
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:14px;">
+          <button type="button" class="btn ok" id="btn-guardar-eval" style="flex:2;">Guardar y pasar al siguiente</button>
+          <button type="button" class="btn-sec" id="btn-tarjeta-verde" style="flex:1; justify-content:center; background:#dcfce7; color:#166534; border-color:#86efac;">
+            🟢 Tarjeta Verde Digital
+          </button>
+        </div>
       </div>
     </section>
 
     <!-- ===================================================================
-         PESTAÑA 3: BANCO UGI (50 VARIANTES DE CANCHA + BITÁCORA PROFE)
+         PESTAÑA 3: BANCO UGI (50 VARIANTES + PLANIFICADOR EXPRESS DUA)
          =================================================================== -->
     <section id="tab-ugi" class="hidden">
       <div class="card">
@@ -768,11 +851,11 @@
 
         <label>1. ¿Qué foco querés trabajar hoy?</label>
         <div class="grid-situaciones" id="botonera-ugi">
-          <button type="button" class="btn-situacion active" data-guia="Grupo disperso"><span>⚡</span><span>Grupo disperso</span></button>
+          <button type="button" class="btn-situacion active" data-guia="Grupo disperso"><span>🎯</span><span>Grupo disperso</span></button>
           <button type="button" class="btn-situacion" data-guia="Frustración por error"><span>😤</span><span>Frustración</span></button>
-          <button type="button" class="btn-situacion" data-guia="Roce o discusión"><span>🛑</span><span>Roce o conflicto</span></button>
+          <button type="button" class="btn-situacion" data-guia="Roce o discusión"><span>🤝</span><span>Roce o conflicto</span></button>
           <button type="button" class="btn-situacion" data-guia="Toma de decisiones"><span>🧠</span><span>Foco cognitivo</span></button>
-          <button type="button" class="btn-situacion" data-guia="Cierre y devolución"><span>🟢</span><span>Cierre en 2 min</span></button>
+          <button type="button" class="btn-situacion" data-guia="Cierre y devolución"><span>⏱️</span><span>Cierre en 2 min</span></button>
         </div>
 
         <div id="panel-respuesta-ugi" class="respuesta-box"></div>
@@ -795,6 +878,32 @@
         </div>
       </div>
 
+      <!-- PLANIFICADOR EXPRESS DUA ("ADAPTAR MI EJERCICIO") -->
+      <div class="card" style="border-left: 5px solid var(--sky);">
+        <h3>🧩 Planificador Express DUA · "Adaptar mi ejercicio"</h3>
+        <p class="hint">Elegí qué habilidad técnica entrenás hoy y qué desafío tenés en el grupo para recibir la adaptación en 3 pasos.</p>
+        <div class="grid2" style="margin-bottom:12px;">
+          <div>
+            <label for="dua-plan-obj">¿Qué querés entrenar hoy?</label>
+            <select id="dua-plan-obj">
+              <option value="Definición y tiro">Definición / Remate / Finalización</option>
+              <option value="Pase y recepción bajo presión">Pase y recepción bajo presión</option>
+              <option value="Táctica fija y posiciones">Táctica grupal / Ocupación de espacios</option>
+              <option value="1 vs 1 y duelo defensivo">Duelo 1 vs 1 y defensa</option>
+            </select>
+          </div>
+          <div>
+            <label for="dua-plan-des">¿Qué desafío tenés en el grupo?</label>
+            <select id="dua-plan-des">
+              <option value="Chico que no tolera la fila">Chico que no tolera la fila / espera</option>
+              <option value="Chico en Fuego (baja tolerancia a frustración)">Chico en Fuego (se frustra al errar)</option>
+              <option value="Grupo disperso o nivel muy desparejo">Grupo disperso o nivel muy desparejo</option>
+            </select>
+          </div>
+        </div>
+        <div id="dua-plan-resultado" class="respuesta-box" style="margin-bottom:0; border-left-color:var(--sky);"></div>
+      </div>
+
       <div class="card">
         <h3>Últimas sesiones registradas en este dispositivo</h3>
         <div id="historial-ugi-local"></div>
@@ -802,7 +911,7 @@
     </section>
 
     <!-- ===================================================================
-         PESTAÑA 4: ANÁLISIS Y REPORTES
+         PESTAÑA 4: ANÁLISIS Y REPORTES (+ ORIENTACIÓN DEPORTIVA COYFD)
          =================================================================== -->
     <section id="tab-analisis" class="hidden">
       <div class="card">
@@ -833,12 +942,12 @@
 
       <div class="card">
         <h3>Matriz individual del grupo</h3>
-        <p class="hint">Alerta automática si la asistencia baja de 70% o el promedio técnico baja de 6.0.</p>
+        <p class="hint">Alerta automática para activar Plan A si baja de 70% de asistencia, promedio &lt; 6.0 o acumula amarillas/rojas.</p>
         <div style="overflow-x:auto;">
           <table>
             <thead>
               <tr id="thead-matriz">
-                <th>Deportista</th><th>Prom.</th><th>A trabajar</th><th>Asist.</th><th>Estado</th>
+                <th>Deportista</th><th>Prom.</th><th>A trabajar / Perfil</th><th>Asist.</th><th>Estado</th>
               </tr>
             </thead>
             <tbody id="tabla-matriz"></tbody>
@@ -848,15 +957,16 @@
     </section>
 
     <!-- ===================================================================
-         PESTAÑA 5: PADRÓN, EXCEL Y CONFIGURACIÓN (SOLO COORDINACIÓN / UGI)
+         PESTAÑA 5: PADRÓN, EXCEL, LEGAJO DNI, FICHAS DUA Y CONFIGURACIÓN
          =================================================================== -->
     <section id="tab-padron" class="hidden">
+
       <!-- Subida por archivo Excel (.xlsx / .csv) -->
       <div class="card">
         <div class="spread">
           <div>
             <h3>1. Subir listado desde Excel (.xlsx) o CSV</h3>
-            <p class="hint" style="margin:0;">Detecta automáticamente las columnas Apellido, Nombre y Grupo/Categoría.</p>
+            <p class="hint" style="margin:0;">Detecta automáticamente las columnas Apellido, Nombre, Grupo/Categoría y DNI (opcional).</p>
           </div>
           <input type="file" id="input-excel-file" accept=".xlsx,.xls,.csv" style="max-width:240px; font-size:0.78rem;">
         </div>
@@ -865,7 +975,7 @@
       <!-- Pegar lista rápida -->
       <form class="card" id="form-padron">
         <h3>2. Carga masiva rápida (pegar desde WhatsApp o Excel)</h3>
-        <p class="hint">Pegá un deportista por renglón (Apellido, Nombre). Si la categoría no existe, se crea sola.</p>
+        <p class="hint">Pegá un deportista por renglón. Si agregás el DNI al final (ej: Gómez, Juan - 48123456), se guarda oculto en su legajo y no se ve en cancha.</p>
         <div class="grid2" id="padron-campos-deporte" style="margin-bottom:10px;">
           <div class="field" style="margin:0;">
             <label for="padron-cat">Categoría / Grupo</label>
@@ -877,20 +987,21 @@
           </div>
         </div>
         <div class="field">
-          <label for="padron-lista">Deportistas (uno por línea)</label>
-          <textarea id="padron-lista" required placeholder="Gómez, Juan&#10;Pérez, Mateo&#10;Rodríguez, Lucía"></textarea>
+          <label for="padron-lista">Deportistas (Apellido, Nombre — opcional: agregar DNI al final)</label>
+          <textarea id="padron-lista" required placeholder="Gómez, Juan - 48123456&#10;Pérez, Mateo - 49234567&#10;Rodríguez, Lucía"></textarea>
         </div>
         <button type="submit" class="btn">Cargar listado al grupo</button>
       </form>
 
       <div class="card">
-        <h3>3. Plantel actual del grupo seleccionado (<span id="count-plantel">0</span>)</h3>
+        <h3>3. Plantel actual, Legajo Privado (DNI) y Pasaportes DUA (<span id="count-plantel">0</span>)</h3>
+        <p class="hint">El DNI y el Legajo Privado solo son visibles acá para Coordinación y Dirección UGI (nunca en la vista de cancha).</p>
         <div id="lista-padron"></div>
       </div>
 
       <div class="card" id="card-variables-deporte">
         <h3>4. Variables a evaluar en <span id="gestos-dep"></span></h3>
-        <p class="hint">Las marcadas como "UGI" son transversales a todo el club.</p>
+        <p class="hint">Las marcadas como "4C UGI" son transversales a todo el club.</p>
         <div id="lista-gestos-config"></div>
         <div style="display:flex; gap:8px; margin-top:10px;">
           <input type="text" id="input-nuevo-gesto" placeholder="Sumar nueva variable técnica...">
@@ -912,18 +1023,16 @@
         </div>
 
         <div style="display:flex; flex-direction:column; gap:12px; margin-top:14px;">
-          <!-- Opción 1: Pasar de temporada en este deporte -->
           <div style="padding:12px; background:#fff; border:1px solid #fed7aa; border-radius:8px;">
             <div style="font-weight:700; font-size:0.92rem; color:#9a3412;">🔄 Pasar de temporada (<span class="txt-area-activa"></span>)</div>
             <p style="font-size:0.8rem; color:var(--muted); margin:4px 0 10px;">
-              Reinicia a cero el historial de asistencias y evaluaciones. <strong>Mantiene intacto el padrón de deportistas</strong> para iniciar el nuevo ciclo sin reingresar los datos.
+              Reinicia a cero el historial de asistencias y evaluaciones. <strong>Mantiene intacto el padrón y los DNI de los deportistas</strong> para iniciar el nuevo ciclo.
             </p>
             <button type="button" class="btn" id="btn-reset-temporada-deporte" style="background:#ea580c; color:#fff; font-size:0.84rem; padding:8px 14px; min-height:38px;">
               🔄 Pasar de temporada en <span class="txt-area-activa"></span>
             </button>
           </div>
 
-          <!-- Opción 2: Borrar todo en este deporte -->
           <div style="padding:12px; background:#fff; border:1px solid #fca5a5; border-radius:8px;">
             <div style="font-weight:700; font-size:0.92rem; color:var(--bad);">🗑️ Borrar todo (<span class="txt-area-activa"></span>)</div>
             <p style="font-size:0.8rem; color:var(--muted); margin:4px 0 10px;">
@@ -934,32 +1043,38 @@
             </button>
           </div>
 
-          <!-- Opción 3: Operaciones Globales Dirección UGI (Todo el Club) -->
           <div id="wrap-reset-general" class="hidden" style="padding:12px; background:#eff6ff; border:2px dashed #93c5fd; border-radius:8px;">
             <div style="font-weight:800; font-size:0.94rem; color:var(--blue); margin-bottom:4px;">
               🛡️ Operaciones Globales (Dirección UGI · Todo el Club)
             </div>
             <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
-              Aplica a las 24 actividades del club de manera simultánea.
+              Aplica a las 25 actividades del club de manera simultánea.
             </p>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
               <button type="button" class="btn" id="btn-reset-temporada-general" style="background:#2563eb; color:#fff; font-size:0.84rem; padding:8px 14px; min-height:38px; flex:1;">
                 🔄 Pasar de temporada TODO el club (Conserva padrones)
               </button>
               <button type="button" class="btn" id="btn-reset-todo-general" style="background:#991b1b; color:#fff; font-size:0.84rem; padding:8px 14px; min-height:38px; flex:1;">
-                💥 Borrar TODO el club (Todas las planillas a cero)
+                🚨 Borrar TODO el club (Todas las planillas a cero)
               </button>
             </div>
           </div>
         </div>
       </div>
+
     </section>
 
   </main>
 
+  <!-- MODAL EMERGENTE PASAPORTE DUA / LEGAJO PRIVADO DNI / TARJETA VERDE -->
+  <div id="dua-modal" class="dua-modal-backdrop hidden">
+    <div class="dua-modal-card" id="dua-modal-body"></div>
+  </div>
+
   <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
   <script>
+    // =========================================================================
     // 1. CONFIGURACIÓN MAESTRA MUNI 360 (100% GOOGLE SHEETS · SIN SUPABASE NI CLAVES EXPUESTAS)
     // =========================================================================
     const URL_SCRIPT_DEPORTES   = "https://script.google.com/macros/s/AKfycbz0VhNzdHKgFfrbHvuCJtLqrLRz9BWKxYxKjQ5CdCNQDiMd38edOmTDnGyTm8OBDeZ6/exec";
@@ -984,7 +1099,7 @@
     const ARQ_HSC = ["Arquero: Posición básica y ángulo de achique", "Arquero: Despeje de kickers y guardas (bajo)", "Arquero: Uso de guantes (tiros a media/alta altura)", "Arquero: Salidas en 1 vs 1 y barrida", "Arquero: Defensa de córner corto", "Arquero: Comunicación y orden defensivo"];
     const ARQ_FUT = ["Arquero: Posición de base y juego de piernas", "Arquero: Toma de pelota y seguridad de manos", "Arquero: Caídas y vuelos laterales", "Arquero: Achique en 1 vs 1", "Arquero: Juego aéreo y descuelgue de centros", "Arquero: Salida con los pies y saque"];
 
-    // CATÁLOGO OFICIAL DE ACTIVIDADES (Sin PINes expuestos en el HTML)
+    // CATÁLOGO OFICIAL DE 25 ACTIVIDADES (Sin PINes expuestos en el HTML)
     const CATALOGO_MUNI360 = [
       { nombre: "Colonia", esBase: true, tieneComida: true,  gestos: ["Participación y entusiasmo", "Respeto de consignas", "Trabajo en equipo", "Coordinación motriz", "Adaptación al agua", "Autonomía personal", "Resolución de conflictos"] },
       { nombre: "COYFD",   esBase: true, tieneComida: false, gestos: ["Coordinación óculo-manual", "Coordinación óculo-pédica", "Equilibrio y desplazamientos", "Giro y salto", "Cooperación en juego", "Comprensión de reglas", "Tolerancia al contacto"] },
@@ -1159,11 +1274,6 @@
       const profe = $('login-profe').value.trim();
       const clave = $('login-pass').value.trim();
 
-      if (clave.toLowerCase() === 'demo1234') {
-        window.cargarDemoVideoUGI('demo1234');
-        return;
-      }
-
       if (!areaElegidaLogin) {
         $('login-error').textContent = "Elegí primero un Deporte, Colonia o COYFD.";
         return;
@@ -1173,11 +1283,15 @@
         return;
       }
 
+      // Atajo instantáneo para modo demo
+      if (clave.toLowerCase() === 'demo1234') {
+        cargarDemoVideoUGI('demo1234');
+        return;
+      }
+
       const btn = e.target.querySelector('button[type="submit"]');
       btn.disabled = true;
       $('login-error').textContent = "Validando acceso seguro...";
-
-      const targetArea = (areaElegidaLogin === "TODOS" || !areaElegidaLogin) ? "Básquet Caballeros" : areaElegidaLogin;
 
       try {
         const res = await fetch(URL_SCRIPT_DEPORTES, {
@@ -1185,40 +1299,36 @@
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({
             tipo: 'LOGIN',
-            deporte: targetArea,
+            deporte: areaElegidaLogin === "TODOS" ? "Básquet Caballeros" : areaElegidaLogin,
             clave: clave
           })
         });
         const data = await res.json();
-
         if (data && data.ok) {
+          localStorage.removeItem('muni360_modo_demo');
           iniciarSesion({
-            area: targetArea,
+            area: areaElegidaLogin === "TODOS" ? "Básquet Caballeros" : areaElegidaLogin,
             esAdminTotal: Boolean(data.esAdminTotal),
             rol: data.rol || "Profe",
             profeNombre: profe,
             token: data.token || ""
           });
         } else {
-          $('login-error').textContent = (data && data.error) ? data.error : "Contraseña incorrecta. Usá 'muni360' (Dirección UGI), 'coordugi' (Coordinación) o 'profeugi' (Profes).";
+          $('login-error').textContent = (data && data.error) ? data.error : "Contraseña incorrecta.";
         }
-      } catch (err) {
-        console.warn('Servidor offline o bloqueado, validando clave localmente:', err);
+      } catch (_) {
+        // Soporte offline con claves estándar de respaldo si no hay internet
         const c = clave.toLowerCase();
-        if (c === 'muni360') {
+        const targetArea = areaElegidaLogin === "TODOS" ? "Básquet Caballeros" : areaElegidaLogin;
+        if (c === 'ugi2026' || c === 'argon2026') {
           iniciarSesion({ area: targetArea, esAdminTotal: true, rol: "Dirección UGI", profeNombre: profe });
-          toast("✓ Ingreso concedido (Dirección UGI · Modo seguro)");
-          return;
-        } else if (c === 'coordugi') {
-          iniciarSesion({ area: targetArea, esAdminTotal: false, rol: "Coordinación", profeNombre: profe });
-          toast("✓ Ingreso concedido (Coordinación · Modo seguro)");
-          return;
-        } else if (c === 'profeugi' || c.endsWith('muni')) {
+          toast("✓ Ingreso concedido (Dirección UGI · Modo offline)");
+        } else if (c === 'profeugi') {
           iniciarSesion({ area: targetArea, esAdminTotal: false, rol: "Profe", profeNombre: profe });
-          toast("✓ Ingreso concedido (Profe · Modo seguro)");
-          return;
+          toast("✓ Ingreso concedido (Profe · Modo offline)");
+        } else {
+          $('login-error').textContent = "No se pudo verificar con el servidor. Revisá tu señal de internet.";
         }
-        $('login-error').textContent = "Contraseña no válida o sin conexión. Claves válidas: 'muni360' (Dirección UGI), 'coordugi' (Coordinación), 'profeugi' (Profes).";
       } finally {
         btn.disabled = false;
       }
@@ -1244,6 +1354,7 @@
       actualizarCabeceraYPestanas();
       cargarAreaActiva();
       renderGuiaUgi();
+      renderPlanificadorDua();
       renderHistorialUgiLocal();
     }
 
@@ -1252,6 +1363,7 @@
       localStorage.removeItem('muni360_modo_demo');
       sesion = null;
       $('login-pass').value = "";
+      $('estado-acciones').innerHTML = "";
       ['app-header', 'barra-estado', 'app-screen'].forEach(id => $(id).classList.add('hidden'));
       $('login-screen').classList.remove('hidden');
     });
@@ -1284,8 +1396,360 @@
     });
 
     // =========================================================================
-    // 5. CARGA DE DATOS DESDE GOOGLE SHEETS (UNIFICADO PARA TODOS)
+    // 5. PASAPORTE DUA + LEGAJO DNI OCULTO + PLANIFICADOR EXPRESS
     // =========================================================================
+    const DUA_DEFAULT = {
+      "Acosta, Mateo (🧩 DUA)": {
+        comunicacion: "Frases cortas de 1 o 2 pasos. Anticiparle 1 minuto antes cuando va a cambiar el ejercicio.",
+        desborda: "Hipersensibilidad al silbato fuerte cerca y esperas largas en fila sin pelota.",
+        regula: "Darle el rol de 'encargado de conos/pelotas' o 2 minutos de hidratación en Zona de Calma."
+      },
+      "Acosta, Mateo": {
+        comunicacion: "Frases cortas de 1 o 2 pasos. Anticiparle 1 minuto antes cuando va a cambiar el ejercicio.",
+        desborda: "Hipersensibilidad al silbato fuerte cerca y esperas largas en fila sin pelota.",
+        regula: "Darle el rol de 'encargado de conos/pelotas' o 2 minutos de hidratación en Zona de Calma."
+      }
+    };
+
+    const DUA_DNI_DEMO = {
+      "acosta, mateo": "48512390",
+      "benítez, tomás": "48901234",
+      "domínguez, lucas": "49102345",
+      "fernández, joaquín": "48765432",
+      "gómez, bautista": "49321654",
+      "lópez, santino": "48654987",
+      "martínez, valentino": "49012876"
+    };
+
+    function nombreBaseDua(j) {
+      return String(j || '').replace(/\s*\(🧩\s*DUA\)\s*/i, '').trim();
+    }
+
+    function claveNombreDni(j) {
+      return nombreBaseDua(j).toLowerCase();
+    }
+
+    function leerMapaDua() {
+      try {
+        const guardado = JSON.parse(localStorage.getItem('muni360_dua_' + areaActiva) || '{}');
+        return { ...DUA_DEFAULT, ...guardado };
+      } catch (_) { return { ...DUA_DEFAULT }; }
+    }
+
+    function guardarMapaDua(mapa) {
+      localStorage.setItem('muni360_dua_' + areaActiva, JSON.stringify(mapa));
+    }
+
+    function obtenerFichaDua(jugador) {
+      const mapa = leerMapaDua();
+      return mapa[jugador] || mapa[nombreBaseDua(jugador)] || (String(jugador).includes('DUA') ? DUA_DEFAULT["Acosta, Mateo"] : null);
+    }
+
+    function leerMapaDni() {
+      try {
+        const local = JSON.parse(localStorage.getItem('muni360_dni_' + areaActiva) || '{}');
+        const mapa = { ...local };
+        if (localStorage.getItem('muni360_modo_demo') === '1') {
+          Object.entries(DUA_DNI_DEMO).forEach(([k, v]) => { if (!mapa[k]) mapa[k] = v; });
+        }
+        (datosDeporte.padron || []).forEach(p => {
+          if (p.dni) mapa[claveNombreDni(p.jugador)] = String(p.dni).replace(/\D/g, '');
+        });
+        return mapa;
+      } catch (_) { return {}; }
+    }
+
+    function guardarDniJugador(jugador, dniLimpio) {
+      const k = claveNombreDni(jugador);
+      const local = JSON.parse(localStorage.getItem('muni360_dni_' + areaActiva) || '{}');
+      if (dniLimpio) local[k] = dniLimpio;
+      else delete local[k];
+      localStorage.setItem('muni360_dni_' + areaActiva, JSON.stringify(local));
+
+      (datosDeporte.padron || []).forEach(p => {
+        if (claveNombreDni(p.jugador) === k) p.dni = dniLimpio;
+      });
+      localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
+    }
+
+    function obtenerDni(jugador) {
+      const mapa = leerMapaDni();
+      return mapa[claveNombreDni(jugador)] || '';
+    }
+
+    function extraerNombreYDni(linea) {
+      let txt = String(linea || '').trim();
+      if (!txt) return null;
+      let dni = '';
+      const match = txt.match(/^(.*?)(?:[\s,|;:\-\/]+|\()(\d{1,2}\.?\d{3}\.?\d{3}|\d{7,8})\)?$/);
+      if (match && match[1].trim()) {
+        txt = match[1].trim();
+        dni = match[2].replace(/\D/g, '');
+      }
+      return { jugador: txt, dni };
+    }
+
+    $('dua-modal').addEventListener('click', e => {
+      if (e.target === $('dua-modal')) $('dua-modal').classList.add('hidden');
+    });
+
+    window.verPasaporteDUA = function (jugador) {
+      const f = obtenerFichaDua(jugador);
+      if (!f) return;
+      $('dua-modal-body').innerHTML = `
+        <div class="spread" style="margin-bottom:12px;">
+          <div>
+            <span class="login-pill" style="margin:0;">Pasaporte Funcional DUA</span>
+            <h3 style="font-size:1.1rem; color:var(--navy); margin-top:4px;">🧩 ${esc(nombreBaseDua(jugador))}</h3>
+          </div>
+          <button type="button" class="btn-sec" onclick="$('dua-modal').classList.add('hidden')">✕ Cerrar</button>
+        </div>
+        <div class="dua-item-box">
+          <strong>🗣️ 1. Comunicación y Consignas</strong>
+          <div>${esc(f.comunicacion || 'Sin especificar')}</div>
+        </div>
+        <div class="dua-item-box" style="border-left: 4px solid #f59e0b;">
+          <strong>⚡ 2. Qué evitar / Qué lo desborda</strong>
+          <div>${esc(f.desborda || 'Sin especificar')}</div>
+        </div>
+        <div class="dua-item-box" style="border-left: 4px solid #16a34a; background:#f0fdf4;">
+          <strong>🟢 3. Qué lo regula en cancha (Acción del Profe)</strong>
+          <div>${esc(f.regula || 'Sin especificar')}</div>
+        </div>
+        <p class="hint" style="margin:6px 0 0; font-size:0.72rem; text-align:center;">
+          Perfil pedagógico de accesibilidad (Ley 25.326 · Sin diagnósticos clínicos).
+        </p>
+      `;
+      $('dua-modal').classList.remove('hidden');
+    };
+
+    window.editarPasaporteDUA = function (jugador) {
+      const f = obtenerFichaDua(jugador) || { comunicacion: '', desborda: '', regula: '' };
+      $('dua-modal-body').innerHTML = `
+        <div class="spread" style="margin-bottom:10px;">
+          <h3 style="font-size:1.05rem; color:var(--navy);">🧩 Configurar Apoyos DUA · ${esc(nombreBaseDua(jugador))}</h3>
+          <button type="button" class="btn-sec" onclick="$('dua-modal').classList.add('hidden')">✕</button>
+        </div>
+        <div class="field">
+          <label>🗣️ 1. Comunicación y consignas que le sirven</label>
+          <input type="text" id="dua-in-com" placeholder="Ej: Consignas cortas, apoyo visual, anticipar cambios..." value="${esc(f.comunicacion)}">
+        </div>
+        <div class="field">
+          <label>⚡ 2. Disparadores sensoriales o qué evitar</label>
+          <input type="text" id="dua-in-des" placeholder="Ej: Silbato fuerte, esperas largas en fila, gritos..." value="${esc(f.desborda)}">
+        </div>
+        <div class="field">
+          <label>🟢 3. Herramienta de calma / Qué lo regula en cancha</label>
+          <input type="text" id="dua-in-reg" placeholder="Ej: Ser ayudante de materiales, pausa de 2 min en Zona de Calma..." value="${esc(f.regula)}">
+        </div>
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <button type="button" class="btn ok" id="btn-dua-save">Guardar Pasaporte DUA</button>
+          <button type="button" class="quitar" id="btn-dua-del" style="padding:0 14px;">Borrar</button>
+        </div>
+      `;
+      $('dua-modal').classList.remove('hidden');
+
+      $('btn-dua-save').onclick = () => {
+        const com = $('dua-in-com').value.trim();
+        const des = $('dua-in-des').value.trim();
+        const reg = $('dua-in-reg').value.trim();
+        const mapa = leerMapaDua();
+        if (com || des || reg) {
+          mapa[jugador] = { comunicacion: com, desborda: des, regula: reg };
+          mapa[nombreBaseDua(jugador)] = { comunicacion: com, desborda: des, regula: reg };
+        }
+        guardarMapaDua(mapa);
+        $('dua-modal').classList.add('hidden');
+        renderVistaActiva();
+        toast(`✓ Pasaporte DUA de ${nombreBaseDua(jugador)} actualizado`);
+      };
+
+      $('btn-dua-del').onclick = () => {
+        const mapa = leerMapaDua();
+        delete mapa[jugador];
+        delete mapa[nombreBaseDua(jugador)];
+        guardarMapaDua(mapa);
+        $('dua-modal').classList.add('hidden');
+        renderVistaActiva();
+        toast(`Ficha DUA quitada`);
+      };
+    };
+
+    window.abrirLegajoPrivadoUGI = function (jugador) {
+      if (!esCoordOAdmin()) return;
+      const dniActual = obtenerDni(jugador);
+      const cat = $('sel-categoria').value;
+      const eq  = cfgActual().esBase ? 'General' : ($('sel-equipo').value || 'General');
+
+      const regsAsist = (datosDeporte.asistencia || []).filter(a => claveNombreDni(a.jugador) === claveNombreDni(jugador));
+      const pres = regsAsist.filter(a => String(a.estado).startsWith('P') || String(a.estado).startsWith('T')).length;
+      const pctAsist = regsAsist.length ? Math.round((pres / regsAsist.length) * 100) + '%' : 'S/D';
+      const amarillas = regsAsist.filter(a => String(a.estado).includes('Sem:A')).length;
+      const rojas     = regsAsist.filter(a => String(a.estado).includes('Sem:R')).length;
+
+      const evalsJ = (datosDeporte.evaluaciones || []).filter(e => claveNombreDni(e.jugador) === claveNombreDni(jugador));
+      let s = 0, c = 0;
+      evalsJ.forEach(e => Object.values(e.notas || {}).forEach(n => { if (Number(n) > 0) { s += Number(n); c++; } }));
+      const promGral = c ? (s / c).toFixed(1) : 'S/D';
+
+      const notasLegajo = JSON.parse(localStorage.getItem('muni360_notas_legajo') || '{}');
+      const obsPrivada = notasLegajo[dniActual || claveNombreDni(jugador)] || '';
+
+      $('dua-modal-body').innerHTML = `
+        <div class="spread" style="margin-bottom:10px;">
+          <div>
+            <span class="login-pill" style="margin:0;">Legajo Único Privado · UGI</span>
+            <h3 style="font-size:1.1rem; color:var(--navy); margin-top:4px;">🗂️ ${esc(nombreBaseDua(jugador))}</h3>
+          </div>
+          <button type="button" class="btn-sec" onclick="$('dua-modal').classList.add('hidden')">✕</button>
+        </div>
+
+        <div class="field" style="background:#f8fafc; padding:10px 12px; border-radius:11px; border:1px solid #cbd5e1;">
+          <label for="legajo-input-dni">🪪 Número de DNI (Oculto en cancha · Guardado en última columna del Padrón)</label>
+          <input type="text" id="legajo-input-dni" inputmode="numeric" placeholder="Sin puntos (ej: 48123456)" value="${esc(dniActual)}" style="min-height:40px; font-weight:800;">
+        </div>
+
+        <div class="legajo-grid">
+          <div class="legajo-stat"><b>${pctAsist}</b><span>Asistencia (${regsAsist.length} cl.)</span></div>
+          <div class="legajo-stat"><b>${promGral}</b><span>Prom. Técnico/4C</span></div>
+          <div class="legajo-stat"><b>🟡 ${amarillas} · 🔴 ${rojas}</b><span>Semáforo Acum.</span></div>
+        </div>
+
+        <div class="field">
+          <label for="legajo-input-obs">🔒 Observaciones privadas de Coordinación / UGI (No visible para profes)</label>
+          <textarea id="legajo-input-obs" style="min-height:75px; font-size:0.84rem;" placeholder="Acuerdos con la familia (Anexo A), Plan A/B, seguimiento interdisciplinario...">${esc(obsPrivada)}</textarea>
+        </div>
+
+        <button type="button" class="btn ok" id="btn-guardar-legajo">Guardar DNI y Legajo Privado</button>
+      `;
+      $('dua-modal').classList.remove('hidden');
+
+      $('btn-guardar-legajo').onclick = async () => {
+        const nuevoDni = $('legajo-input-dni').value.replace(/\D/g, '').trim();
+        const nuevaObs = $('legajo-input-obs').value.trim();
+
+        guardarDniJugador(jugador, nuevoDni);
+        const mapNotas = JSON.parse(localStorage.getItem('muni360_notas_legajo') || '{}');
+        mapNotas[nuevoDni || claveNombreDni(jugador)] = nuevaObs;
+        localStorage.setItem('muni360_notas_legajo', JSON.stringify(mapNotas));
+
+        $('dua-modal').classList.add('hidden');
+        renderVistaActiva();
+        toast(`✓ Legajo y DNI de ${nombreBaseDua(jugador)} guardados`);
+
+        if (nuevoDni && localStorage.getItem('muni360_modo_demo') !== '1') {
+          try {
+            await fetch(URL_SCRIPT_DEPORTES, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({
+                tipo: 'ALTA_PADRON',
+                token: sesion?.token || '',
+                deporte: areaActiva,
+                categoria: cat,
+                equipo: eq,
+                jugadores: [ { jugador, dni: nuevoDni } ]
+              })
+            });
+          } catch (_) {}
+        }
+      };
+    };
+
+    // Adaptaciones DUA en 3 pasos
+    const DUA_ADAPTACIONES = {
+      "Definición y tiro": {
+        "Chico que no tolera la fila": {
+          paso1: "Dividir en 3 estaciones simultáneas en semicírculo con 2 o 3 jugadores por estación.",
+          paso2: "El que tira va directo a buscar la pelota y le pasa al siguiente; ritmo continuo sin esperas quietos.",
+          paso3: "Regla visual: tirar cuando el arquero o cono muestre color habilitado."
+        },
+        "Chico en Fuego (baja tolerancia a frustración)": {
+          paso1: "Definición con meta ampliada o arco con zonas de bonus donde cualquier tiro al marco suma.",
+          paso2: "Regla de revancha instantánea: si erra, tiene 1 segundo para tomar el rebote y corregir.",
+          paso3: "El profe refuerza la mecánica de salida antes de que la pelota llegue al arco."
+        },
+        "Grupo disperso o nivel muy desparejo": {
+          paso1: "Dos distancias de remate (cono verde a 5m, cono azul a 8m); cada deportista elige su desafío.",
+          paso2: "Consigna en parejas: uno asiste con pase medido y el otro define a un toque.",
+          paso3: "Cuenta regresiva de 4 segundos para armar el tiro desde que recibe."
+        }
+      },
+      "Pase y recepción bajo presión": {
+        "Chico que no tolera la fila": {
+          paso1: "Rondo o rueda continua de pases donde todos tienen contacto con el elemento en menos de 5 segundos.",
+          paso2: "Uso de 2 pelotas/bochas en simultáneo para mantener el escaneo visual al 100%.",
+          paso3: "Rotación constante de defensor al interceptar."
+        },
+        "Chico en Fuego (baja tolerancia a frustración)": {
+          paso1: "Otorgar rol de comodín exterior por 3 minutos (no puede ser presionado de espaldas).",
+          paso2: "Puntuar la decisión de pase libre aunque el compañero no controle.",
+          paso3: "Palabra clave de reseteo: si pierde la pelota, toca el piso y ya busca interceptar."
+        },
+        "Grupo disperso o nivel muy desparejo": {
+          paso1: "Defensor condicionado: solo puede interceptar con sombra sin contacto por los primeros 3 pases.",
+          paso2: "Dirección de pase obligatoria hacia donde no haya presión acumulada.",
+          paso3: "Bonificar con 2 puntos el pase filtrado que rompe línea."
+        }
+      },
+      "Táctica fija y posiciones": {
+        "Chico que no tolera la fila": {
+          paso1: "Marcar zonas en el piso con conos de colores vivos para dar anclaje espacial inmediato.",
+          paso2: "Simulación de jugada a ritmo real en bloques de 15 segundos sin parates largos a hablar.",
+          paso3: "Asignarle la primera acción (sacador o receptor inicial)."
+        },
+        "Chico en Fuego (baja tolerancia a frustración)": {
+          paso1: "Ensayar primero sin oposición defensiva para consolidar la confianza motriz.",
+          paso2: "Celebrar colectivamente cuando la pelota viaja por las 3 zonas planificadas.",
+          paso3: "Si la jugada se traba, se reinicia cantando 'vamos de nuevo' sin buscar culpables."
+        },
+        "Grupo disperso o nivel muy desparejo": {
+          paso1: "Consigna visual: cada jugador debe pisar su cuadrante antes del pase de apertura.",
+          paso2: "Pausas de 5 segundos donde el profe congela la jugada y pregunta: '¿dónde está el hombre libre?'.",
+          paso3: "Rotar las posiciones cada 4 repeticiones para que todos vivan la toma de decisión."
+        }
+      },
+      "1 vs 1 y duelo defensivo": {
+        "Chico que no tolera la fila": {
+          paso1: "Armar 4 microcanchas o pasillos paralelos para que haya 4 duelos al mismo tiempo.",
+          paso2: "Tiempo límite: cada duelo dura 6 segundos cronometrados; quien no resuelve pasa a defender.",
+          paso3: "Transición inmediata: al terminar, trote suave por afuera y entra al siguiente pasillo."
+        },
+        "Chico en Fuego (baja tolerancia a frustración)": {
+          paso1: "El defensor recupera sin chocar bruscamente (marca orientada a quitar espacio, no a derribar).",
+          paso2: "Si el atacante pierde el control pero persigue la pelota en los primeros 2 segundos, gana 1 punto de actitud.",
+          paso3: "Choque de manos obligatorio antes de cada duelo."
+        },
+        "Grupo disperso o nivel muy desparejo": {
+          paso1: "Nivelar duelos por velocidad o contextura inicial para que la exigencia sea justa.",
+          paso2: "Otorgar al atacante una finta permitida y al defensor la meta de canalizar hacia la línea lateral.",
+          paso3: "Premiar el esfuerzo defensivo tanto como el desborde ofensivo."
+        }
+      }
+    };
+
+    function renderPlanificadorDua() {
+      const obj = $('dua-plan-obj').value;
+      const des = $('dua-plan-des').value;
+      const adapt = DUA_ADAPTACIONES[obj]?.[des] || {
+        paso1: "Reducir la espera organizando subgrupos simultáneos de 3 o 4 deportistas.",
+        paso2: "Brindar consigna visual clara con conos o marcas en el piso.",
+        paso3: "Reforzar el esfuerzo inmediato y la actitud en verde."
+      };
+
+      $('dua-plan-resultado').innerHTML = `
+        <div style="font-weight:800; color:var(--blue); font-size:0.92rem; margin-bottom:8px;">
+          🧩 Adaptación en 3 pasos: ${esc(obj)} frente a "${esc(des)}"
+        </div>
+        <div style="font-size:0.86rem; margin-bottom:5px;"><strong>Paso 1 (Estructura espacial):</strong> ${esc(adapt.paso1)}</div>
+        <div style="font-size:0.86rem; margin-bottom:5px;"><strong>Paso 2 (Regla pedagógica):</strong> ${esc(adapt.paso2)}</div>
+        <div style="font-size:0.86rem; margin-bottom:2px;"><strong>Paso 3 (Acción del profe):</strong> ${esc(adapt.paso3)}</div>
+      `;
+    }
+
+    $('dua-plan-obj').addEventListener('change', renderPlanificadorDua);
+    $('dua-plan-des').addEventListener('change', renderPlanificadorDua);
+
     async function cargarAreaActiva() {
       window._asistKeyActual = null;
       const d = areaActiva;
@@ -1294,11 +1758,12 @@
       renderVistaActiva();
 
       if (localStorage.getItem('muni360_modo_demo') === '1') {
-        $('estado-txt').innerHTML = `🎭 <strong>MODO DEMO ACTIVO</strong> (Datos de muestra para video/reunión)`;
+        $('estado-txt').innerHTML = `🎬 <strong>MODO DEMO ACTIVO</strong> (Datos de muestra para video/reunión)`;
         $('estado-acciones').innerHTML = `<button type="button" class="btn-sec" style="font-size:0.75rem; padding:3px 10px; background:#fff; color:#c62828; border-color:#e17c6b;" onclick="salirModoDemo()">✕ Salir de Demo</button>`;
         return;
       }
 
+      $('estado-acciones').innerHTML = '';
       $('estado-txt').textContent = `● Sincronizando con el Sheet de ${d}...`;
       try {
         const r = await fetch(`${URL_SCRIPT_DEPORTES}?deporte=${encodeURIComponent(d)}&token=${encodeURIComponent(sesion?.token || '')}`);
@@ -1308,7 +1773,7 @@
             padron: j.padron || [],
             evaluaciones: j.evaluaciones || [],
             asistencia: j.asistencia || [],
-            gestos: j.gestos,
+            gestos: (j.gestos && j.gestos.length) ? j.gestos : datosDeporte.gestos,
             email: j.email || ''
           };
           localStorage.setItem('muni360_cache_' + d, JSON.stringify(datosDeporte));
@@ -1366,7 +1831,7 @@
     }
 
     // =========================================================================
-    // 6. PESTAÑA 1: ASISTENCIA + COMIDA (COLONIA) + SEMÁFORO UGI
+    // 6. PESTAÑA 1: ASISTENCIA + COMIDA (COLONIA) + SEMÁFORO UGI + BOTÓN DUA
     // =========================================================================
     function renderAsistencia() {
       const cfg = cfgActual();
@@ -1377,14 +1842,13 @@
 
       $('titulo-lista-asist').textContent = `Lista de asistencia · ${cat || areaActiva} ${!cfg.esBase && eq ? '(' + eq + ')' : ''}`;
       const lista = plantelActualNombres();
-
       const currentKey = `${areaActiva}|${cat}|${eq}|${fecha}`;
+
       if (window._asistKeyActual !== currentKey) {
         window._asistKeyActual = currentKey;
         asistTempDep = {};
         comidaTempDep = {};
         semTempDep = {};
-
         datosDeporte.asistencia
           .filter(a => a.categoria === cat && (a.equipo || 'General') === eq && a.fecha === fecha)
           .forEach(a => {
@@ -1393,7 +1857,6 @@
             comidaTempDep[a.jugador] = valor.includes('Comida');
             if (valor.includes('Sem:A')) semTempDep[a.jugador] = 'A';
             else if (valor.includes('Sem:R')) semTempDep[a.jugador] = 'R';
-            else if (valor.includes('Sem:V')) semTempDep[a.jugador] = 'V';
             else semTempDep[a.jugador] = 'V';
           });
       }
@@ -1428,9 +1891,14 @@
         return;
       }
 
-      $('lista-asist').innerHTML = filtrados.map(j => `
+      $('lista-asist').innerHTML = filtrados.map(j => {
+        const fichaDua = obtenerFichaDua(j);
+        const btnDuaHtml = (fichaDua && (fichaDua.comunicacion || fichaDua.desborda || fichaDua.regula))
+          ? `<button type="button" class="btn-dua-badge" data-dua-ver="${esc(j)}">🧩 Ver apoyo DUA</button>`
+          : '';
+        return `
         <div class="asist-row" data-jugador="${esc(j)}">
-          <div class="asist-name">${esc(j)}</div>
+          <div class="asist-name">${esc(nombreBaseDua(j))} ${btnDuaHtml}</div>
           <div class="asist-controls">
             ${cfg.tieneComida ? `<button type="button" class="comida-btn" data-action="comida" aria-pressed="${comidaTempDep[j] && asistTempDep[j] !== 'A'}">🍴 ${comidaTempDep[j] && asistTempDep[j] !== 'A' ? 'Comida' : 'Sin comida'}</button>` : ''}
             <div class="sem-group" title="Semáforo Conductual UGI">
@@ -1444,12 +1912,20 @@
               <button type="button" data-e="T" aria-pressed="${asistTempDep[j] === 'T'}">T</button>
             </div>
           </div>
-        </div>`).join('');
+        </div>`;
+      }).join('');
     }
 
     $('buscar-alumno-asist').addEventListener('input', renderAsistencia);
 
     $('lista-asist').addEventListener('click', e => {
+      const btnDua = e.target.closest('button[data-dua-ver]');
+      if (btnDua) {
+        e.stopPropagation();
+        window.verPasaporteDUA(btnDua.dataset.duaVer);
+        return;
+      }
+
       const row = e.target.closest('.asist-row');
       if (!row) return;
       const j = row.dataset.jugador;
@@ -1489,6 +1965,7 @@
       const cfg = cfgActual();
       const fecha = $('input-fecha').value;
       const clima = $('sel-clima-clase').value;
+      const puntos = $('sel-puntos-ciudad').value;
       const lista = plantelActualNombres();
       if (!lista.length) return;
 
@@ -1509,29 +1986,30 @@
       });
       localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
 
-      if (localStorage.getItem('muni360_modo_demo') === '1') {
-        toast(`✓ Demo: Asistencia guardada (modo presentación)`);
-        return;
-      }
-
-      try {
-        await fetch(URL_SCRIPT_DEPORTES, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            tipo: 'ASISTENCIA',
-            token: sesion?.token || '',
-            profe: sesion?.profeNombre || '',
-            deporte: areaActiva,
-            fecha,
-            categoria: cat,
-            equipo: eq,
-            datos: registro
-          })
-        });
-        toast(`✓ Asistencia de ${areaActiva} guardada en el Sheet`);
-      } catch (_) {
-        toast(`✓ Guardada en el dispositivo (se enviará al recuperar señal)`);
+      if (localStorage.getItem('muni360_modo_demo') !== '1') {
+        try {
+          await fetch(URL_SCRIPT_DEPORTES, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              tipo: 'ASISTENCIA',
+              token: sesion?.token || '',
+              profe: sesion?.profeNombre || '',
+              deporte: areaActiva,
+              fecha,
+              categoria: cat,
+              equipo: eq,
+              puntosCiudad: puntos,
+              clima: clima,
+              datos: registro
+            })
+          });
+          toast(`✓ Asistencia de ${areaActiva} guardada en el Sheet`);
+        } catch (_) {
+          toast(`✓ Guardada en el dispositivo (se enviará al recuperar señal)`);
+        }
+      } else {
+        toast(`✓ Asistencia guardada en Modo Demo`);
       }
 
       if (clima === "Fuego") {
@@ -1552,7 +2030,7 @@
     });
 
     // =========================================================================
-    // 7. PESTAÑA 2: EVALUACIÓN TÉCNICA, ARQUERO Y 4C UGI
+    // 7. PESTAÑA 2: EVALUACIÓN TÉCNICA, ARQUERO, 4C UGI Y TARJETA VERDE DIGITAL
     // =========================================================================
     function tieneArqueroActual() {
       return Boolean(cfgActual().arquero);
@@ -1567,7 +2045,14 @@
     }
 
     function evalDeJugador(jugador, fecha) {
-      return datosDeporte.evaluaciones.find(e => e.jugador === jugador && e.fecha === fecha);
+      const cat = $('sel-categoria').value;
+      const eq  = $('sel-equipo').value || 'General';
+      return datosDeporte.evaluaciones.find(e =>
+        e.jugador === jugador &&
+        e.fecha === fecha &&
+        (!e.categoria || e.categoria === cat) &&
+        (!e.equipo || (e.equipo || 'General') === eq)
+      );
     }
 
     function renderEvaluacion() {
@@ -1576,7 +2061,7 @@
       $('lista-eval').innerHTML = lista.length
         ? lista.map((j, i) => `
             <button type="button" class="jugador" data-i="${i}" aria-pressed="${j === jugadorActivo}">
-              <span>${esc(j)}</span>
+              <span>${esc(nombreBaseDua(j))}</span>
               ${evalDeJugador(j, fecha) ? '<span class="tag">✓ Evaluado</span>' : ''}
             </button>`).join('')
         : `<p class="hint" style="text-align:center; padding:14px 0;">No hay deportistas cargados en este grupo.</p>`;
@@ -1597,7 +2082,7 @@
       puestoEval = (tieneArqueroActual() && eraArq) ? 'arquero' : 'campo';
 
       renderEvaluacion();
-      $('jugador-activo').textContent = jugador;
+      $('jugador-activo').textContent = nombreBaseDua(jugador);
       $('switch-puesto').classList.toggle('hidden', !tieneArqueroActual());
       renderFilasGestos();
       $('panel-gestos').classList.remove('hidden');
@@ -1656,7 +2141,8 @@
         delete notasTemp[g];
         $(`stepper-${gi}`).classList.remove('con-valor');
       } else {
-        notasTemp[g] = Math.max(1, Math.min(10, n));
+        const val = Math.max(1, Math.min(10, Math.round(n * 10) / 10));
+        notasTemp[g] = val;
         $(`stepper-${gi}`).classList.add('con-valor');
       }
     });
@@ -1694,7 +2180,7 @@
         } catch (_) {}
       }
 
-      toast(`✓ ${jugadorActivo} evaluado`);
+      toast(`✓ ${nombreBaseDua(jugadorActivo)} evaluado`);
       const pl = plantelActualNombres();
       const idx = pl.indexOf(jugadorActivo);
       const sig = [...pl.slice(idx + 1), ...pl.slice(0, idx)].find(j => !evalDeJugador(j, fecha));
@@ -1705,6 +2191,45 @@
         renderEvaluacion();
         toast("¡Plantel completo evaluado!");
       }
+    });
+
+    $('btn-tarjeta-verde').addEventListener('click', () => {
+      if (!jugadorActivo) { toast("Elegí primero un deportista"); return; }
+      const jBase = nombreBaseDua(jugadorActivo);
+      $('dua-modal-body').innerHTML = `
+        <div class="spread" style="margin-bottom:10px;">
+          <div>
+            <span class="login-pill" style="background:#dcfce7; color:#166534; border-color:#86efac;">Reconocimiento UGI</span>
+            <h3 style="font-size:1.15rem; color:#166534; margin-top:4px;">🟢 Tarjeta Verde Digital</h3>
+          </div>
+          <button type="button" class="btn-sec" onclick="$('dua-modal').classList.add('hidden')">✕</button>
+        </div>
+        <p style="font-size:0.88rem; color:#1e293b; margin-bottom:12px;">
+          Mención al mérito actitudinal y de convivencia para <strong>${esc(jBase)}</strong>:
+        </p>
+        <div class="field">
+          <label>Motivo de la distinción</label>
+          <select id="sel-motivo-verde">
+            <option value="Tolerancia ejemplar al error o frustración">Tolerancia ejemplar al error o frustración</option>
+            <option value="Compañerismo y respaldo a un compañero que falló">Compañerismo y respaldo a un compañero</option>
+            <option value="Resolución pacífica de un roce o conflicto">Resolución pacífica de un conflicto</option>
+            <option value="Superación y entrega máxima en la práctica">Superación y entrega máxima</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Mensaje para el deportista y su familia (opcional)</label>
+          <input type="text" id="nota-verde" placeholder="Ej: Gran actitud en el cierre del entrenamiento...">
+        </div>
+        <button type="button" class="btn ok" id="btn-confirmar-verde">Registrar Tarjeta Verde</button>
+      `;
+      $('dua-modal').classList.remove('hidden');
+
+      $('btn-confirmar-verde').onclick = () => {
+        $('dua-modal').classList.add('hidden');
+        toast(`🟢 Tarjeta Verde asignada a ${jBase}`);
+        semTempDep[jugadorActivo] = 'V';
+        renderAsistencia();
+      };
     });
 
     // =========================================================================
@@ -1788,7 +2313,7 @@
               <div><strong>${esc(x.fecha)}</strong> · ${esc(x.categoria)} (${esc(x.profe)})</div>
               <div style="font-size:0.78rem; color:var(--muted);">${esc(x.foco)} — ${esc(x.checklist)} ${x.nota ? '| ' + esc(x.nota) : ''}</div>
             </div>`).join('')
-        : `<p class="hint">Todavía no registraste sesiones en este teléfono.</p>`;
+        : `<p class="hint">Todavía no registraste sesiones en este dispositivo.</p>`;
     }
 
     // =========================================================================
@@ -1835,7 +2360,7 @@
         const enAlerta = (prom !== null && prom < 6) || (pct !== null && pct < 70);
         if (enAlerta) alertas++;
         return {
-          Deportista: jugador,
+          Deportista: nombreBaseDua(jugador),
           Promedio: prom !== null ? prom.toFixed(1) : '-',
           ATrabajar: prom !== null && peorP <= 6 ? peorG : 'Parejo',
           Asistencia: pct !== null ? pct + '%' : '-',
@@ -1869,7 +2394,7 @@
     });
 
     // =========================================================================
-    // 10. PESTAÑA 5: PADRÓN (CARGA TEXTO + SUBIDA EXCEL .XLSX)
+    // 10. PESTAÑA 5: PADRÓN (CARGA TEXTO CON DNI + SUBIDA EXCEL .XLSX + DUA)
     // =========================================================================
     function renderPadron() {
       if (!esCoordOAdmin()) return;
@@ -1880,11 +2405,23 @@
       $('wrap-reset-general').classList.toggle('hidden', !sesion?.esAdminTotal);
 
       $('lista-padron').innerHTML = lista.length
-        ? lista.map((j, i) => `
+        ? lista.map((j, i) => {
+            const dniVal = obtenerDni(j);
+            const tieneFichaDua = Boolean(obtenerFichaDua(j));
+            return `
             <div class="item">
-              <span>${esc(j)}</span>
-              <button type="button" class="quitar" data-i="${i}">Quitar</button>
-            </div>`).join('')
+              <div>
+                <strong>${esc(nombreBaseDua(j))}</strong>
+                ${tieneFichaDua ? '<span class="pill v" style="font-size:0.68rem; margin-left:6px;">🧩 DUA</span>' : ''}
+                ${dniVal ? `<span class="pill" style="background:#e0f2fe; color:#0369a1; font-size:0.68rem; margin-left:4px;">DNI: ${esc(dniVal)}</span>` : ''}
+              </div>
+              <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button type="button" class="btn-dua-edit" onclick="editarPasaporteDUA('${esc(j)}')">🧩 DUA</button>
+                <button type="button" class="btn-legajo-dni ${dniVal ? 'con-dni' : ''}" onclick="abrirLegajoPrivadoUGI('${esc(j)}')">🪪 Legajo</button>
+                <button type="button" class="quitar" data-i="${i}">Quitar</button>
+              </div>
+            </div>`;
+          }).join('')
         : `<p class="hint">Grupo sin inscriptos.</p>`;
 
       $('padron-cat').value = $('sel-categoria').value || '';
@@ -1904,33 +2441,44 @@
       const lineas = $('padron-lista').value.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
       if (!cat || !lineas.length) return;
 
-      const jugadores = [...new Set(lineas)];
-      jugadores.forEach(j => {
-        if (!datosDeporte.padron.some(p => igual(p.categoria, cat) && igual(p.equipo || 'General', eq) && igual(p.jugador, j))) {
-          datosDeporte.padron.push({ categoria: cat, equipo: eq, jugador: j });
+      const altasPayload = [];
+      lineas.forEach(lin => {
+        const parsed = extraerNombreYDni(lin);
+        if (!parsed || !parsed.jugador) return;
+        const nombreJ = parsed.jugador;
+        const dniJ    = parsed.dni;
+
+        if (!datosDeporte.padron.some(p => igual(p.categoria, cat) && igual(p.equipo || 'General', eq) && igual(p.jugador, nombreJ))) {
+          datosDeporte.padron.push({ categoria: cat, equipo: eq, jugador: nombreJ, dni: dniJ });
         }
+        if (dniJ) guardarDniJugador(nombreJ, dniJ);
+        altasPayload.push({ jugador: nombreJ, dni: dniJ });
       });
+
       localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
       $('padron-lista').value = '';
       renderFiltrosDeporte();
       $('sel-categoria').value = cat;
       $('sel-equipo').value = eq;
       renderVistaActiva();
-      toast(`✓ ${jugadores.length} deportistas cargados en ${cat}`);
-      try {
-        await fetch(URL_SCRIPT_DEPORTES, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            tipo: 'ALTA_PADRON',
-            token: sesion?.token || '',
-            deporte: areaActiva,
-            categoria: cat,
-            equipo: eq,
-            jugadores
-          })
-        });
-      } catch (_) {}
+      toast(`✓ ${altasPayload.length} deportistas cargados en ${cat}`);
+
+      if (localStorage.getItem('muni360_modo_demo') !== '1') {
+        try {
+          await fetch(URL_SCRIPT_DEPORTES, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              tipo: 'ALTA_PADRON',
+              token: sesion?.token || '',
+              deporte: areaActiva,
+              categoria: cat,
+              equipo: eq,
+              jugadores: altasPayload
+            })
+          });
+        } catch (_) {}
+      }
     });
 
     $('input-excel-file').addEventListener('change', async e => {
@@ -1941,15 +2489,36 @@
       const hoja = wb.Sheets[wb.SheetNames[0]];
       const filas = XLSX.utils.sheet_to_json(hoja, { header: 1, defval: '' });
       const nombres = [];
+
       filas.slice(1).forEach(r => {
         const c0 = String(r[0] || '').trim();
         const c1 = String(r[1] || '').trim();
-        if (c0 && c1) nombres.push(`${c0}, ${c1}`);
-        else if (c0) nombres.push(c0);
+        const c2 = String(r[2] || '').trim();
+        const c3 = String(r[3] || '').trim();
+        const c4 = String(r[4] || '').trim();
+
+        let nombreCompuesto = '';
+        let dniEncontrado = '';
+
+        [c0, c1, c2, c3, c4].forEach(val => {
+          const m = val.match(/^\d{7,8}$/);
+          if (m && !dniEncontrado) dniEncontrado = m[0];
+        });
+
+        if (c0 && c1 && isNaN(Number(c0)) && isNaN(Number(c1))) {
+          nombreCompuesto = `${c0}, ${c1}`;
+        } else if (c0 && isNaN(Number(c0))) {
+          nombreCompuesto = c0;
+        }
+
+        if (nombreCompuesto) {
+          nombres.push(dniEncontrado ? `${nombreCompuesto} - ${dniEncontrado}` : nombreCompuesto);
+        }
       });
+
       if (nombres.length) {
         $('padron-lista').value = nombres.join('\n');
-        toast(`✓ ${nombres.length} nombres leídos del Excel. Tocá "Cargar listado al grupo".`);
+        toast(`✓ ${nombres.length} deportistas leídos del Excel. Tocá "Cargar listado al grupo".`);
       }
     });
 
@@ -1970,29 +2539,31 @@
       if (!b) return;
       const lista = plantelActualNombres();
       const jugador = lista[Number(b.dataset.i)];
-      if (!jugador || !confirm(`¿Quitar a ${jugador} del grupo?`)) return;
+      if (!jugador || !confirm(`¿Quitar a ${nombreBaseDua(jugador)} del grupo?`)) return;
       const cat = $('sel-categoria').value;
       const eq  = cfgActual().esBase ? 'General' : ($('sel-equipo').value || 'General');
 
       datosDeporte.padron = datosDeporte.padron.filter(p => !(igual(p.categoria, cat) && igual(p.equipo || 'General', eq) && igual(p.jugador, jugador)));
       localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
       renderVistaActiva();
-      toast(`✓ ${jugador} quitado del grupo`);
+      toast(`✓ ${nombreBaseDua(jugador)} quitado del grupo`);
 
-      try {
-        await fetch(URL_SCRIPT_DEPORTES, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            tipo: 'BAJA_PADRON',
-            token: sesion?.token || '',
-            deporte: areaActiva,
-            categoria: cat,
-            equipo: eq,
-            jugador
-          })
-        });
-      } catch (_) {}
+      if (localStorage.getItem('muni360_modo_demo') !== '1') {
+        try {
+          await fetch(URL_SCRIPT_DEPORTES, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              tipo: 'BAJA_PADRON',
+              token: sesion?.token || '',
+              deporte: areaActiva,
+              categoria: cat,
+              equipo: eq,
+              jugador
+            })
+          });
+        } catch (_) {}
+      }
     });
 
     // --- ACCIONES DE REINICIO DE TEMPORADA Y VACIADO DE DATOS ---
@@ -2069,7 +2640,7 @@
 
     $('btn-reset-temporada-general').addEventListener('click', async () => {
       if (!sesion?.esAdminTotal) return;
-      const resp = prompt(`🛡️ ATENCIÓN DIRECCIÓN UGI:\n\nVas a PASAR DE TEMPORADA EN TODO EL CLUB (24 actividades).\n\n• Se reiniciarán asistencias y evaluaciones en todas las planillas.\n• Los PADRONES de todos los deportes se mantendrán intactos.\n\nPara confirmar, escribí TEMPORADA en mayúsculas:`);
+      const resp = prompt(`🛡️ ATENCIÓN DIRECCIÓN UGI:\n\nVas a PASAR DE TEMPORADA EN TODO EL CLUB (25 actividades).\n\n• Se reiniciarán asistencias y evaluaciones en todas las planillas.\n• Los PADRONES de todos los deportes se mantendrán intactos.\n\nPara confirmar, escribí TEMPORADA en mayúsculas:`);
       if (resp !== 'TEMPORADA') {
         if (resp !== null) alert('Operación cancelada: el texto no coincidió.');
         return;
@@ -2114,7 +2685,7 @@
 
     $('btn-reset-todo-general').addEventListener('click', async () => {
       if (!sesion?.esAdminTotal) return;
-      const resp = prompt(`🚨 PELIGRO MÁXIMO (DIRECCIÓN UGI):\n\nVas a BORRAR TODAS LAS PLANILLAS DE TODO EL CLUB (Padrón, Asistencias y Evaluaciones de las 24 actividades).\n\nPara confirmar esta acción IRREVERSIBLE, escribí BORRAR TODO en mayúsculas:`);
+      const resp = prompt(`🚨 PELIGRO MÁXIMO (DIRECCIÓN UGI):\n\nVas a BORRAR TODAS LAS PLANILLAS DE TODO EL CLUB (Padrón, Asistencias y Evaluaciones de las 25 actividades).\n\nPara confirmar esta acción IRREVERSIBLE, escribí BORRAR TODO en mayúsculas:`);
       if (resp !== 'BORRAR TODO') {
         if (resp !== null) alert('Operación cancelada: el texto no coincidió.');
         return;
@@ -2147,7 +2718,6 @@
         toast(`✓ Vaciado en el dispositivo`);
       }
     });
-
 
     // =========================================================================
     // 11. CAMBIO DE PESTAÑAS Y RESTAURACIÓN AUTOMÁTICA DE SESIÓN
@@ -2200,13 +2770,13 @@
 
       const demoData = {
         padron: [
-          { categoria: cat, equipo: eq, jugador: "Acosta, Mateo (🧩 DUA)" },
-          { categoria: cat, equipo: eq, jugador: "Benítez, Tomás" },
-          { categoria: cat, equipo: eq, jugador: "Domínguez, Lucas" },
-          { categoria: cat, equipo: eq, jugador: "Fernández, Joaquín" },
-          { categoria: cat, equipo: eq, jugador: "Gómez, Bautista" },
-          { categoria: cat, equipo: eq, jugador: "López, Santino" },
-          { categoria: cat, equipo: eq, jugador: "Martínez, Valentino" }
+          { categoria: cat, equipo: eq, jugador: "Acosta, Mateo (🧩 DUA)", dni: "48512390" },
+          { categoria: cat, equipo: eq, jugador: "Benítez, Tomás", dni: "48901234" },
+          { categoria: cat, equipo: eq, jugador: "Domínguez, Lucas", dni: "49102345" },
+          { categoria: cat, equipo: eq, jugador: "Fernández, Joaquín", dni: "48765432" },
+          { categoria: cat, equipo: eq, jugador: "Gómez, Bautista", dni: "49321654" },
+          { categoria: cat, equipo: eq, jugador: "López, Santino", dni: "48654987" },
+          { categoria: cat, equipo: eq, jugador: "Martínez, Valentino", dni: "49012876" }
         ],
         asistencia: [
           { fecha: hoy, categoria: cat, equipo: eq, jugador: "Acosta, Mateo (🧩 DUA)", estado: "P | Sem:V" },
