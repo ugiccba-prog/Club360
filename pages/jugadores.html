@@ -38,6 +38,8 @@
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
     body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); line-height: 1.6; overflow-x: hidden; width: 100%; }
+    a { text-decoration: none; }
+    .btn-main, .nav-cta, .btn-group a, button { text-decoration: none !important; border-bottom: none !important; }
 
     /* HEADER Y NAVEGACIÓN (Copiado de tu index.html) */
     .site-header {
@@ -220,12 +222,16 @@
       border-color: var(--sky-dark); background: white;
     }
     .semaforo-circle {
-      width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center;
-      justify-content: center; font-size: 1.6rem; transition: transform 0.25s ease, box-shadow 0.25s ease;
+      width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
+    .sem-dot { width: 18px; height: 18px; border-radius: 50%; display: block; }
     .sem-verde .semaforo-circle { background: #e8f5e9; border: 2.5px solid #78aa85; box-shadow: 0 4px 14px rgba(120, 170, 133, 0.35); }
+    .sem-verde .sem-dot { background: #38a169; }
     .sem-amarillo .semaforo-circle { background: #fef9e7; border: 2.5px solid #e8c46e; box-shadow: 0 4px 14px rgba(232, 196, 110, 0.35); }
+    .sem-amarillo .sem-dot { background: #d69e2e; }
     .sem-rojo .semaforo-circle { background: #fdf2f0; border: 2.5px solid #e17c6b; box-shadow: 0 4px 14px rgba(225, 124, 107, 0.35); }
+    .sem-rojo .sem-dot { background: #e53e3e; }
     
     .semaforo-btn strong { color: var(--navy); font-size: 1.05rem; font-weight: 700; }
     .semaforo-btn small { color: var(--muted); font-size: 0.82rem; line-height: 1.35; }
@@ -459,19 +465,19 @@
 
           <div class="semaforo-btns-grid">
             <button type="button" class="semaforo-btn sem-verde" data-estado="verde">
-              <div class="semaforo-circle">😊</div>
+              <div class="semaforo-circle"><span class="sem-dot"></span></div>
               <strong>Tranquilo/a</strong>
               <small style="color: var(--muted); font-size: 0.78rem;">Con ganas y enfocado</small>
             </button>
 
             <button type="button" class="semaforo-btn sem-amarillo" data-estado="amarillo">
-              <div class="semaforo-circle">😐</div>
+              <div class="semaforo-circle"><span class="sem-dot"></span></div>
               <strong>Nervioso/a</strong>
               <small style="color: var(--muted); font-size: 0.78rem;">Cansancio o dudas</small>
             </button>
 
             <button type="button" class="semaforo-btn sem-rojo" data-estado="rojo">
-              <div class="semaforo-circle">😤</div>
+              <div class="semaforo-circle"><span class="sem-dot"></span></div>
               <strong>Con bronca</strong>
               <small style="color: var(--muted); font-size: 0.78rem;">Frustración o enojo</small>
             </button>
@@ -610,10 +616,12 @@
           </div>
           <div class="app-visual" style="background: radial-gradient(circle at 50% 25%, #0d2546 0%, #060d1a 85%); color: #f8f9fa;">
             <div style="text-align: center; padding: 1rem;">
-              <div style="display: inline-flex; gap: 12px; margin-bottom: 1rem; background: rgba(255,255,255,0.06); padding: 10px 18px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); font-size: 1.5rem;">
-                <span title="Fuego">🔥</span>
-                <span title="Vapor">💨</span>
-                <span title="Agua">💧</span>
+              <div style="display: inline-flex; gap: 8px; margin-bottom: 1rem; background: rgba(255,255,255,0.06); padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12);">
+                <span style="color: #ff7675; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em;">FUEGO</span>
+                <span style="color: rgba(255,255,255,0.4);">/</span>
+                <span style="color: #55efc4; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em;">VAPOR</span>
+                <span style="color: rgba(255,255,255,0.4);">/</span>
+                <span style="color: #74b9ff; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em;">AGUA</span>
               </div>
               <div style="font-family: var(--display); font-weight: 800; font-size: 1.55rem; color: #00c48c; letter-spacing: -0.02em; line-height: 1.15;">Estado Vapor</div>
               <p style="font-size: 0.8rem; color: #94a3b8; margin: 0.4rem 0 0;">Energía alta &middot; Mente en calma</p>
@@ -673,7 +681,7 @@
                   <img src="../assets/images/guia/escudo-ccba.png" alt="CCBA" style="height: 54px; width: auto; object-fit: contain;">
                   <img src="../assets/images/guia/logo-ugi.png" alt="UGI" style="height: 54px; width: auto; object-fit: contain;">
                 </div>
-                <div style="font-size: 2.8rem; margin-bottom: 0.5rem;">🧠 ⚽</div>
+                <span style="display: inline-block; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sky); background: rgba(89,189,233,0.15); padding: 0.4rem 0.9rem; border-radius: 999px; margin-bottom: 0.8rem;">Guía Oficial</span>
                 <div style="font-family: var(--display); font-size: 1.6rem; line-height: 1.2;">Entrenar la cabeza</div>
                 <p style="font-size: 0.82rem; opacity: 0.75; margin-top: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase;">8 Capítulos y Ejercicios</p>
               </div>
@@ -715,7 +723,7 @@
 
             <div class="app-visual" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);">
               <div style="text-align: center; padding: 1rem;">
-                <div style="font-size: 3.5rem; margin-bottom: 0.4rem;">🎨 ⭐</div>
+                <span style="display: inline-block; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: #1b5e20; background: rgba(46,125,50,0.15); padding: 0.4rem 0.9rem; border-radius: 999px; margin-bottom: 0.8rem;">Etapa Formativa</span>
                 <div style="font-family: var(--display); font-size: 1.7rem; color: #1b5e20; line-height: 1.1;">Para Pintar y Jugar</div>
                 <p style="color: #2e7d32; font-size: 0.85rem; font-weight: 700; margin: 0.5rem 0 1rem;">Para llevar siempre en tu bolso</p>
                 <div style="display: inline-block; background: white; padding: 0.5rem 1.1rem; border-radius: 999px; font-size: 0.78rem; font-weight: 800; color: #2e7d32; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">

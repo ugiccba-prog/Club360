@@ -1249,6 +1249,7 @@
     // 5. CARGA DE DATOS DESDE GOOGLE SHEETS (UNIFICADO PARA TODOS)
     // =========================================================================
     async function cargarAreaActiva() {
+      window._asistKeyActual = null;
       const d = areaActiva;
       datosDeporte = JSON.parse(localStorage.getItem('muni360_cache_' + d) || 'null') || { padron: [], evaluaciones: [], asistencia: [], gestos: null, email: '' };
       renderFiltrosDeporte();
@@ -1268,6 +1269,7 @@
           };
           localStorage.setItem('muni360_cache_' + d, JSON.stringify(datosDeporte));
           $('estado-txt').textContent = `● Conectado en vivo al Sheet de ${d}`;
+          window._asistKeyActual = null;
           renderFiltrosDeporte();
           renderVistaActiva();
         } else if (j && !j.ok && j.error && (j.error.includes('autorizada') || j.error.includes('vencida'))) {
@@ -1331,15 +1333,25 @@
 
       $('titulo-lista-asist').textContent = `Lista de asistencia · ${cat || areaActiva} ${!cfg.esBase && eq ? '(' + eq + ')' : ''}`;
       const lista = plantelActualNombres();
-      asistTempDep = {};
 
-      datosDeporte.asistencia
-        .filter(a => a.categoria === cat && (a.equipo || 'General') === eq && a.fecha === fecha)
-        .forEach(a => {
-          const valor = String(a.estado || 'P');
-          asistTempDep[a.jugador] = valor.charAt(0) || 'P';
-          if (valor.includes('Comida')) comidaTempDep[a.jugador] = true;
-        });
+      const currentKey = `${areaActiva}|${cat}|${eq}|${fecha}`;
+      if (window._asistKeyActual !== currentKey) {
+        window._asistKeyActual = currentKey;
+        asistTempDep = {};
+        comidaTempDep = {};
+        semTempDep = {};
+
+        datosDeporte.asistencia
+          .filter(a => a.categoria === cat && (a.equipo || 'General') === eq && a.fecha === fecha)
+          .forEach(a => {
+            const valor = String(a.estado || 'P');
+            asistTempDep[a.jugador] = valor.charAt(0) || 'P';
+            comidaTempDep[a.jugador] = valor.includes('Comida');
+            if (valor.includes('Sem:A')) semTempDep[a.jugador] = 'A';
+            else if (valor.includes('Sem:R')) semTempDep[a.jugador] = 'R';
+            else semTempDep[a.jugador] = 'V';
+          });
+      }
 
       lista.forEach(j => {
         if (!asistTempDep[j]) asistTempDep[j] = 'P';

@@ -39,6 +39,8 @@
     *, *::before, *::after { box-sizing: border-box; }
     html { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
     body { margin: 0; color: var(--ink); background: var(--paper); font-family: var(--sans); line-height: 1.6; overflow-x: hidden; width: 100%; }
+    a { text-decoration: none; }
+    .btn-download-pdf, .nav-cta, .btn-main, .btn-workshop-submit, .btn-calc-quiz { text-decoration: none !important; border-bottom: none !important; }
 
     /* HEADER Y NAVEGACIÓN */
     .site-header {
@@ -270,7 +272,12 @@
       box-sizing: border-box; max-width: 100%;
     }
     .plantilla-top { display: flex; align-items: flex-start; gap: 1rem; }
-    .plantilla-icon { font-size: 1.8rem; line-height: 1; }
+    .plantilla-num {
+      font-family: var(--display); font-weight: 800; font-size: 0.95rem; color: var(--navy);
+      background: var(--cream); border: 1px solid var(--line); width: 2.2rem; height: 2.2rem;
+      min-width: 2.2rem; display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 8px; letter-spacing: -0.02em;
+    }
     .plantilla-card h3 { margin: 0 0 0.2rem; font-size: 1.05rem; color: var(--navy); }
     .plantilla-card .cap-tag { font-size: 0.72rem; color: var(--sky-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
     .plantilla-card p { margin: 0.4rem 0 0; font-size: 0.88rem; color: var(--muted); line-height: 1.45; }
@@ -822,7 +829,7 @@
 
           <!-- RESULTADO DEL TEST -->
           <div class="quiz-result-box" id="quiz-result">
-            <div style="font-size: 3rem; margin-bottom: 0.5rem;" id="quiz-icon">🛡️</div>
+            <span id="quiz-icon" style="display: inline-block; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; background: rgba(255,255,255,0.18); color: white; padding: 0.4rem 1rem; border-radius: 999px; margin-bottom: 1rem;">DEVOLUCIÓN FORMATIVA</span>
             <h3 style="font-family: var(--display); font-size: clamp(2rem, 3.8vw, 2.6rem); margin: 0 0 0.8rem;" id="quiz-title">
               Perfil: Acompañante Base Segura
             </h3>
@@ -856,7 +863,7 @@
           
           <div class="plantilla-card">
             <div class="plantilla-top">
-              <span class="plantilla-icon">💬</span>
+              <span class="plantilla-num">01</span>
               <div>
                 <span class="cap-tag">Capítulo 1</span>
                 <h3>Frases prohibidas / Frases que sí</h3>
@@ -867,7 +874,7 @@
 
           <div class="plantilla-card">
             <div class="plantilla-top">
-              <span class="plantilla-icon">🎯</span>
+              <span class="plantilla-num">02</span>
               <div>
                 <span class="cap-tag">Capítulo 2</span>
                 <h3>Mi propio marcador (Las 4C)</h3>
@@ -878,7 +885,7 @@
 
           <div class="plantilla-card">
             <div class="plantilla-top">
-              <span class="plantilla-icon">🚦</span>
+              <span class="plantilla-num">03</span>
               <div>
                 <span class="cap-tag">Capítulo 3</span>
                 <h3>Semáforo emocional</h3>
@@ -889,7 +896,7 @@
 
           <div class="plantilla-card">
             <div class="plantilla-top">
-              <span class="plantilla-icon">🚗</span>
+              <span class="plantilla-num">04</span>
               <div>
                 <span class="cap-tag">Capítulo 4</span>
                 <h3>Guion del auto de vuelta</h3>
@@ -900,7 +907,7 @@
 
           <div class="plantilla-card">
             <div class="plantilla-top">
-              <span class="plantilla-icon">🪙</span>
+              <span class="plantilla-num">05</span>
               <div>
                 <span class="cap-tag">Capítulo 5</span>
                 <h3>Tablero de economía de fichas</h3>
@@ -911,7 +918,7 @@
 
           <div class="plantilla-card">
             <div class="plantilla-top">
-              <span class="plantilla-icon">🔄</span>
+              <span class="plantilla-num">06</span>
               <div>
                 <span class="cap-tag">Capítulo 6</span>
                 <h3>Tarjeta Validar &ndash; Acordar &ndash; Reiniciar</h3>
@@ -922,7 +929,7 @@
 
           <div class="plantilla-card">
             <div class="plantilla-top">
-              <span class="plantilla-icon">📜</span>
+              <span class="plantilla-num">07</span>
               <div>
                 <span class="cap-tag">Capítulo 7</span>
                 <h3>Código de honor familiar</h3>
@@ -933,7 +940,7 @@
 
           <div class="plantilla-card">
             <div class="plantilla-top">
-              <span class="plantilla-icon">✉️</span>
+              <span class="plantilla-num">08</span>
               <div>
                 <span class="cap-tag">Capítulo 8</span>
                 <h3>Mensaje para pedir reunión con el DT</h3>
@@ -944,7 +951,7 @@
 
           <div class="plantilla-card">
             <div class="plantilla-top">
-              <span class="plantilla-icon">📋</span>
+              <span class="plantilla-num">09</span>
               <div>
                 <span class="cap-tag">Capítulo 9</span>
                 <h3>Checklist mensual de motivación</h3>
@@ -955,7 +962,7 @@
 
           <div class="plantilla-card">
             <div class="plantilla-top">
-              <span class="plantilla-icon">📅</span>
+              <span class="plantilla-num">10</span>
               <div>
                 <span class="cap-tag">Capítulo 10</span>
                 <h3>Calendario de 30 días</h3>
@@ -1033,8 +1040,8 @@
             </div>
           </div>
           <div class="app-visual" style="background: linear-gradient(135deg, #082b49 0%, #143d5b 100%);">
-            <div style="text-align: center; color: white;">
-              <div style="font-size: 2.8rem; margin-bottom: 0.3rem;">🤝</div>
+            <div style="text-align: center; color: white; padding: 1.5rem;">
+              <span style="display: inline-block; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sky); background: rgba(89,189,233,0.18); padding: 0.4rem 0.9rem; border-radius: 999px; margin-bottom: 0.8rem;">Espacio Inclusivo</span>
               <div style="font-family: var(--display); font-size: 1.6rem;">Inclusión &amp; Pertenencia</div>
             </div>
           </div>
@@ -1183,17 +1190,17 @@
       const cap = document.getElementById("quiz-capitulos");
 
       if (total >= 4) {
-        icon.textContent = "🛡️";
+        icon.textContent = "DEVOLUCIÓN FORMATIVA";
         title.textContent = "Perfil: Acompañante Base Segura (" + total + "/5 puntos)";
         desc.textContent = "¡Excelente! Tu mirada está centrada en la persona, el disfrute y el aprendizaje. Ofrecés contención emocional sin invadir el rol técnico del entrenador. Tu actitud crea el entorno ideal para que tu hijo/a crezca con confianza y pasión por el deporte.";
         cap.innerHTML = "<strong>Capítulos clave de tu guía:</strong> Capítulo 4 &middot; <em>La química del auto de vuelta</em> y Capítulo 7 &middot; <em>El código de honor familiar</em>.";
       } else if (total >= 2) {
-        icon.textContent = "⚖️";
+        icon.textContent = "DEVOLUCIÓN FORMATIVA";
         title.textContent = "Perfil: Acompañamiento en Transición (" + total + "/5 puntos)";
         desc.textContent = "Tenés claro el valor formativo del deporte, pero en momentos de alta competencia o nerviosismo puede ganarte la adrenalina y llevarte a corregir jugadas o focalizarte en el resultado numérico. Pequeños ajustes en la comunicación van a marcar una gran diferencia.";
         cap.innerHTML = "<strong>Capítulos clave de tu guía:</strong> Capítulo 1 &middot; <em>Tu rol real (base segura)</em> y Capítulo 6 &middot; <em>Cuando la frustración explota</em>.";
       } else {
-        icon.textContent = "⚡";
+        icon.textContent = "DEVOLUCIÓN FORMATIVA";
         title.textContent = "Perfil: Enfoque en Rendimiento (" + total + "/5 puntos)";
         desc.textContent = "Es natural querer que a tu hijo/a le vaya bien, pero cuando la exigencia y la crítica técnica se trasladan al hogar o la tribuna, el deportista siente presión excesiva y riesgo de desgaste. Esta guía te brinda pautas concretas para transformar esa exigencia en sostén positivo.";
         cap.innerHTML = "<strong>Capítulos clave de tu guía:</strong> Capítulo 1 &middot; <em>Base segura</em>, Capítulo 2 &middot; <em>Modelo de las 4C</em> y Capítulo 3 &middot; <em>Semáforo emocional</em>.";
