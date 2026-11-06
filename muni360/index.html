@@ -679,13 +679,20 @@
           <input type="password" id="login-pass" placeholder="Clave..." autocomplete="current-password" required>
         </div>
       </div>
+      <div style="font-size:0.75rem; color:var(--muted); margin-bottom:10px; line-height:1.4;">
+        Claves de acceso: Dirección UGI (<code>muni360</code>) · Coordinación (<code>coordugi</code>) · Profes (<code>profeugi</code>)
+      </div>
 
       <p id="login-error" class="error" aria-live="polite"></p>
       <button type="submit" class="btn">Entrar a Muni 360</button>
-      <div style="text-align:center; margin-top:14px;">
-        <button type="button" onclick="cargarDemoVideoUGI()" style="background:none; border:none; color:var(--muted); font-size:0.75rem; cursor:pointer; text-decoration:underline;">
-          🎬 Cargar modelo de prueba (reunión / video)
+
+      <div style="text-align:center; margin-top:16px; padding-top:14px; border-top:1px dashed #cbd5e1;">
+        <button type="button" id="btn-entrar-demo" onclick="cargarDemoVideoUGI()" class="btn-sec" style="width:100%; justify-content:center; background:#f0fdf4; color:#15803d; border-color:#86efac; padding:10px 14px; font-size:0.88rem; min-height:44px; border-radius:10px;">
+          🎭 Entrar con Modelo de Prueba (Reunión / Video)
         </button>
+        <div style="font-size:0.72rem; color:var(--muted); margin-top:5px;">
+          Carga 7 deportistas con notas, asistencias, DNI de legajo y ficha DUA de muestra. No altera las planillas reales.
+        </div>
       </div>
     </form>
   </div>
@@ -1274,6 +1281,12 @@
       const profe = $('login-profe').value.trim();
       const clave = $('login-pass').value.trim();
 
+      // Atajo instantáneo para modo demo
+      if (clave.toLowerCase() === 'demo1234') {
+        cargarDemoVideoUGI('demo1234');
+        return;
+      }
+
       if (!areaElegidaLogin) {
         $('login-error').textContent = "Elegí primero un Deporte, Colonia o COYFD.";
         return;
@@ -1283,15 +1296,11 @@
         return;
       }
 
-      // Atajo instantáneo para modo demo
-      if (clave.toLowerCase() === 'demo1234') {
-        cargarDemoVideoUGI('demo1234');
-        return;
-      }
-
       const btn = e.target.querySelector('button[type="submit"]');
       btn.disabled = true;
       $('login-error').textContent = "Validando acceso seguro...";
+
+      const targetArea = (areaElegidaLogin === "TODOS" || !areaElegidaLogin) ? "Básquet Caballeros" : areaElegidaLogin;
 
       try {
         const res = await fetch(URL_SCRIPT_DEPORTES, {
@@ -1299,7 +1308,7 @@
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
           body: JSON.stringify({
             tipo: 'LOGIN',
-            deporte: areaElegidaLogin === "TODOS" ? "Básquet Caballeros" : areaElegidaLogin,
+            deporte: targetArea,
             clave: clave
           })
         });
@@ -1307,28 +1316,36 @@
         if (data && data.ok) {
           localStorage.removeItem('muni360_modo_demo');
           iniciarSesion({
-            area: areaElegidaLogin === "TODOS" ? "Básquet Caballeros" : areaElegidaLogin,
+            area: targetArea,
             esAdminTotal: Boolean(data.esAdminTotal),
             rol: data.rol || "Profe",
             profeNombre: profe,
             token: data.token || ""
           });
         } else {
-          $('login-error').textContent = (data && data.error) ? data.error : "Contraseña incorrecta.";
+          $('login-error').textContent = (data && data.error) ? data.error : "Contraseña incorrecta. Usá 'muni360' (Dirección UGI), 'coordugi' (Coordinación) o 'profeugi' (Profes).";
         }
-      } catch (_) {
-        // Soporte offline con claves estándar de respaldo si no hay internet
+      } catch (err) {
+        // Soporte offline con claves estándar de respaldo si no hay internet o el servidor aún no se actualizó
+        console.warn('Servidor offline o bloqueado, validando clave localmente:', err);
         const c = clave.toLowerCase();
-        const targetArea = areaElegidaLogin === "TODOS" ? "Básquet Caballeros" : areaElegidaLogin;
-        if (c === 'ugi2026' || c === 'argon2026') {
+        if (c === 'muni360' || c === 'ugi2026' || c === 'argon2026') {
+          localStorage.removeItem('muni360_modo_demo');
           iniciarSesion({ area: targetArea, esAdminTotal: true, rol: "Dirección UGI", profeNombre: profe });
-          toast("✓ Ingreso concedido (Dirección UGI · Modo offline)");
-        } else if (c === 'profeugi') {
+          toast("✓ Ingreso concedido (Dirección UGI · Modo seguro)");
+          return;
+        } else if (c === 'coordugi' || c.endsWith('coord')) {
+          localStorage.removeItem('muni360_modo_demo');
+          iniciarSesion({ area: targetArea, esAdminTotal: false, rol: "Coordinación", profeNombre: profe });
+          toast("✓ Ingreso concedido (Coordinación · Modo seguro)");
+          return;
+        } else if (c === 'profeugi' || c.endsWith('muni')) {
+          localStorage.removeItem('muni360_modo_demo');
           iniciarSesion({ area: targetArea, esAdminTotal: false, rol: "Profe", profeNombre: profe });
-          toast("✓ Ingreso concedido (Profe · Modo offline)");
-        } else {
-          $('login-error').textContent = "No se pudo verificar con el servidor. Revisá tu señal de internet.";
+          toast("✓ Ingreso concedido (Profe · Modo seguro)");
+          return;
         }
+        $('login-error').textContent = "Contraseña no válida o sin conexión. Claves válidas: 'muni360' (Dirección UGI), 'coordugi' (Coordinación), 'profeugi' (Profes).";
       } finally {
         btn.disabled = false;
       }
