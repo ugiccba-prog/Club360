@@ -180,8 +180,8 @@ function doPost(e) {
       var deporte = String(data.deporte || '').trim();
       var celular = String(data.celular || '').trim();
 
-      // Claves maestras UGI (Acceso Total a todos los deportes + Colonia + COYFD)
-      if (clave === 'ugi2025' || clave === 'ugi2026' || clave === 'muni360' || clave === 'adminugi') {
+      // 1. Dirección UGI: Clave maestra con acceso total a todo el club
+      if (clave === 'muni360' || clave === 'adminugi') {
         return respuesta({
           ok: true,
           rol: 'Dirección UGI',
@@ -193,8 +193,9 @@ function doPost(e) {
       }
 
       var reg = CLAVES_SEGURAS[deporte];
-      // Clave de coordinación específica o global
-      if ((reg && clave === reg.coord.toLowerCase()) || (clave === '2001' && deporte === 'Colonia') || (clave === '2002' && deporte === 'COYFD') || clave === 'coordugi') {
+
+      // 2. Coordinación: Clave del deporte (ej: basquetcoord) o universal (coordugi)
+      if ((reg && clave === reg.coord.toLowerCase()) || clave === 'coordugi') {
         return respuesta({
           ok: true,
           rol: 'Coordinación',
@@ -205,13 +206,8 @@ function doPost(e) {
         });
       }
 
-      // Clave de profesor específica, universal o PIN heredado
-      if ((reg && clave === reg.profe.toLowerCase()) ||
-          clave === 'profeugi' || clave === 'muni2025' ||
-          (clave === '1001' && deporte === 'Colonia') ||
-          (clave === '1002' && deporte === 'COYFD') ||
-          clave === deporte.toLowerCase().replace(/\s+/g, '') ||
-          clave === deporte.toLowerCase().replace(/\s+/g, '') + 'muni') {
+      // 3. Profesores: Clave del deporte (ej: basquetmuni) o universal (profeugi)
+      if ((reg && clave === reg.profe.toLowerCase()) || clave === 'profeugi') {
         return respuesta({
           ok: true,
           rol: 'Profe',
