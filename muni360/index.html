@@ -427,9 +427,11 @@
     .dua-modal-card {
       background: #fff;
       width: 100%;
-      max-width: 440px;
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
       border-radius: 18px;
-      padding: 20px;
+      padding: 18px;
       box-shadow: 0 20px 45px rgba(0,0,0,0.35);
       border-top: 6px solid #00a8e8;
     }
@@ -449,6 +451,101 @@
       letter-spacing: 0.4px;
       margin-bottom: 3px;
     }
+    .legajo-sec {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 11px 12px;
+      margin-bottom: 11px;
+    }
+    .legajo-sec-title {
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--navy);
+      letter-spacing: 0.3px;
+      margin-bottom: 7px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .act-pills-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .act-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
+    .act-pill.auto {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #86efac;
+    }
+    .chip-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #fff;
+      color: #475569;
+      border: 1px solid #cbd5e1;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.73rem;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+    }
+    .chip-check[aria-pressed="true"] {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+    .bitacora-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+    .bitacora-item {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid var(--navy);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.81rem;
+    }
+    .bitacora-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+    .bitacora-del {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-weight: 800;
+      font-size: 0.82rem;
+      cursor: pointer;
+      padding: 2px 5px;
+      border-radius: 5px;
+    }
+    .bitacora-del:hover { background: #fee2e2; color: #b91c1c; }
 
     /* ================= EVALUACIÓN DEPORTIVA Y STEPPER ================= */
     .lista { display: flex; flex-direction: column; gap: 6px; }
@@ -1687,6 +1784,122 @@
       };
     };
 
+    function iconoActividadUgi(nombre) {
+      const n = String(nombre || '');
+      if (n === 'Colonia') return '☀️ Colonia';
+      if (n === 'COYFD') return '🏃‍♂️ COYFD';
+      if (n === 'Ciudad Integrado') return '🧩 Ciudad Integrado';
+      if (n.startsWith('Básquet')) return '🏀 ' + n;
+      if (n.startsWith('Fútbol')) return '⚽ ' + n;
+      if (n.startsWith('Hockey')) return '🏑 ' + n;
+      if (n.startsWith('Rugby')) return '🏉 ' + n;
+      if (n.startsWith('Vóley')) return '🏐 ' + n;
+      if (n.startsWith('Gimnasia')) return '🤸 ' + n;
+      if (n === 'Tenis') return '🎾 Tenis';
+      if (n === 'Handball') return '🤾 Handball';
+      if (n === 'Cestoball') return '🧺 Cestoball';
+      if (n === 'Judo' || n === 'Karate') return '🥋 ' + n;
+      if (n.startsWith('Natación')) return '🏊 ' + n;
+      if (n.startsWith('Patín')) return '⛸️ ' + n;
+      if (n === 'Golf') return '⛳ Golf';
+      if (n === 'Pelota Paleta') return '🎾 Pelota Paleta';
+      return '🏅 ' + n;
+    }
+
+    function detectarActividadesCruzadas(jugador, dni) {
+      const claveNom = claveNombreDni(jugador);
+      const dniLimpio = String(dni || '').replace(/\D/g, '');
+      const encontradas = new Map();
+
+      CATALOGO_MUNI360.forEach(act => {
+        let cache = null;
+        if (act.nombre === areaActiva) {
+          cache = datosDeporte;
+        } else {
+          try { cache = JSON.parse(localStorage.getItem('muni360_cache_' + act.nombre) || 'null'); } catch (_) {}
+        }
+        if (!cache || !Array.isArray(cache.padron)) return;
+        cache.padron.forEach(p => {
+          const pDni = String(p.dni || '').replace(/\D/g, '');
+          const coincideDni = Boolean(dniLimpio && pDni && pDni === dniLimpio);
+          const coincideNom = claveNombreDni(p.jugador) === claveNom;
+          if (coincideDni || coincideNom) {
+            encontradas.set(act.nombre, { actividad: act.nombre, categoria: p.categoria || '' });
+          }
+        });
+      });
+
+      if (!encontradas.has(areaActiva)) {
+        encontradas.set(areaActiva, { actividad: areaActiva, categoria: $('sel-categoria').value || '' });
+      }
+      return Array.from(encontradas.values());
+    }
+
+    function leerMapaLegajosV2() {
+      try {
+        return JSON.parse(localStorage.getItem('muni360_legajos_ugi_v2') || '{}');
+      } catch (_) { return {}; }
+    }
+
+    function obtenerLegajoUnificado(jugador, dni) {
+      const mapa = leerMapaLegajosV2();
+      const kNom = claveNombreDni(jugador);
+      const kDni = String(dni || obtenerDni(jugador) || '').replace(/\D/g, '');
+      const base = (kDni && mapa[kDni]) || mapa[kNom] || {};
+
+      let bitacora = Array.isArray(base.bitacora) ? [...base.bitacora] : [];
+      if (!bitacora.length) {
+        try {
+          const notasViejas = JSON.parse(localStorage.getItem('muni360_notas_legajo') || '{}');
+          const obsVieja = notasViejas[kDni] || notasViejas[kNom];
+          if (obsVieja) {
+            bitacora.push({
+              id: 'leg_' + Date.now(),
+              fecha: fechaLocal(0),
+              tipo: '📝 Nota general de Coordinación',
+              detalle: obsVieja,
+              autor: sesion?.profeNombre || 'Coordinación UGI'
+            });
+          }
+        } catch (_) {}
+      }
+
+      return {
+        dni: kDni || base.dni || '',
+        estadoPlan: base.estadoPlan || '🟢 Seguimiento Estándar',
+        actividadesSimultaneas: Array.isArray(base.actividadesSimultaneas) ? [...base.actividadesSimultaneas] : [],
+        paseInterno: base.paseInterno || '',
+        bitacora
+      };
+    }
+
+    function guardarLegajoUnificado(jugador, dni, ficha) {
+      const mapa = leerMapaLegajosV2();
+      const kNom = claveNombreDni(jugador);
+      const kDni = String(dni || ficha.dni || '').replace(/\D/g, '');
+      const objGuardar = {
+        dni: kDni,
+        nombre: nombreBaseDua(jugador),
+        estadoPlan: ficha.estadoPlan || '🟢 Seguimiento Estándar',
+        actividadesSimultaneas: Array.from(new Set(ficha.actividadesSimultaneas || [])),
+        paseInterno: String(ficha.paseInterno || '').trim(),
+        bitacora: Array.isArray(ficha.bitacora) ? ficha.bitacora : []
+      };
+      mapa[kNom] = objGuardar;
+      if (kDni) mapa[kDni] = objGuardar;
+      localStorage.setItem('muni360_legajos_ugi_v2', JSON.stringify(mapa));
+    }
+
+    function estiloBadgeEventoLegajo(tipo) {
+      const t = String(tipo || '');
+      if (t.includes('Reunión') || t.includes('Padres')) return 'background:#dbeafe; color:#1e40af;';
+      if (t.includes('Queja') || t.includes('reclamo')) return 'background:#fee2e2; color:#991b1b;';
+      if (t.includes('conductual') || t.includes('cancha')) return 'background:#fef3c7; color:#92400e;';
+      if (t.includes('Cambio de deporte')) return 'background:#e0e7ff; color:#3730a3;';
+      if (t.includes('Acuerdo PAI') || t.includes('Seguimiento')) return 'background:#dcfce7; color:#166534;';
+      return 'background:#e2e8f0; color:#334155;';
+    }
+
     window.abrirLegajoPrivadoUGI = function (jugador) {
       if (!esCoordOAdmin()) return;
       const dniActual = obtenerDni(jugador);
@@ -1704,21 +1917,51 @@
       evalsJ.forEach(e => Object.values(e.notas || {}).forEach(n => { if (Number(n) > 0) { s += Number(n); c++; } }));
       const promGral = c ? (s / c).toFixed(1) : 'S/D';
 
-      const notasLegajo = JSON.parse(localStorage.getItem('muni360_notas_legajo') || '{}');
-      const obsPrivada = notasLegajo[dniActual || claveNombreDni(jugador)] || '';
+      const ficha = obtenerLegajoUnificado(jugador, dniActual);
+      let actManuales = new Set(ficha.actividadesSimultaneas);
+      let bitacoraTemp = [...ficha.bitacora];
+
+      const ESTADOS_PLAN = [
+        "🟢 Seguimiento Estándar",
+        "🟡 Plan A Activo (Acompañamiento 90 días)",
+        "🟠 Plan B Activo (Participación Condicionada 60 días)",
+        "🔴 Evaluación Plan C / Derivación interna",
+        "🧩 Ciudad Integrado / Doble pertenencia"
+      ];
+
+      const TIPOS_EVENTO = [
+        "👨‍👩‍👧 Reunión / Entrevista con Padres (Anexo C)",
+        "⚠️ Queja o reclamo familiar",
+        "🚦 Situación conductual / Episodio en cancha",
+        "🔄 Cambio de deporte / categoría",
+        "🤝 Acuerdo PAI / Seguimiento UGI",
+        "📝 Nota general de Coordinación"
+      ];
+
+      const deportesExtraOpciones = CATALOGO_MUNI360
+        .map(d => d.nombre)
+        .filter(n => n !== 'Colonia' && n !== 'COYFD' && n !== areaActiva);
 
       $('dua-modal-body').innerHTML = `
         <div class="spread" style="margin-bottom:10px;">
           <div>
-            <span class="login-pill" style="margin:0;">Legajo Único Privado · UGI</span>
+            <span class="login-pill" style="margin:0;">Legajo Único Transversal · UGI</span>
             <h3 style="font-size:1.1rem; color:var(--navy); margin-top:4px;">🗂️ ${esc(nombreBaseDua(jugador))}</h3>
           </div>
-          <button type="button" class="btn-sec" onclick="$('dua-modal').classList.add('hidden')">✕</button>
+          <button type="button" class="btn-sec" onclick="$('dua-modal').classList.add('hidden')">✕ Cerrar</button>
         </div>
 
-        <div class="field" style="background:#f8fafc; padding:10px 12px; border-radius:11px; border:1px solid #cbd5e1;">
-          <label for="legajo-input-dni">🪪 Número de DNI (Oculto en cancha · Guardado en última columna del Padrón)</label>
-          <input type="text" id="legajo-input-dni" inputmode="numeric" placeholder="Sin puntos (ej: 48123456)" value="${esc(dniActual)}" style="min-height:40px; font-weight:800;">
+        <div class="grid2" style="margin-bottom:10px; align-items:end;">
+          <div class="field" style="margin:0; background:#f8fafc; padding:8px 10px; border-radius:11px; border:1px solid #cbd5e1;">
+            <label for="legajo-input-dni">🪪 DNI (Clave única en todo el Club)</label>
+            <input type="text" id="legajo-input-dni" inputmode="numeric" placeholder="Sin puntos (ej: 48123456)" value="${esc(dniActual || ficha.dni)}" style="min-height:38px; font-weight:800;">
+          </div>
+          <div class="field" style="margin:0; background:#f8fafc; padding:8px 10px; border-radius:11px; border:1px solid #cbd5e1;">
+            <label for="legajo-estado-plan">🛡️ Estado Institucional UGI</label>
+            <select id="legajo-estado-plan" style="min-height:38px; font-weight:800; font-size:0.82rem;">
+              ${ESTADOS_PLAN.map(est => `<option value="${esc(est)}" ${ficha.estadoPlan === est ? 'selected' : ''}>${esc(est)}</option>`).join('')}
+            </select>
+          </div>
         </div>
 
         <div class="legajo-grid">
@@ -1727,27 +1970,200 @@
           <div class="legajo-stat"><b>🟡 ${amarillas} · 🔴 ${rojas}</b><span>Semáforo Acum.</span></div>
         </div>
 
-        <div class="field">
-          <label for="legajo-input-obs">🔒 Observaciones privadas de Coordinación / UGI (No visible para profes)</label>
-          <textarea id="legajo-input-obs" style="min-height:75px; font-size:0.84rem;" placeholder="Acuerdos con la familia (Anexo A), Plan A/B, seguimiento interdisciplinario...">${esc(obsPrivada)}</textarea>
+        <!-- 1. MAPA DE ACTIVIDADES Y PASES INTERNOS -->
+        <div class="legajo-sec">
+          <div class="legajo-sec-title">
+            <span>🏃‍♂️ Recorrido y Actividades en el Club</span>
+            <small style="color:var(--muted); font-weight:700; text-transform:none;">Detección por DNI / Nombre</small>
+          </div>
+          <div id="legajo-pills-actividades" class="act-pills-wrap"></div>
+
+          <label style="font-size:0.71rem; margin-top:6px;">Marcar otras actividades que practica o practicó en el club:</label>
+          <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:8px;" id="legajo-chips-simultaneas">
+            <button type="button" class="chip-check" data-act-chip="Colonia">☀️ Colonia</button>
+            <button type="button" class="chip-check" data-act-chip="COYFD">🏃‍♂️ COYFD</button>
+            <button type="button" class="chip-check" data-act-chip="Ciudad Integrado">🧩 Ciudad Integrado</button>
+            <select id="legajo-select-otro-dep" style="width:auto; min-height:30px; padding:3px 8px; font-size:0.74rem; border-radius:999px;">
+              <option value="">+ Sumar otro deporte...</option>
+              ${deportesExtraOpciones.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('')}
+            </select>
+          </div>
+
+          <div class="field" style="margin:0;">
+            <label for="legajo-pase-interno" style="font-size:0.71rem;">🔄 Historial de cambio de deporte / pase interno</label>
+            <input type="text" id="legajo-pase-interno" placeholder="Ej: Pasó de COYFD a Fútbol en Marzo / Cambió de Rugby a Básquet" value="${esc(ficha.paseInterno)}" style="min-height:36px; font-size:0.82rem;">
+          </div>
         </div>
 
-        <button type="button" class="btn ok" id="btn-guardar-legajo">Guardar DNI y Legajo Privado</button>
+        <!-- 3. BITÁCORA CRONOLÓGICA DE EVENTOS -->
+        <div class="legajo-sec" style="background:#fff; border-color:#cbd5e1;">
+          <div class="legajo-sec-title">
+            <span>📋 Bitácora de Novedades Fechadas (Padres, Acuerdos y Situaciones)</span>
+          </div>
+
+          <div style="background:#f8fafc; border:1px dashed #cbd5e1; border-radius:10px; padding:9px; margin-bottom:8px;">
+            <div style="font-size:0.74rem; font-weight:800; color:var(--blue); margin-bottom:6px;">+ Sumar registro al legajo</div>
+            <div class="grid2" style="gap:8px; margin-bottom:6px;">
+              <div>
+                <label for="legajo-ev-fecha" style="font-size:0.68rem;">Fecha</label>
+                <input type="date" id="legajo-ev-fecha" value="${fechaLocal(0)}" style="min-height:35px; font-size:0.8rem; padding:4px 8px;">
+              </div>
+              <div>
+                <label for="legajo-ev-tipo" style="font-size:0.68rem;">Tipo de evento</label>
+                <select id="legajo-ev-tipo" style="min-height:35px; font-size:0.78rem; padding:4px 8px;">
+                  ${TIPOS_EVENTO.map(t => `<option value="${esc(t)}">${esc(t)}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+            <textarea id="legajo-ev-detalle" style="min-height:54px; font-size:0.82rem; padding:6px 8px; margin-bottom:6px;" placeholder="Qué pasó, quiénes estuvieron presentes y qué se acordó..."></textarea>
+            <button type="button" class="btn-sec" id="btn-agregar-evento-legajo" style="width:100%; justify-content:center; background:#eff6ff; color:#1d4ed8; border-color:#93c5fd; min-height:34px;">
+              ➕ Agregar al historial del legajo
+            </button>
+          </div>
+
+          <div id="legajo-bitacora-lista" class="bitacora-list"></div>
+        </div>
+
+        <button type="button" class="btn ok" id="btn-guardar-legajo">Guardar DNI y Legajo Unificado</button>
       `;
+
+      function renderPillsYChips() {
+        const dniVal = $('legajo-input-dni').value.replace(/\D/g, '').trim();
+        const autoDetectadas = detectarActividadesCruzadas(jugador, dniVal);
+        const nombresAuto = new Set(autoDetectadas.map(x => x.actividad));
+
+        const pillsAutoHtml = autoDetectadas.map(x =>
+          `<span class="act-pill auto" title="Inscripto en padrón">${esc(iconoActividadUgi(x.actividad))}${x.categoria ? ' · ' + esc(x.categoria) : ''}</span>`
+        ).join('');
+
+        const pillsManualHtml = Array.from(actManuales)
+          .filter(a => !nombresAuto.has(a))
+          .map(a => `<span class="act-pill">${esc(iconoActividadUgi(a))} <button type="button" data-quitar-act="${esc(a)}" style="border:none;background:none;color:#0369a1;font-weight:900;cursor:pointer;padding:0 2px;">×</button></span>`)
+          .join('');
+
+        $('legajo-pills-actividades').innerHTML = (pillsAutoHtml + pillsManualHtml) || `<span class="hint">Sin actividades adicionales registradas.</span>`;
+
+        document.querySelectorAll('#legajo-chips-simultaneas .chip-check').forEach(btn => {
+          const act = btn.dataset.actChip;
+          btn.setAttribute('aria-pressed', String(actManuales.has(act) || nombresAuto.has(act)));
+        });
+      }
+
+      function renderBitacoraModal() {
+        const ordenados = [...bitacoraTemp].sort((a, b) => String(b.fecha || '').localeCompare(String(a.fecha || '')));
+        $('legajo-bitacora-lista').innerHTML = ordenados.length
+          ? ordenados.map(ev => `
+              <div class="bitacora-item">
+                <div class="bitacora-top">
+                  <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                    <strong>📅 ${esc(ev.fecha)}</strong>
+                    <span class="pill" style="${estiloBadgeEventoLegajo(ev.tipo)}">${esc(ev.tipo)}</span>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <small style="color:var(--muted); font-weight:700;">${esc(ev.autor || 'Coordinación UGI')}</small>
+                    <button type="button" class="bitacora-del" data-del-ev="${esc(ev.id)}" title="Eliminar entrada">✕</button>
+                  </div>
+                </div>
+                <div style="color:#1e293b; line-height:1.35;">${esc(ev.detalle)}</div>
+              </div>
+            `).join('')
+          : `<p class="hint" style="text-align:center; margin:6px 0;">Todavía no hay eventos cargados en la bitácora de este deportista.</p>`;
+      }
+
+      function persistirEstadoActualModal() {
+        const dniVal = $('legajo-input-dni').value.replace(/\D/g, '').trim();
+        guardarDniJugador(jugador, dniVal);
+        guardarLegajoUnificado(jugador, dniVal, {
+          dni: dniVal,
+          estadoPlan: $('legajo-estado-plan').value,
+          actividadesSimultaneas: Array.from(actManuales),
+          paseInterno: $('legajo-pase-interno').value.trim(),
+          bitacora: bitacoraTemp
+        });
+      }
+
+      renderPillsYChips();
+      renderBitacoraModal();
       $('dua-modal').classList.remove('hidden');
 
-      $('btn-guardar-legajo').onclick = async () => {
-        const nuevoDni = $('legajo-input-dni').value.replace(/\D/g, '').trim();
-        const nuevaObs = $('legajo-input-obs').value.trim();
+      $('legajo-input-dni').addEventListener('input', renderPillsYChips);
 
-        guardarDniJugador(jugador, nuevoDni);
-        const mapNotas = JSON.parse(localStorage.getItem('muni360_notas_legajo') || '{}');
-        mapNotas[nuevoDni || claveNombreDni(jugador)] = nuevaObs;
-        localStorage.setItem('muni360_notas_legajo', JSON.stringify(mapNotas));
+      $('legajo-chips-simultaneas').addEventListener('click', e => {
+        const chip = e.target.closest('.chip-check');
+        if (!chip) return;
+        const act = chip.dataset.actChip;
+        if (actManuales.has(act)) actManuales.delete(act);
+        else actManuales.add(act);
+        renderPillsYChips();
+      });
+
+      $('legajo-select-otro-dep').addEventListener('change', e => {
+        const val = e.target.value;
+        if (val) {
+          actManuales.add(val);
+          e.target.value = '';
+          renderPillsYChips();
+        }
+      });
+
+      $('legajo-pills-actividades').addEventListener('click', e => {
+        const btn = e.target.closest('button[data-quitar-act]');
+        if (!btn) return;
+        actManuales.delete(btn.dataset.quitarAct);
+        renderPillsYChips();
+      });
+
+      $('btn-agregar-evento-legajo').onclick = () => {
+        const detalle = $('legajo-ev-detalle').value.trim();
+        if (!detalle) {
+          toast("Escribí el detalle o acuerdo antes de agregarlo");
+          $('legajo-ev-detalle').focus();
+          return;
+        }
+        const nuevoEv = {
+          id: 'ev_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+          fecha: $('legajo-ev-fecha').value || fechaLocal(0),
+          tipo: $('legajo-ev-tipo').value,
+          detalle,
+          autor: `${sesion?.profeNombre || 'Coordinación'} (${areaActiva})`
+        };
+        bitacoraTemp.unshift(nuevoEv);
+        $('legajo-ev-detalle').value = '';
+        persistirEstadoActualModal();
+        renderBitacoraModal();
+        renderVistaActiva();
+        toast("✓ Registro sumado a la bitácora del legajo");
+      };
+
+      $('legajo-bitacora-lista').addEventListener('click', e => {
+        const btn = e.target.closest('button[data-del-ev]');
+        if (!btn) return;
+        const idBorrar = btn.dataset.delEv;
+        bitacoraTemp = bitacoraTemp.filter(x => x.id !== idBorrar);
+        persistirEstadoActualModal();
+        renderBitacoraModal();
+        renderVistaActiva();
+        toast("Entrada eliminada del historial");
+      });
+
+      $('btn-guardar-legajo').onclick = async () => {
+        const detallePendiente = $('legajo-ev-detalle').value.trim();
+        if (detallePendiente) {
+          bitacoraTemp.unshift({
+            id: 'ev_' + Date.now(),
+            fecha: $('legajo-ev-fecha').value || fechaLocal(0),
+            tipo: $('legajo-ev-tipo').value,
+            detalle: detallePendiente,
+            autor: `${sesion?.profeNombre || 'Coordinación'} (${areaActiva})`
+          });
+        }
+
+        const nuevoDni = $('legajo-input-dni').value.replace(/\D/g, '').trim();
+        persistirEstadoActualModal();
 
         $('dua-modal').classList.add('hidden');
         renderVistaActiva();
-        toast(`✓ Legajo y DNI de ${nombreBaseDua(jugador)} guardados`);
+        toast(`✓ Legajo unificado de ${nombreBaseDua(jugador)} guardado`);
 
         if (nuevoDni && localStorage.getItem('muni360_modo_demo') !== '1') {
           try {
@@ -2616,16 +3032,21 @@
         ? lista.map((j, i) => {
             const dniVal = obtenerDni(j);
             const tieneFichaDua = Boolean(obtenerFichaDua(j));
+            const legData = obtenerLegajoUnificado(j, dniVal);
+            const planTag = (legData.estadoPlan && !legData.estadoPlan.startsWith('🟢'))
+              ? `<span class="pill" style="background:#fef3c7; color:#92400e; font-size:0.66rem; margin-left:4px;">${esc(legData.estadoPlan.split('(')[0].trim())}</span>`
+              : '';
             return `
             <div class="item">
               <div>
                 <strong>${esc(nombreBaseDua(j))}</strong>
                 ${tieneFichaDua ? '<span class="pill v" style="font-size:0.68rem; margin-left:6px;">🧩 DUA</span>' : ''}
                 ${dniVal ? `<span class="pill" style="background:#e0f2fe; color:#0369a1; font-size:0.68rem; margin-left:4px;">DNI: ${esc(dniVal)}</span>` : ''}
+                ${planTag}
               </div>
               <div style="display:flex; gap:6px; flex-wrap:wrap;">
                 <button type="button" class="btn-dua-edit" onclick="editarPasaporteDUA('${esc(j)}')">🧩 DUA</button>
-                <button type="button" class="btn-legajo-dni ${dniVal ? 'con-dni' : ''}" onclick="abrirLegajoPrivadoUGI('${esc(j)}')">🪪 Legajo</button>
+                <button type="button" class="btn-legajo-dni ${dniVal ? 'con-dni' : ''}" onclick="abrirLegajoPrivadoUGI('${esc(j)}')">${dniVal ? '🗂️ Legajo (DNI ✓)' : '🗂️ Legajo'}</button>
                 <button type="button" class="quitar" data-i="${i}">Quitar</button>
               </div>
             </div>`;
@@ -3022,6 +3443,72 @@
 
       localStorage.setItem('muni360_modo_demo', '1');
       localStorage.setItem('muni360_cache_' + dep, JSON.stringify(demoData));
+      localStorage.setItem('muni360_cache_Colonia', JSON.stringify({
+        padron: [
+          { categoria: "Grupo 8 años", equipo: "General", jugador: "Acosta, Mateo (🧩 DUA)", dni: "48512390" }
+        ],
+        asistencia: [], evaluaciones: [], gestos: null, email: "ugi@ccba.com.ar"
+      }));
+      localStorage.setItem('muni360_cache_COYFD', JSON.stringify({
+        padron: [
+          { categoria: "Grupo 9-10 años", equipo: "General", jugador: "Benítez, Tomás", dni: "48901234" }
+        ],
+        asistencia: [], evaluaciones: [], gestos: null, email: "ugi@ccba.com.ar"
+      }));
+
+      const legajoMateo = {
+        estadoPlan: "🟡 Plan A Activo (Acompañamiento 90 días)",
+        actividadesSimultaneas: ["Colonia", "Ciudad Integrado", "Básquet Caballeros"],
+        paseInterno: "Pasó de COYFD a Básquet Caballeros en Marzo (adaptación positiva con apoyos visuales).",
+        bitacora: [
+          {
+            id: "ev_demo_1",
+            fecha: hoy,
+            tipo: "👨‍👩‍👧 Reunión / Entrevista con Padres (Anexo C)",
+            detalle: "Entrevista con padres (Anexo A/C): se acordó uso de anticipación visual en tableros de cancha y referente par durante los partidos.",
+            autor: "Juan Machado"
+          },
+          {
+            id: "ev_demo_2",
+            fecha: fechaLocal(-14),
+            tipo: "🔄 Cambio de deporte / categoría",
+            detalle: "Pase articulado desde COYFD hacia Básquet Caballeros Sub-12 luego de completar etapa de iniciación polideportiva.",
+            autor: "Coordinación UGI"
+          }
+        ],
+        actualizadoPor: "Juan Machado",
+        actualizadoFecha: hoy
+      };
+      const legajoTomas = {
+        estadoPlan: "🟢 Seguimiento Estándar",
+        actividadesSimultaneas: ["COYFD", "Básquet Caballeros"],
+        paseInterno: "Doble actividad activa: asiste los sábados a COYFD y martes/jueves a Básquet.",
+        bitacora: [
+          {
+            id: "ev_demo_3",
+            fecha: hoy,
+            tipo: "🚦 Situación conductual / Episodio en cancha",
+            detalle: "Frustración leve ante el error en cierre de práctica. Se trabajó respiración breve con el profe y finalizó el entrenamiento en grupo.",
+            autor: "Juan Machado"
+          },
+          {
+            id: "ev_demo_4",
+            fecha: fechaLocal(-20),
+            tipo: "📝 Nota general de Coordinación",
+            detalle: "Articulación con profes de COYFD: muy buena integración con sus compañeros de categoría.",
+            autor: "Coordinación UGI"
+          }
+        ],
+        actualizadoPor: "Juan Machado",
+        actualizadoFecha: hoy
+      };
+      const mapaLegajosDemo = leerMapaLegajosV2();
+      mapaLegajosDemo["48512390"] = legajoMateo;
+      mapaLegajosDemo[claveNombreDni("Acosta, Mateo")] = legajoMateo;
+      mapaLegajosDemo["48901234"] = legajoTomas;
+      mapaLegajosDemo[claveNombreDni("Benítez, Tomás")] = legajoTomas;
+      localStorage.setItem('muni360_legajos_ugi_v2', JSON.stringify(mapaLegajosDemo));
+
       const sesionDemo = {
         area: dep, esAdminTotal: true, rol: "Dirección UGI", profeNombre: "Juan Machado"
       };
@@ -3033,6 +3520,8 @@
     window.salirModoDemo = function() {
       localStorage.removeItem('muni360_modo_demo');
       localStorage.removeItem('muni360_cache_Básquet Caballeros');
+      localStorage.removeItem('muni360_cache_Colonia');
+      localStorage.removeItem('muni360_cache_COYFD');
       localStorage.removeItem('muni360_sesion_activa');
       sesion = null;
       $('login-pass').value = "";
