@@ -679,8 +679,6 @@
           <input type="password" id="login-pass" placeholder="Clave..." autocomplete="current-password" required>
         </div>
       </div>
-      <div style="font-size:0.75rem; color:var(--muted); margin-bottom:10px; line-height:1.4;">
-
       <p id="login-error" class="error" aria-live="polite"></p>
       <button type="submit" class="btn">Entrar a Muni 360</button>
 
@@ -1280,7 +1278,7 @@
       const clave = $('login-pass').value.trim();
 
       // Atajo instantáneo para modo demo
-      if (clave.toLowerCase() === 'demo1234') {
+      if (clave.toLowerCase() === 'demo1234' || clave.toLowerCase() === 'demo') {
         cargarDemoVideoUGI('demo1234');
         return;
       }
@@ -2766,12 +2764,13 @@
     // =========================================================================
     window.cargarDemoVideoUGI = function(passIngresada) {
       let pass = passIngresada || $('login-pass').value.trim();
-      if (!pass || pass.toLowerCase() !== "demo1234") {
-        const pedida = prompt("Ingresá la contraseña para acceder al Modo Demo:");
+      const esValida = p => p && (p.toLowerCase() === "demo1234" || p.toLowerCase() === "demo");
+      if (!esValida(pass)) {
+        const pedida = prompt("Ingresá la contraseña para acceder al Modo Demo (demo1234):");
         if (pedida === null) return;
         pass = pedida.trim();
       }
-      if (pass.toLowerCase() !== "demo1234") {
+      if (!esValida(pass)) {
         $('login-error').textContent = "Contraseña de demo incorrecta.";
         toast("Contraseña de demo incorrecta.");
         return;
