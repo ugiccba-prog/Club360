@@ -627,11 +627,86 @@
       box-shadow: 0 10px 25px rgba(11, 37, 69, 0.35);
     }
 
+    /* ================= MODO CANCHA: BARRA COMPACTA, KPIS Y ACORDEÓN CIERRE ================= */
+    .barra-contexto {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1.5px solid var(--sky-border);
+      border-left: 4px solid var(--navy);
+      border-radius: 12px;
+      padding: 7px 11px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 6px rgba(11, 37, 69, 0.05);
+    }
+    .barra-contexto-txt {
+      font-size: 0.83rem;
+      font-weight: 800;
+      color: var(--navy);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .btn-pill-contexto {
+      background: var(--sky-light);
+      color: var(--blue);
+      border: 1px solid var(--sky-border);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .btn-pill-contexto:hover { background: #bae6fd; }
+
+    #kpis-asist-dia { gap: 6px; margin-bottom: 9px; }
+    #kpis-asist-dia .kpi { padding: 7px 5px; border-radius: 10px; border-top-width: 3px; }
+    #kpis-asist-dia .kpi b { font-size: 1.12rem; line-height: 1.15; }
+    #kpis-asist-dia .kpi span { font-size: 0.61rem; line-height: 1.1; display: block; }
+
+    details.cierre-acordeon {
+      margin-top: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 11px;
+      overflow: hidden;
+    }
+    details.cierre-acordeon summary {
+      padding: 9px 12px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--navy);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+    details.cierre-acordeon summary::-webkit-details-marker { display: none; }
+    details.cierre-acordeon summary::after {
+      content: "▾";
+      font-size: 0.85rem;
+      color: var(--muted);
+      transition: transform 0.18s ease;
+    }
+    details.cierre-acordeon[open] summary::after { transform: rotate(180deg); }
+    details.cierre-acordeon[open] summary { border-bottom: 1px solid #e2e8f0; background: #f1f5f9; }
+    .cierre-acordeon-body { padding: 10px 12px; }
+
     @media (max-width: 560px) {
       .grid2 { grid-template-columns: 1fr; }
       .grid-situaciones { grid-template-columns: repeat(2, 1fr); }
       .grid-situaciones button:last-child { grid-column: span 2; min-height: 44px; }
       .tabs { grid-template-columns: repeat(4, 1fr); }
+      #kpis-asist-dia { gap: 5px; margin-bottom: 8px; }
+      #kpis-asist-dia .kpi { padding: 6px 4px; }
+      #kpis-asist-dia .kpi b { font-size: 1.02rem; }
+      #kpis-asist-dia .kpi span { font-size: 0.58rem; }
     }
   </style>
 </head>
@@ -736,8 +811,19 @@
       </button>
     </div>
 
-    <!-- TARJETA DE FILTROS GLOBALES -->
-    <div class="card" id="card-filtros">
+    <!-- BARRA COMPACTA DE CONTEXTO ACTIVO (MODO CANCHA) -->
+    <div id="barra-contexto-activo" class="barra-contexto">
+      <span id="txt-contexto-activo" class="barra-contexto-txt">📍 Seleccionar grupo · 📅 Hoy</span>
+      <button type="button" id="btn-toggle-filtros" class="btn-pill-contexto">⚙️ Cambiar grupo / fecha</button>
+    </div>
+
+    <!-- TARJETA DE FILTROS GLOBALES (COLAPSABLE) -->
+    <div class="card hidden" id="card-filtros">
+      <div class="spread" style="margin-bottom:8px;">
+        <span style="font-size:0.78rem; font-weight:800; color:var(--navy); text-transform:uppercase;">Seleccionar Grupo y Fecha</span>
+        <button type="button" class="btn-sec" id="btn-listo-filtros" style="min-height:30px; padding:4px 12px; background:#dcfce7; color:#166534; border-color:#86efac;">✓ Listo</button>
+      </div>
+
       <div class="field hidden" id="wrap-deporte-admin">
         <label for="sel-deporte">Actividad / Deporte Activo (Vista Dirección UGI)</label>
         <select id="sel-deporte"></select>
@@ -748,7 +834,7 @@
           <label for="sel-categoria">Categoría</label>
           <select id="sel-categoria"></select>
         </div>
-        <div class="field" style="margin:0;">
+        <div class="field" style="margin:0;" id="wrap-sel-equipo">
           <label for="sel-equipo">Equipo / Tira</label>
           <select id="sel-equipo"></select>
         </div>
@@ -788,27 +874,30 @@
 
         <div id="lista-asist"></div>
 
-        <!-- CIERRE DE CLASE UGI: PUNTOS CIUDAD + TERMOSTATO GRUPAL -->
-        <div style="margin-top:14px; padding:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px;">
-          <div class="grid2">
-            <div>
-              <label for="sel-puntos-ciudad">🏆 Termómetro Puntos Ciudad hoy</label>
-              <select id="sel-puntos-ciudad" style="min-height:40px; font-size:0.86rem;">
-                <option value="+5">⭐ Cumplieron meta grupal (+5 Puntos Ciudad)</option>
-                <option value="+10">🟢 Meta + Tarjeta Verde grupal (+10 Puntos)</option>
-                <option value="0">➖ Sin puntos extra hoy (0)</option>
-              </select>
-            </div>
-            <div>
-              <label for="sel-clima-clase">🌡️ Clima general de la clase</label>
-              <select id="sel-clima-clase" style="min-height:40px; font-size:0.86rem;">
-                <option value="Vapor">💨 Estado Vapor (Enfocados / Óptimo)</option>
-                <option value="Fuego">🔥 Exceso de Fuego (Pasados de rosca / Roce)</option>
-                <option value="Agua">💧 Exceso de Agua (Dispersos / Baja energía)</option>
-              </select>
+        <!-- CIERRE DE CLASE UGI COLAPSABLE: PUNTOS CIUDAD + TERMOSTATO GRUPAL -->
+        <details class="cierre-acordeon" id="details-cierre-clase">
+          <summary>🌡️ Cierre rápido de clase: Clima y Puntos Ciudad (opcional)</summary>
+          <div class="cierre-acordeon-body">
+            <div class="grid2">
+              <div>
+                <label for="sel-puntos-ciudad">🏆 Termómetro Puntos Ciudad hoy</label>
+                <select id="sel-puntos-ciudad" style="min-height:40px; font-size:0.86rem;">
+                  <option value="+5">⭐ Cumplieron meta grupal (+5 Puntos Ciudad)</option>
+                  <option value="+10">🟢 Meta + Tarjeta Verde grupal (+10 Puntos)</option>
+                  <option value="0">➖ Sin puntos extra hoy (0)</option>
+                </select>
+              </div>
+              <div>
+                <label for="sel-clima-clase">🌡️ Clima general de la clase</label>
+                <select id="sel-clima-clase" style="min-height:40px; font-size:0.86rem;">
+                  <option value="Vapor">💨 Estado Vapor (Enfocados / Óptimo)</option>
+                  <option value="Fuego">🔥 Exceso de Fuego (Pasados de rosca / Roce)</option>
+                  <option value="Agua">💧 Exceso de Agua (Dispersos / Baja energía)</option>
+                </select>
+              </div>
             </div>
           </div>
-        </div>
+        </details>
 
         <button type="button" class="btn ok" id="btn-guardar-asist" style="margin-top:12px;">Guardar asistencia y sincronizar Sheet</button>
       </div>
@@ -1360,7 +1449,8 @@
       $('login-screen').classList.add('hidden');
       ['app-header', 'barra-estado', 'app-screen'].forEach(id => $(id).classList.remove('hidden'));
 
-      $('wrap-deporte-admin').classList.toggle('hidden', !sesion.esAdminTotal);
+      const esAdmin = Boolean(sesion.esAdminTotal && sesion.rol !== "Profe");
+      $('wrap-deporte-admin').classList.toggle('hidden', !esAdmin);
       $('sel-deporte').value = areaActiva;
       $('input-fecha').value = fechaLocal(0);
 
@@ -1386,24 +1476,33 @@
     }
 
     function esCoordOAdmin() {
-      return sesion && (sesion.rol === "Coordinación" || sesion.rol === "Dirección UGI");
+      return sesion && sesion.rol !== "Profe" && (sesion.rol === "Coordinación" || sesion.rol === "Dirección UGI");
     }
 
     function actualizarCabeceraYPestanas() {
       const cfg = cfgActual();
       $('header-sub').textContent = `${cfg.nombre} · ${sesion.rol} (${sesion.profeNombre})`;
-      $('tab-btn-padron').classList.toggle('hidden', !esCoordOAdmin());
-      $('nav-tabs').classList.toggle('cuatro', !esCoordOAdmin());
+      const puedePadron = esCoordOAdmin();
+      $('tab-btn-padron').classList.toggle('hidden', !puedePadron);
+      $('nav-tabs').classList.toggle('cuatro', !puedePadron);
+      $('wrap-deporte-admin').classList.toggle('hidden', !(sesion && sesion.esAdminTotal && sesion.rol !== "Profe"));
 
       $('filtros-deporte').classList.remove('hidden');
       $('filtros-colonia').classList.add('hidden');
       $('btn-todos-comida').classList.toggle('hidden', !cfg.tieneComida);
+      $('wrap-sel-equipo').classList.toggle('hidden', Boolean(cfg.esBase));
       $('wrap-padron-eq').classList.toggle('hidden', Boolean(cfg.esBase));
       $('card-variables-deporte').classList.remove('hidden');
+
+      if (!puedePadron && tabActual === 'padron') {
+        cambiarTab('asistencia');
+      }
     }
 
     $('sel-deporte').addEventListener('change', e => {
       areaActiva = e.target.value;
+      $('sel-categoria').value = '';
+      $('sel-equipo').value = '';
       actualizarCabeceraYPestanas();
       cargarAreaActiva();
     });
@@ -1810,29 +1909,125 @@
       return [...new Set(datosDeporte.padron.filter(p => p.categoria === cat).map(p => p.equipo || 'General'))].sort(orden);
     }
 
+    let filtrosDesplegados = false;
+
+    function formatearFechaCorta(iso) {
+      if (!iso) return 'Hoy';
+      const partes = String(iso).split('-');
+      const ddMm = partes.length === 3 ? `${partes[2]}/${partes[1]}` : iso;
+      return iso === fechaLocal(0) ? `Hoy (${ddMm})` : ddMm;
+    }
+
+    function guardarUltimaSeleccionGrupo() {
+      const cat = $('sel-categoria').value;
+      const eq  = $('sel-equipo').value || 'General';
+      if (cat) localStorage.setItem('muni360_ult_cat_' + areaActiva, cat);
+      if (eq)  localStorage.setItem('muni360_ult_eq_' + areaActiva, eq);
+    }
+
+    function actualizarBarraContexto() {
+      const cfg = cfgActual();
+      const cat = $('sel-categoria').value;
+      const eq  = $('sel-equipo').value || 'General';
+      const fecha = $('input-fecha').value || fechaLocal(0);
+
+      let txtGrupo = cat ? `📍 ${cat}` : `📍 Seleccionar grupo`;
+      if (cat && !cfg.esBase && eq && eq !== 'General') {
+        const prefijoEq = /^tira\b/i.test(eq) ? eq : `Tira ${eq}`;
+        txtGrupo += ` · ${prefijoEq}`;
+      }
+      const txtFecha = `📅 ${formatearFechaCorta(fecha)}`;
+      $('txt-contexto-activo').textContent = (tabActual === 'analisis' || tabActual === 'padron')
+        ? txtGrupo
+        : `${txtGrupo} · ${txtFecha}`;
+
+      const enBancoUgi = tabActual === 'ugi';
+      $('barra-contexto-activo').classList.toggle('hidden', enBancoUgi);
+
+      const sinCategoria = !cat;
+      const mostrarCard = !enBancoUgi && (filtrosDesplegados || sinCategoria);
+      $('card-filtros').classList.toggle('hidden', !mostrarCard);
+      $('btn-toggle-filtros').textContent = mostrarCard ? '▴ Ocultar filtros' : '⚙️ Cambiar grupo / fecha';
+    }
+
     function renderFiltrosDeporte() {
       const cats = categoriasDep();
+      const ultCat = localStorage.getItem('muni360_ult_cat_' + areaActiva) || '';
       const prevCat = $('sel-categoria').value;
+
       $('sel-categoria').innerHTML = cats.length
         ? cats.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('')
         : `<option value="">Sin categorías/grupos cargados</option>`;
-      if (cats.includes(prevCat)) $('sel-categoria').value = prevCat;
+
+      if (cats.includes(prevCat)) {
+        $('sel-categoria').value = prevCat;
+      } else if (ultCat && cats.includes(ultCat)) {
+        $('sel-categoria').value = ultCat;
+      } else if (cats.length) {
+        $('sel-categoria').value = cats[0];
+      }
 
       const eqs = equiposDep($('sel-categoria').value);
+      const ultEq = localStorage.getItem('muni360_ult_eq_' + areaActiva) || '';
       const prevEq = $('sel-equipo').value;
+
       $('sel-equipo').innerHTML = eqs.length
         ? eqs.map(e => `<option value="${esc(e)}">${esc(e)}</option>`).join('')
         : `<option value="General">General</option>`;
-      if (eqs.includes(prevEq)) $('sel-equipo').value = prevEq;
+
+      if (eqs.includes(prevEq)) {
+        $('sel-equipo').value = prevEq;
+      } else if (ultEq && eqs.includes(ultEq)) {
+        $('sel-equipo').value = ultEq;
+      } else if (eqs.length) {
+        $('sel-equipo').value = eqs[0];
+      }
+
+      if (cats.length) {
+        guardarUltimaSeleccionGrupo();
+        filtrosDesplegados = false;
+      } else {
+        filtrosDesplegados = true;
+      }
+      actualizarBarraContexto();
     }
+
+    $('btn-toggle-filtros').addEventListener('click', () => {
+      filtrosDesplegados = !filtrosDesplegados;
+      actualizarBarraContexto();
+    });
+
+    $('btn-listo-filtros').addEventListener('click', () => {
+      guardarUltimaSeleccionGrupo();
+      filtrosDesplegados = false;
+      actualizarBarraContexto();
+    });
 
     $('sel-categoria').addEventListener('change', () => {
       const eqs = equiposDep($('sel-categoria').value);
+      const ultEq = localStorage.getItem('muni360_ult_eq_' + areaActiva) || '';
       $('sel-equipo').innerHTML = eqs.length ? eqs.map(e => `<option value="${esc(e)}">${esc(e)}</option>`).join('') : `<option value="General">General</option>`;
+      if (ultEq && eqs.includes(ultEq)) $('sel-equipo').value = ultEq;
+      guardarUltimaSeleccionGrupo();
+      if (cfgActual().esBase || eqs.length <= 1) {
+        filtrosDesplegados = false;
+      }
+      actualizarBarraContexto();
       renderVistaActiva();
     });
-    $('sel-equipo').addEventListener('change', renderVistaActiva);
-    $('input-fecha').addEventListener('change', renderVistaActiva);
+
+    $('sel-equipo').addEventListener('change', () => {
+      guardarUltimaSeleccionGrupo();
+      filtrosDesplegados = false;
+      actualizarBarraContexto();
+      renderVistaActiva();
+    });
+
+    $('input-fecha').addEventListener('change', () => {
+      filtrosDesplegados = false;
+      actualizarBarraContexto();
+      renderVistaActiva();
+    });
 
     function plantelActualNombres() {
       const cat = $('sel-categoria').value;
@@ -2736,6 +2931,7 @@
     // 11. CAMBIO DE PESTAÑAS Y RESTAURACIÓN AUTOMÁTICA DE SESIÓN
     // =========================================================================
     function renderVistaActiva() {
+      actualizarBarraContexto();
       renderAsistencia();
       renderEvaluacion();
       renderAnalisis();
@@ -2743,6 +2939,7 @@
     }
 
     function cambiarTab(id) {
+      if (id === 'padron' && !esCoordOAdmin()) return;
       tabActual = id;
       ['asistencia', 'evaluacion', 'ugi', 'analisis', 'padron'].forEach(t => {
         $('tab-' + t).classList.toggle('hidden', t !== id);
@@ -2750,8 +2947,8 @@
       document.querySelectorAll('#nav-tabs .tab').forEach(b => {
         b.setAttribute('aria-selected', String(b.dataset.tab === id));
       });
-      $('card-filtros').classList.toggle('hidden', id === 'ugi');
       $('wrap-fecha').classList.toggle('hidden', id === 'analisis' || id === 'padron');
+      actualizarBarraContexto();
     }
 
     $('nav-tabs').addEventListener('click', e => {
