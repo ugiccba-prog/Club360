@@ -813,7 +813,7 @@
        1. PANTALLA INICIAL UNIFICADA (MUNI 360)
        ===================================================================== -->
   <div id="login-screen">
-    <form id="login-form" class="login-card">
+    <form id="login-form" class="login-card" novalidate>
       <img src="../escudo-ccba.png" onerror="this.src='escudo-ccba.png'" alt="Escudo C.C.B.A." class="login-shield">
       <div><span class="login-pill">Club Ciudad de Buenos Aires</span></div>
       <h1>MUNI 360 · UGI</h1>
@@ -1477,6 +1477,10 @@
         $('login-error').textContent = "Ingresá tu nombre y apellido.";
         return;
       }
+      if (!clave) {
+        $('login-error').textContent = "Ingresá la contraseña de acceso.";
+        return;
+      }
 
       const btn = e.target.querySelector('button[type="submit"]');
       btn.disabled = true;
@@ -1701,6 +1705,11 @@
     $('dua-modal').addEventListener('click', e => {
       if (e.target === $('dua-modal')) $('dua-modal').classList.add('hidden');
     });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !$('dua-modal').classList.contains('hidden')) {
+        $('dua-modal').classList.add('hidden');
+      }
+    });
 
     window.verPasaporteDUA = function (jugador) {
       const f = obtenerFichaDua(jugador);
@@ -1896,7 +1905,7 @@
       if (t.includes('Queja') || t.includes('reclamo')) return 'background:#fee2e2; color:#991b1b;';
       if (t.includes('conductual') || t.includes('cancha')) return 'background:#fef3c7; color:#92400e;';
       if (t.includes('Cambio de deporte')) return 'background:#e0e7ff; color:#3730a3;';
-      if (t.includes('Acuerdo PAI') || t.includes('Seguimiento')) return 'background:#dcfce7; color:#166534;';
+      if (t.includes('Acuerdo PAI') || t.includes('Seguimiento') || t.includes('Tarjeta Verde')) return 'background:#dcfce7; color:#166534;';
       return 'background:#e2e8f0; color:#334155;';
     }
 
@@ -2849,6 +2858,19 @@
       $('dua-modal').classList.remove('hidden');
 
       $('btn-confirmar-verde').onclick = () => {
+        const motivo = $('sel-motivo-verde').value;
+        const notaExtra = $('nota-verde').value.trim();
+        const dniJ = obtenerDni(jugadorActivo);
+        const fichaLeg = obtenerLegajoUnificado(jugadorActivo, dniJ);
+        fichaLeg.bitacora.unshift({
+          id: 'tv_' + Date.now(),
+          fecha: $('input-fecha').value || fechaLocal(0),
+          tipo: '🟢 Tarjeta Verde Digital',
+          detalle: `${motivo}${notaExtra ? ' — "' + notaExtra + '"' : ''}`,
+          autor: `${sesion?.profeNombre || 'Profe'} (${areaActiva})`
+        });
+        guardarLegajoUnificado(jugadorActivo, dniJ, fichaLeg);
+
         $('dua-modal').classList.add('hidden');
         toast(`🟢 Tarjeta Verde asignada a ${jBase}`);
         semTempDep[jugadorActivo] = 'V';
@@ -2947,12 +2969,21 @@
 
     function renderAnalisis() {
       const lista = plantelActualNombres();
-      const evals = datosDeporte.evaluaciones || [];
+      const setLista = new Set(lista);
+      const diasFiltro = Number($('sel-periodo').value || 0);
+      const fechaCorte = diasFiltro > 0 ? fechaLocal(-diasFiltro) : '';
+
+      const evals = (datosDeporte.evaluaciones || []).filter(e =>
+        setLista.has(e.jugador) && (!fechaCorte || String(e.fecha || '') >= fechaCorte)
+      );
+      const asistGrupo = (datosDeporte.asistencia || []).filter(a =>
+        setLista.has(a.jugador) && (!fechaCorte || String(a.fecha || '') >= fechaCorte)
+      );
       const gestos = gestosActuales();
 
       let suma = 0, cant = 0;
       const promsGesto = gestos.map(g => {
-        const vals = evals.map(e => e.notas[g]).filter(n => n > 0);
+        const vals = evals.map(e => e.notas?.[g]).filter(n => n > 0);
         suma += vals.reduce((a, b) => a + b, 0);
         cant += vals.length;
         return { g, prom: vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : 0 };
@@ -2968,33 +2999,45 @@
       }).join('');
 
       let alertas = 0;
+      let totalPresGrupo = 0, totalRegsGrupo = 0;
+
       ultimaMatrizExport = lista.map(jugador => {
         const evJ = evals.filter(e => e.jugador === jugador);
         let s = 0, c = 0, peorG = '-', peorP = 11;
-        evJ.forEach(e => Object.entries(e.notas).forEach(([g, n]) => {
+        evJ.forEach(e => Object.entries(e.notas || {}).forEach(([g, n]) => {
           s += n; c++;
           if (n < peorP) { peorP = n; peorG = g; }
         }));
         const prom = c ? (s / c) : null;
 
-        const regs = datosDeporte.asistencia.filter(a => a.jugador === jugador);
+        const regs = asistGrupo.filter(a => a.jugador === jugador);
         const pres = regs.filter(a => String(a.estado).startsWith('P') || String(a.estado).startsWith('T')).length;
+        totalPresGrupo += pres;
+        totalRegsGrupo += regs.length;
         const pct = regs.length ? Math.round((pres / regs.length) * 100) : null;
 
-        const enAlerta = (prom !== null && prom < 6) || (pct !== null && pct < 70);
+        const amarillas = regs.filter(a => String(a.estado).includes('Sem:A')).length;
+        const rojas     = regs.filter(a => String(a.estado).includes('Sem:R')).length;
+        const legData   = obtenerLegajoUnificado(jugador, obtenerDni(jugador));
+        const tienePlanActivo = Boolean(legData.estadoPlan && !legData.estadoPlan.startsWith('🟢'));
+
+        const enAlerta = (prom !== null && prom < 6) || (pct !== null && pct < 70) || rojas > 0 || amarillas >= 2 || tienePlanActivo;
         if (enAlerta) alertas++;
+
         return {
           Deportista: nombreBaseDua(jugador),
           Promedio: prom !== null ? prom.toFixed(1) : '-',
           ATrabajar: prom !== null && peorP <= 6 ? peorG : 'Parejo',
           Asistencia: pct !== null ? pct + '%' : '-',
-          Estado: enAlerta ? '⚠ Seguimiento' : '✓ Óptimo',
+          Semaforo: rojas ? `🔴 ${rojas} / 🟡 ${amarillas}` : (amarillas ? `🟡 ${amarillas}` : '🟢 100%'),
+          Estado: tienePlanActivo ? legData.estadoPlan.split('(')[0].trim() : (enAlerta ? '⚠ Seguimiento' : '✓ Óptimo'),
           enAlerta
         };
       });
 
+      const pctGrupoGlobal = totalRegsGrupo ? Math.round((totalPresGrupo / totalRegsGrupo) * 100) + '%' : (ultimaMatrizExport.length ? 'Activa' : '-');
       $('kpi-promedio').textContent = cant ? (suma / cant).toFixed(1) : '-';
-      $('kpi-asistencia').textContent = ultimaMatrizExport.length ? 'Activa' : '-';
+      $('kpi-asistencia').textContent = pctGrupoGlobal;
       $('kpi-alertas').textContent = String(alertas);
 
       $('tabla-matriz').innerHTML = ultimaMatrizExport.length
@@ -3009,9 +3052,12 @@
         : `<tr><td colspan="5" class="hint" style="text-align:center;">Sin deportistas cargados.</td></tr>`;
     }
 
+    $('sel-periodo').addEventListener('change', renderAnalisis);
+
     $('btn-exportar-excel').addEventListener('click', () => {
       if (!window.XLSX || !ultimaMatrizExport.length) { toast("No hay datos para exportar"); return; }
-      const ws = XLSX.utils.json_to_sheet(ultimaMatrizExport);
+      const filasLimpias = ultimaMatrizExport.map(({ enAlerta, ...resto }) => resto);
+      const ws = XLSX.utils.json_to_sheet(filasLimpias);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Reporte_UGI");
       XLSX.writeFile(wb, `Muni360_${areaActiva.replace(/\s+/g, '_')}_${fechaLocal()}.xlsx`);
@@ -3045,8 +3091,8 @@
                 ${planTag}
               </div>
               <div style="display:flex; gap:6px; flex-wrap:wrap;">
-                <button type="button" class="btn-dua-edit" onclick="editarPasaporteDUA('${esc(j)}')">🧩 DUA</button>
-                <button type="button" class="btn-legajo-dni ${dniVal ? 'con-dni' : ''}" onclick="abrirLegajoPrivadoUGI('${esc(j)}')">${dniVal ? '🗂️ Legajo (DNI ✓)' : '🗂️ Legajo'}</button>
+                <button type="button" class="btn-dua-edit" data-dua-edit="${esc(j)}">🧩 DUA</button>
+                <button type="button" class="btn-legajo-dni ${dniVal ? 'con-dni' : ''}" data-legajo-open="${esc(j)}">${dniVal ? '🗂️ Legajo (DNI ✓)' : '🗂️ Legajo'}</button>
                 <button type="button" class="quitar" data-i="${i}">Quitar</button>
               </div>
             </div>`;
@@ -3056,11 +3102,17 @@
       $('padron-cat').value = $('sel-categoria').value || '';
       $('padron-eq').value  = cfgActual().esBase ? 'General' : ($('sel-equipo').value || 'A');
       const gLista = gestosActuales();
-      $('lista-gestos-config').innerHTML = gLista.map(g => `
+      $('lista-gestos-config').innerHTML = gLista.map(g => {
+        const esFijo = GESTOS_COMUNES_UGI.includes(g) || cfgActual().gestos.includes(g);
+        return `
         <div class="item">
           <span>${esc(g)}</span>
-          ${GESTOS_COMUNES_UGI.includes(g) ? '<span class="pill a">4C UGI</span>' : ''}
-        </div>`).join('');
+          <div style="display:flex; align-items:center; gap:6px;">
+            ${GESTOS_COMUNES_UGI.includes(g) ? '<span class="pill a">4C UGI</span>' : ''}
+            ${!esFijo ? `<button type="button" class="bitacora-del" data-quitar-gesto="${esc(g)}" title="Quitar variable personalizada">✕</button>` : ''}
+          </div>
+        </div>`;
+      }).join('');
     }
 
     $('form-padron').addEventListener('submit', async e => {
@@ -3154,7 +3206,11 @@
     $('btn-sumar-gesto').addEventListener('click', () => {
       const nuevo = $('input-nuevo-gesto').value.trim();
       if (!nuevo) return;
-      const base = (datosDeporte.gestos && datosDeporte.gestos.length) ? datosDeporte.gestos : [...cfgActual().gestos];
+      const base = (datosDeporte.gestos && datosDeporte.gestos.length) ? [...datosDeporte.gestos] : [...cfgActual().gestos];
+      if (base.some(g => igual(g, nuevo)) || GESTOS_COMUNES_UGI.some(g => igual(g, nuevo))) {
+        toast("Esa variable ya existe en la lista");
+        return;
+      }
       base.push(nuevo);
       datosDeporte.gestos = base;
       localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
@@ -3163,7 +3219,28 @@
       toast(`Variable "${nuevo}" sumada a ${areaActiva}`);
     });
 
+    $('lista-gestos-config').addEventListener('click', e => {
+      const btn = e.target.closest('button[data-quitar-gesto]');
+      if (!btn) return;
+      const gQuitar = btn.dataset.quitarGesto;
+      const base = (datosDeporte.gestos && datosDeporte.gestos.length) ? [...datosDeporte.gestos] : [...cfgActual().gestos];
+      datosDeporte.gestos = base.filter(g => g !== gQuitar);
+      localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
+      renderVistaActiva();
+      toast(`Variable "${gQuitar}" quitada`);
+    });
+
     $('lista-padron').addEventListener('click', async e => {
+      const btnDua = e.target.closest('button[data-dua-edit]');
+      if (btnDua) {
+        window.editarPasaporteDUA(btnDua.dataset.duaEdit);
+        return;
+      }
+      const btnLeg = e.target.closest('button[data-legajo-open]');
+      if (btnLeg) {
+        window.abrirLegajoPrivadoUGI(btnLeg.dataset.legajoOpen);
+        return;
+      }
       const b = e.target.closest('.quitar');
       if (!b) return;
       const lista = plantelActualNombres();
