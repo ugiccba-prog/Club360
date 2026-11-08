@@ -136,13 +136,7 @@ function inicializarPlantillaBase() {
 
   // Activar pestaña Configuración al abrir
   ss.setActiveSheet(shConf);
-
-  SpreadsheetApp.getUi().alert(
-    '🎉 ¡Planilla Base de Club 360 Creada con Éxito!\n\n' +
-    '1. Ya podés cambiar la palabra /edit al final de la URL del navegador por /copy.\n' +
-    '2. Ese enlace /copy es el que le enviarás a tus compradores.\n' +
-    '3. En Extensiones > Apps Script, vinculá tu biblioteca Core y pegá el código cascarón.'
-  );
+  console.log('Planilla Base de Club 360 creada con éxito.');
 }
 
 function formatearEncabezado(hoja, columnas, bg, fg) {
