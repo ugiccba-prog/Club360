@@ -21,7 +21,7 @@ var CONFIG_MAESTRA = {
   WHATSAPP_SOPORTE: '5491100000000', // Modificar con tu número de WhatsApp real (ej: 54911XXXXXXXX)
   EMAIL_SOPORTE: 'soporte@club360.com',
   // ID de tu planilla privada de licencias activas. Si está vacío '', funciona en modo desarrollo/abierto.
-  ID_PLANILLA_LICENCIAS: '',
+  ID_PLANILLA_LICENCIAS: '1GzC24E92g4ntR3aFgxrgIHG8SkicTE1ylKblilaItgU',
   MODO_DEBUG: false
 };
 
@@ -89,16 +89,17 @@ function validarLicencia(spreadsheetId) {
     for (var i = 1; i < filas.length; i++) {
       var idFila = String(filas[i][colId] || filas[i][0] || '').trim();
       if (idFila === spreadsheetId) {
-        var rawEstado = '';
-        if (colEstado !== -1 && filas[i][colEstado]) rawEstado = String(filas[i][colEstado]);
-        else if (filas[i][6]) rawEstado = String(filas[i][6]);
-        else if (filas[i][5]) rawEstado = String(filas[i][5]);
+        var filaTexto = filas[i].map(function(v) { return String(v || '').trim().toUpperCase(); });
+        var estadoFinal = 'INACTIVA';
+        if (filaTexto.indexOf('ACTIVA') !== -1) estadoFinal = 'ACTIVA';
+        else if (filaTexto.indexOf('DEMO') !== -1) estadoFinal = 'DEMO';
+        else if (colEstado !== -1 && filas[i][colEstado]) estadoFinal = String(filas[i][colEstado]).trim().toUpperCase();
 
         encontrada = {
           fila: i + 1,
           cliente: String(filas[i][colCliente] || filas[i][1] || 'Club'),
           vencimiento: colVence !== -1 ? filas[i][colVence] : filas[i][5],
-          estado: (rawEstado || 'INACTIVA').trim().toUpperCase()
+          estado: estadoFinal
         };
         break;
       }
