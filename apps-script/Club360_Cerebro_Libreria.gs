@@ -67,18 +67,38 @@ function validarLicencia(spreadsheetId) {
     var hojaLic = ssLic.getSheetByName('Licencias') || ssLic.getSheets()[0];
     var filas = hojaLic.getDataRange().getValues();
     
-    // Columnas esperadas: [0] ID_Planilla, [1] Cliente, [2] Contacto, [3] Plan, [4] Vencimiento, [5] Estado
+    // Detección dinámica y tolerante de columnas
+    var cabeceras = (filas[0] || []).map(function(c) { return String(c || '').trim().toLowerCase(); });
+    var colId = 0;
+    var colCliente = 1;
+    var colVence = -1;
+    var colEstado = -1;
+
+    for (var c = 0; c < cabeceras.length; c++) {
+      var h = cabeceras[c];
+      if (h.indexOf('id') !== -1) colId = c;
+      else if (h.indexOf('nombre') !== -1 || h.indexOf('club') !== -1 || h.indexOf('cliente') !== -1) colCliente = c;
+      else if (h.indexOf('venc') !== -1) colVence = c;
+      else if (h.indexOf('estado') !== -1) colEstado = c;
+    }
+
+    if (colEstado === -1) colEstado = 6; // Columna G
+    if (colVence === -1) colVence = 5;  // Columna F
+
     var encontrada = null;
     for (var i = 1; i < filas.length; i++) {
-      var idFila = String(filas[i][0] || '').trim();
+      var idFila = String(filas[i][colId] || filas[i][0] || '').trim();
       if (idFila === spreadsheetId) {
+        var rawEstado = '';
+        if (colEstado !== -1 && filas[i][colEstado]) rawEstado = String(filas[i][colEstado]);
+        else if (filas[i][6]) rawEstado = String(filas[i][6]);
+        else if (filas[i][5]) rawEstado = String(filas[i][5]);
+
         encontrada = {
           fila: i + 1,
-          cliente: String(filas[i][1] || 'Club'),
-          contacto: String(filas[i][2] || ''),
-          plan: String(filas[i][3] || 'Mensual'),
-          vencimiento: filas[i][4],
-          estado: String(filas[i][5] || 'INACTIVA').trim().toUpperCase()
+          cliente: String(filas[i][colCliente] || filas[i][1] || 'Club'),
+          vencimiento: colVence !== -1 ? filas[i][colVence] : filas[i][5],
+          estado: (rawEstado || 'INACTIVA').trim().toUpperCase()
         };
         break;
       }
