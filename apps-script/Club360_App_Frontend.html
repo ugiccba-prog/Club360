@@ -1248,8 +1248,22 @@
 
   <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
+  <!-- DATOS DE CONFIGURACIÓN INYECTADOS POR EL SERVIDOR -->
+  <script id="club360-config-data" type="application/json">
+  {{DEPORTES_JSON}}
+  </script>
+
   <script>
     // =========================================================================
+    // CONFIGURACIÓN DINÁMICA DE LA PLANILLA CLIENTE
+    // =========================================================================
+    let DEPORTES_CLIENTE_CONFIG = [];
+    try {
+      const rawCfg = document.getElementById('club360-config-data');
+      if (rawCfg && rawCfg.textContent.indexOf('{{') === -1) {
+        DEPORTES_CLIENTE_CONFIG = JSON.parse(rawCfg.textContent.trim());
+      }
+    } catch (_) {}
     // 1. CONFIGURACIÓN MAESTRA MUNI 360 (100% GOOGLE SHEETS · SIN SUPABASE NI CLAVES EXPUESTAS)
     // =========================================================================
     const URL_SCRIPT_DEPORTES = (typeof window !== 'undefined' && window.location.href.indexOf('script.google.com') !== -1)
@@ -1276,7 +1290,6 @@
     const ARQ_HSC = ["Arquero: Posición básica y ángulo de achique", "Arquero: Despeje de kickers y guardas (bajo)", "Arquero: Uso de guantes (tiros a media/alta altura)", "Arquero: Salidas en 1 vs 1 y barrida", "Arquero: Defensa de córner corto", "Arquero: Comunicación y orden defensivo"];
     const ARQ_FUT = ["Arquero: Posición de base y juego de piernas", "Arquero: Toma de pelota y seguridad de manos", "Arquero: Caídas y vuelos laterales", "Arquero: Achique en 1 vs 1", "Arquero: Juego aéreo y descuelgue de centros", "Arquero: Salida con los pies y saque"];
 
-    var DEPORTES_CLIENTE_CONFIG = {{DEPORTES_JSON}};
     // CATÁLOGO OFICIAL DE ACTIVIDADES (Sin PINes expuestos en el HTML)
     const CATALOGO_MUNI360 = [
 
