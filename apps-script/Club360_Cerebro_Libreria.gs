@@ -150,7 +150,7 @@ function leerConfiguracionCliente(ss) {
     emailCoord: '',
     deportes: [
       'Fútbol', 'Básquet', 'Vóley', 'Hockey', 'Tenis', 
-      'Natación', 'Gimnasia', 'Rugby', 'Colonia'
+      'Natación', 'Gimnasia', 'Rugby', 'Pádel'
     ],
     modulos: {
       asistencia: true,

@@ -825,21 +825,7 @@
         <select id="login-deporte"></select>
       </div>
 
-      <div class="divider">o elegí Base Formativa</div>
 
-      <!-- BLOQUE INFERIOR: TARJETAS RÁPIDAS COLONIA Y COYFD -->
-      <div class="base-cards">
-        <button type="button" class="base-btn" id="btn-base-colonia" data-area="Colonia">
-          <span class="ico">☀️</span>
-          <span>COLONIA</span>
-          <small>Asistencia + Comedor</small>
-        </button>
-        <button type="button" class="base-btn" id="btn-base-coyfd" data-area="COYFD">
-          <span class="ico">🏃‍♂️</span>
-          <span>COYFD</span>
-          <small>Iniciación y Orientación</small>
-        </button>
-      </div>
 
       <div class="grid2" style="margin-bottom:10px;">
         <div class="field" style="margin:0;">
@@ -1293,8 +1279,6 @@
     var DEPORTES_CLIENTE_CONFIG = {{DEPORTES_JSON}};
     // CATÁLOGO OFICIAL DE ACTIVIDADES (Sin PINes expuestos en el HTML)
     const CATALOGO_MUNI360 = [
-      { nombre: "Colonia", esBase: true, tieneComida: true,  gestos: ["Participación y entusiasmo", "Respeto de consignas", "Trabajo en equipo", "Coordinación motriz", "Adaptación al agua", "Autonomía personal", "Resolución de conflictos"] },
-      { nombre: "COYFD",   esBase: true, tieneComida: false, gestos: ["Coordinación óculo-manual", "Coordinación óculo-pédica", "Equilibrio y desplazamientos", "Giro y salto", "Cooperación en juego", "Comprensión de reglas", "Tolerancia al contacto"] },
 
       { nombre: "Básquet Caballeros",              gestos: G_BASQUET },
       { nombre: "Básquet Damas",                   gestos: G_BASQUET },
@@ -1459,23 +1443,13 @@
 
     function marcarSeleccionLogin(nombreArea) {
       areaElegidaLogin = nombreArea;
-      const esColonia = nombreArea === "Colonia";
-      const esCoyfd   = nombreArea === "COYFD";
-      $('btn-base-colonia').classList.toggle('active', esColonia);
-      $('btn-base-coyfd').classList.toggle('active', esCoyfd);
-      if (esColonia || esCoyfd) {
-        $('login-deporte').value = "";
-      } else {
-        $('login-deporte').value = nombreArea;
-      }
+      $('login-deporte').value = nombreArea;
       $('login-error').textContent = "";
     }
 
     $('login-deporte').addEventListener('change', e => {
       if (e.target.value) marcarSeleccionLogin(e.target.value);
     });
-    $('btn-base-colonia').addEventListener('click', () => marcarSeleccionLogin("Colonia"));
-    $('btn-base-coyfd').addEventListener('click', () => marcarSeleccionLogin("COYFD"));
 
     marcarSeleccionLogin(areaElegidaLogin);
 
@@ -1491,7 +1465,7 @@
       }
 
       if (!areaElegidaLogin) {
-        $('login-error').textContent = "Elegí primero un Deporte, Colonia o COYFD.";
+        $('login-error').textContent = "Elegí primero un Deporte.";
         return;
       }
       if (!profe) {
@@ -1538,7 +1512,7 @@
         const c = clave.toLowerCase();
         if (c === 'muni360' || c === 'ugi2026' || c === 'argon2026') {
           localStorage.removeItem('muni360_modo_demo');
-          iniciarSesion({ area: targetArea, esAdminTotal: true, rol: "Dirección UGI", profeNombre: profe });
+          iniciarSesion({ area: targetArea, esAdminTotal: true, rol: "Coordinación General", profeNombre: profe });
           toast("✓ Ingreso concedido (Dirección UGI · Modo seguro)");
           return;
         } else if (c === 'coordugi' || c.endsWith('coord')) {
@@ -3541,37 +3515,25 @@
 
       localStorage.setItem('muni360_modo_demo', '1');
       localStorage.setItem('muni360_cache_' + dep, JSON.stringify(demoData));
-      localStorage.setItem('muni360_cache_Colonia', JSON.stringify({
-        padron: [
-          { categoria: "Grupo 8 años", equipo: "General", jugador: "Acosta, Mateo (🧩 DUA)", dni: "48512390" }
-        ],
-        asistencia: [], evaluaciones: [], gestos: null, email: "ugi@ccba.com.ar"
-      }));
-      localStorage.setItem('muni360_cache_COYFD', JSON.stringify({
-        padron: [
-          { categoria: "Grupo 9-10 años", equipo: "General", jugador: "Benítez, Tomás", dni: "48901234" }
-        ],
-        asistencia: [], evaluaciones: [], gestos: null, email: "ugi@ccba.com.ar"
-      }));
 
       const legajoMateo = {
         estadoPlan: "🟡 Plan A Activo (Acompañamiento 90 días)",
-        actividadesSimultaneas: ["Colonia", "Ciudad Integrado", "Básquet Caballeros"],
-        paseInterno: "Pasó de COYFD a Básquet Caballeros en Marzo (adaptación positiva con apoyos visuales).",
+        actividadesSimultaneas: ["Básquet Caballeros", "Preparación Física"],
+        paseInterno: "Promovido de Sub 13 a Sub 15 competitivo (adaptación positiva con apoyos técnicos).",
         bitacora: [
           {
             id: "ev_demo_1",
             fecha: hoy,
             tipo: "👨‍👩‍👧 Reunión / Entrevista con Padres (Anexo C)",
-            detalle: "Entrevista con padres (Anexo A/C): se acordó uso de anticipación visual en tableros de cancha y referente par durante los partidos.",
+            detalle: "Entrevista con familia: plan de desarrollo deportivo acordado, objetivos técnicos y compromiso de asistencia.",
             autor: "Juan Machado"
           },
           {
             id: "ev_demo_2",
             fecha: fechaLocal(-14),
             tipo: "🔄 Cambio de deporte / categoría",
-            detalle: "Pase articulado desde COYFD hacia Básquet Caballeros Sub-12 luego de completar etapa de iniciación polideportiva.",
-            autor: "Coordinación UGI"
+            detalle: "Promoción deportiva hacia categoría competitiva tras completar el ciclo formativo inicial.",
+            autor: "Coordinación Club 360"
           }
         ],
         actualizadoPor: "Juan Machado",
@@ -3579,22 +3541,22 @@
       };
       const legajoTomas = {
         estadoPlan: "🟢 Seguimiento Estándar",
-        actividadesSimultaneas: ["COYFD", "Básquet Caballeros"],
-        paseInterno: "Doble actividad activa: asiste los sábados a COYFD y martes/jueves a Básquet.",
+        actividadesSimultaneas: ["Básquet Caballeros"],
+        paseInterno: "Asistencia perfecta: excelente regularidad en entrenamientos y partidos oficiales.",
         bitacora: [
           {
             id: "ev_demo_3",
             fecha: hoy,
             tipo: "🚦 Situación conductual / Episodio en cancha",
-            detalle: "Frustración leve ante el error en cierre de práctica. Se trabajó respiración breve con el profe y finalizó el entrenamiento en grupo.",
+            detalle: "Manejo positivo del error en momentos decisivos. Muy buena comunicación con sus compañeros y liderazgo.",
             autor: "Juan Machado"
           },
           {
             id: "ev_demo_4",
             fecha: fechaLocal(-20),
             tipo: "📝 Nota general de Coordinación",
-            detalle: "Articulación con profes de COYFD: muy buena integración con sus compañeros de categoría.",
-            autor: "Coordinación UGI"
+            detalle: "Evolución táctica destacada en el último mes: excelente lectura de juego y disciplina de equipo.",
+            autor: "Coordinación Club 360"
           }
         ],
         actualizadoPor: "Juan Machado",
@@ -3608,7 +3570,7 @@
       localStorage.setItem('muni360_legajos_ugi_v2', JSON.stringify(mapaLegajosDemo));
 
       const sesionDemo = {
-        area: dep, esAdminTotal: true, rol: "Dirección UGI", profeNombre: "Juan Machado"
+        area: dep, esAdminTotal: true, rol: "Coordinación General", profeNombre: "Juan Machado"
       };
       localStorage.setItem('muni360_sesion_activa', JSON.stringify(sesionDemo));
       iniciarSesion(sesionDemo);
@@ -3618,9 +3580,7 @@
     window.salirModoDemo = function() {
       localStorage.removeItem('muni360_modo_demo');
       localStorage.removeItem('muni360_cache_Básquet Caballeros');
-      localStorage.removeItem('muni360_cache_Colonia');
-      localStorage.removeItem('muni360_cache_COYFD');
-      localStorage.removeItem('muni360_sesion_activa');
+                  localStorage.removeItem('muni360_sesion_activa');
       sesion = null;
       $('login-pass').value = "";
       ['app-header', 'barra-estado', 'app-screen'].forEach(id => $(id).classList.add('hidden'));
