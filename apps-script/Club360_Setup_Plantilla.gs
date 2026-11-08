@@ -31,7 +31,7 @@ function inicializarPlantillaBase() {
     ['Color Secundario (Hex)', '#00a8e8', 'Color de acento para botones y alertas (ej: #00a8e8 o #f59e0b)'],
     ['Clave Coordinación', 'coord360', 'Contraseña para acceder a estadísticas, padrón y legajos'],
     ['Clave Entrenadores', 'profe360', 'Contraseña que usarán los profes para pasar lista y evaluar'],
-    ['Email de Notificaciones', Session.getActiveUser().getEmail() || 'coordinacion@ejemplo.com', 'Donde se enviarán las auditorías semanales y alertas'],
+    ['Email de Notificaciones', 'coordinacion@tudominio.com', 'Donde se enviarán las auditorías semanales y alertas'],
     ['Deportes y Disciplinas', 'Fútbol Caballeros, Fútbol Damas, Básquet, Vóley, Hockey, Tenis, Natación, Patín, Rugby, Gimnasia', 'Separados por comas. Podés agregar o quitar las que use tu club'],
     ['Estado de Licencia', 'ACTIVA', 'Controlado automáticamente por el servidor central de Club 360']
   ];
