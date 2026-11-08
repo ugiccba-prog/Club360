@@ -1803,9 +1803,7 @@
 
     function iconoActividadUgi(nombre) {
       const n = String(nombre || '');
-      if (n === 'Colonia') return '☀️ Colonia';
-      if (n === 'COYFD') return '🏃‍♂️ COYFD';
-      if (n === 'Ciudad Integrado') return '🧩 Ciudad Integrado';
+                  if (n === 'Ciudad Integrado') return '🧩 Ciudad Integrado';
       if (n.startsWith('Básquet')) return '🏀 ' + n;
       if (n.startsWith('Fútbol')) return '⚽ ' + n;
       if (n.startsWith('Hockey')) return '🏑 ' + n;
@@ -1997,9 +1995,7 @@
 
           <label style="font-size:0.71rem; margin-top:6px;">Marcar otras actividades que practica o practicó en el club:</label>
           <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:8px;" id="legajo-chips-simultaneas">
-            <button type="button" class="chip-check" data-act-chip="Colonia">☀️ Colonia</button>
-            <button type="button" class="chip-check" data-act-chip="COYFD">🏃‍♂️ COYFD</button>
-            <button type="button" class="chip-check" data-act-chip="Ciudad Integrado">🧩 Ciudad Integrado</button>
+                                    <button type="button" class="chip-check" data-act-chip="Ciudad Integrado">🧩 Ciudad Integrado</button>
             <select id="legajo-select-otro-dep" style="width:auto; min-height:30px; padding:3px 8px; font-size:0.74rem; border-radius:999px;">
               <option value="">+ Sumar otro deporte...</option>
               ${deportesExtraOpciones.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('')}
@@ -2008,7 +2004,7 @@
 
           <div class="field" style="margin:0;">
             <label for="legajo-pase-interno" style="font-size:0.71rem;">🔄 Historial de cambio de deporte / pase interno</label>
-            <input type="text" id="legajo-pase-interno" placeholder="Ej: Pasó de COYFD a Fútbol en Marzo / Cambió de Rugby a Básquet" value="${esc(ficha.paseInterno)}" style="min-height:36px; font-size:0.82rem;">
+            <input type="text" id="legajo-pase-interno" placeholder="Ej: Cambió de Categoría / Pase deportivo interno" value="${esc(ficha.paseInterno)}" style="min-height:36px; font-size:0.82rem;">
           </div>
         </div>
 
@@ -2520,7 +2516,7 @@
       if (cfg.tieneComida) {
         $('kpi-dia-lbl2').textContent = '🍴 Comida hoy';
         $('kpi-dia-val2').textContent = String(alm);
-        $('kpi-dia-sub2').textContent = 'almuerzan en Colonia';
+        $('kpi-dia-sub2').textContent = 'en actividad';
       } else {
         $('kpi-dia-lbl2').textContent = '🚦 Semáforo UGI';
         $('kpi-dia-val2').textContent = alertasSem ? `${alertasSem} ⚠` : '100% 🟢';

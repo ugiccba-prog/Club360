@@ -85,6 +85,27 @@ function validarLicencia(spreadsheetId) {
     }
 
     if (!encontrada) {
+      // Auto-registro en tu planilla maestra para que veas qué cliente abrió la copia
+      try {
+        var nombreDetectado = 'Club ' + spreadsheetId.slice(0, 6);
+        try {
+          var ssCliente = SpreadsheetApp.openById(spreadsheetId);
+          var confCl = ssCliente.getSheetByName('Configuración');
+          if (confCl) nombreDetectado = String(confCl.getRange('B2').getValue() || nombreDetectado);
+        } catch (_) {}
+
+        hojaLic.appendRow([
+          spreadsheetId,
+          nombreDetectado,
+          '',
+          'Por Activar',
+          new Date(),
+          '',
+          'INACTIVA',
+          'Detectado automáticamente al abrir la web'
+        ]);
+      } catch (_) {}
+
       return {
         ok: false,
         estado: 'NO_REGISTRADA',
