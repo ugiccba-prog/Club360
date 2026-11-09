@@ -1,713 +1,1634 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HPX70B00SH"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-HPX70B00SH');
-  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Unidad de Gestión Integral del Club Ciudad de Buenos Aires: formación deportiva, convivencia, inclusión y entrenamiento mental." />
-  <meta name="theme-color" content="#59bde9" />
+  <title>Deportes 360 · El Sistema Integral de Gestión de Cancha para Clubes y Academias</title>
+  <meta name="description" content="Plataforma de gestión deportiva para clubes, colegios y academias. Asistencia en 1 toque, evaluaciones técnicas, banco pedagógico y neuroentrenamiento." />
   
-  <!-- OPEN GRAPH / WHATSAPP / REDES -->
-  <meta property="og:title" content="UGI | Club Ciudad de Buenos Aires" />
-  <meta property="og:description" content="Unidad de Gestión Integral: formación deportiva, convivencia, valores y portales oficiales para Jugadores y Familias." />
-  <meta property="og:image" content="assets/images/logo-header.png" />
+  <!-- OPEN GRAPH / SOCIAL -->
+  <meta property="og:title" content="Deportes 360 · Gestión Deportiva Inteligente" />
+  <meta property="og:description" content="Controlá asistencias, evaluaciones de rendimiento y padrón de deportistas desde el celular en la cancha. Tus datos 100% seguros y privados." />
+  <meta property="og:url" content="https://deportes360.store" />
   <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <title>Unidad de Gestion Integral | Club Ciudad de Buenos Aires</title>
   <link rel="icon" type="image/png" href="assets/images/favicon.png" />
-  
-  <style>
-    /* VARIABLES Y BASE */
-    :root {
-      --sky: #59bde9;
-      --sky-light: #a9def1;
-      --sky-dark: #2a8fc1;
-      --navy: #082b49;
-      --navy-soft: #143d5b;
-      --cream: #f5f1e8;
-      --paper: #fffdf8;
-      --ink: #102b3c;
-      --muted: #60727d;
-      --line: rgba(8, 43, 73, 0.18);
-      --radius: 1.5rem;
-      --display: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
-    
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    h1, h2, h3, h4 { font-family: var(--display); letter-spacing: -0.025em; }
-    body {
-      margin: 0;
-      color: var(--ink);
-      background: var(--paper);
-      font-family: var(--sans);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-    a {
-      text-decoration: none;
-    }
-    .button, .nav-cta, .btn-main, .tarjeta a {
-      text-decoration: none !important;
-      border-bottom: none !important;
-    }
 
-    /* ACCESIBILIDAD */
-    .skip-link {
-      position: fixed; left: 1rem; top: -5rem; z-index: 100;
-      padding: 0.75rem 1rem; background: var(--navy); color: white;
-      border-radius: 0.4rem; transition: top 180ms ease;
-    }
-    .skip-link:focus { top: 1rem; }
-    .sr-only {
-      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
-    }
-
-    /* HEADER Y NAVEGACIÓN */
-    .site-header {
-      position: fixed; inset: 0 0 auto; z-index: 50; display: flex;
-      align-items: center; justify-content: space-between; min-height: 5.5rem;
-      padding: 0.8rem clamp(1.2rem, 4vw, 4.5rem); color: var(--navy);
-      transition: background 250ms ease, box-shadow 250ms ease, min-height 250ms ease;
-    }
-    .site-header.scrolled {
-      min-height: 4.5rem; background: rgba(255, 253, 248, 0.93);
-      box-shadow: 0 1px 0 var(--line); backdrop-filter: blur(14px);
-    }
-    
-    /* MARCA Y LOGO */
-    .brand { display: inline-flex; align-items: center; gap: 0.75rem; text-decoration: none; color: inherit; }
-    .brand img {
-      max-height: 55px;
-      max-width: 240px;
-      width: auto;
-      object-fit: contain;
-    }
-    .brand-copy { display: grid; line-height: 1.05; }
-    .brand-copy strong { font-size: 1.05rem; letter-spacing: 0.18em; }
-    .brand-copy small { margin-top: 0.28rem; font-size: 0.62rem; letter-spacing: 0.04em; }
-    
-    /* NAVEGACIÓN */
-    .main-nav { display: flex; align-items: center; gap: clamp(1rem, 2.2vw, 2rem); }
-    .main-nav a {
-      position: relative; font-size: 0.78rem; font-weight: 600;
-      letter-spacing: 0.03em; text-decoration: none; color: inherit;
-    }
-    .main-nav a:not(.nav-cta)::after {
-      content: ""; position: absolute; inset: auto 0 -0.35rem; height: 1px;
-      background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform 180ms ease;
-    }
-    .main-nav a:hover::after { transform: scaleX(1); transform-origin: left; }
-    .nav-cta {
-      padding: 0.65rem 1.1rem; border: 1px solid currentColor; border-radius: 999px;
-      text-decoration: none;
-      transition: background 180ms ease, color 180ms ease;
-    }
-    .nav-cta:hover { color: white; background: var(--navy); }
-    .menu-toggle { display: none; }
-
-    /* SECCIÓN HERO (INICIO) */
-    .hero {
-      position: relative; display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(26rem, 0.98fr);
-      align-items: center; min-height: 100vh; padding: 8.5rem clamp(1.2rem, 7vw, 8rem) 5rem;
-      background: var(--sky); isolation: isolate; overflow: hidden;
-    }
-    .hero-grid {
-      position: absolute; inset: 0; z-index: -3; opacity: 0.28;
-      background-image: linear-gradient(rgba(8, 43, 73, 0.14) 1px, transparent 1px), linear-gradient(90deg, rgba(8, 43, 73, 0.14) 1px, transparent 1px);
-      background-size: 5.2rem 5.2rem; mask-image: linear-gradient(to right, black, transparent 75%);
-    }
-    .hero-orbit {
-      position: absolute; z-index: -2; border: 1px solid rgba(8, 43, 73, 0.2); border-radius: 50%; pointer-events: none;
-    }
-    .orbit-one { width: 44vw; aspect-ratio: 1; right: -12vw; top: -13vw; }
-    .orbit-two { width: 25vw; aspect-ratio: 1; left: 42%; bottom: -15vw; }
-    
-    .hero-copy { position: relative; z-index: 2; max-width: 48rem; padding-right: 4rem; }
-    .eyebrow {
-      display: flex; align-items: center; gap: 0.75rem; margin: 0 0 1.5rem;
-      color: var(--navy); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.19em; text-transform: uppercase;
-    }
-    .eyebrow::before { content: ""; width: 2.4rem; height: 1px; background: currentColor; }
-    
-    .hero h1, .section h2, .approach h2 { margin: 0; font-family: var(--display); font-weight: 800; line-height: 1.02; letter-spacing: -0.03em; }
-    .hero h1 { font-size: clamp(4.1rem, 7.8vw, 8.7rem); max-width: 13ch; }
-    .hero h1 em, .approach h2 em { font-weight: 800; font-style: normal; color: var(--paper); }
-    .hero-lead { max-width: 36rem; margin: 2.2rem 0 2.5rem; font-size: clamp(1rem, 1.3vw, 1.2rem); }
-    
-    .hero-actions { display: flex; align-items: center; gap: 2rem; }
-    .button {
-      display: inline-flex; align-items: center; justify-content: center; min-height: 3.4rem;
-      padding: 0.8rem 1.5rem; border: 1px solid transparent; border-radius: 999px;
-      font-size: 0.78rem; font-weight: 700; text-decoration: none; transition: transform 180ms ease, background 180ms ease, color 180ms ease;
-    }
-    .button:hover { transform: translateY(-3px); }
-    .button-dark { color: white; background: var(--navy); box-shadow: 0 0.8rem 2rem rgba(8, 43, 73, 0.18); }
-    .button-dark:hover { color: var(--navy); background: var(--paper); }
-    .text-link { font-size: 0.8rem; font-weight: 700; text-underline-offset: 0.35rem; color: inherit; }
-    .text-link span { display: inline-block; margin-left: 0.4rem; transition: transform 180ms ease; }
-    .text-link:hover span { transform: translate(0.2rem, 0.2rem); }
-
-    .hero-visual { position: relative; display: grid; place-items: center; height: min(68vh, 46rem); }
-    .court-card {
-      position: relative; width: min(100%, 31rem); height: 100%; padding: 2rem;
-      color: var(--cream); background: var(--navy); border-radius: 14rem 14rem 1.4rem 1.4rem;
-      box-shadow: 1.5rem 1.5rem 0 rgba(255, 253, 248, 0.34); transform: rotate(2deg);
-    }
-    .court-label {
-      position: absolute; z-index: 2; top: 2.2rem; left: 50%; font-size: 0.62rem;
-      letter-spacing: 0.18em; text-transform: uppercase; transform: translateX(-50%); white-space: nowrap;
-    }
-    .court-lines { width: 100%; height: 100%; fill: none; stroke: rgba(245, 241, 232, 0.45); stroke-width: 2; }
-    .court-lines .court-dot { fill: var(--sky); stroke: none; }
-    
-    .pillar {
-      position: absolute; display: grid; min-width: 8rem; padding: 0.75rem 1rem;
-      color: var(--navy); background: var(--paper); box-shadow: 0 0.8rem 1.8rem rgba(3, 25, 42, 0.22); transform: rotate(-2deg);
-    }
-    .pillar span { font-size: 0.55rem; letter-spacing: 0.12em; }
-    .pillar strong { font-family: var(--display); font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
-    .pillar-one { left: -3.3rem; top: 22%; }
-    .pillar-two { right: -3rem; top: 47%; }
-    .pillar-three { left: 2rem; bottom: 6%; }
-    .hand-note {
-      position: absolute; right: -3rem; bottom: 1rem; margin: 0; color: var(--navy);
-      font-family: "Segoe Print", "Bradley Hand", cursive; font-size: 0.95rem; line-height: 1.35; transform: rotate(-6deg);
-    }
-    
-    .scroll-cue {
-      position: absolute; left: clamp(1.2rem, 4vw, 4.5rem); bottom: 2.5rem; display: flex; align-items: center; gap: 0.9rem;
-      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.18em; text-decoration: none; text-transform: uppercase;
-      transform: rotate(-90deg) translateY(100%); transform-origin: left bottom; color: inherit;
-    }
-    .scroll-cue i { width: 3rem; height: 1px; background: currentColor; }
-
-    /* SECCIONES GENERALES */
-    .section { position: relative; padding: clamp(6rem, 10vw, 10rem) clamp(1.2rem, 7vw, 8rem); }
-    .purpose { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); column-gap: clamp(3rem, 9vw, 10rem); background: var(--paper); }
-    .section-number { position: absolute; right: 5vw; top: 2rem; color: rgba(8, 43, 73, 0.05); font-family: var(--display); font-size: clamp(8rem, 20vw, 18rem); line-height: 1; }
-    .eyebrow-blue { color: var(--sky-dark); }
-    .purpose h2, .section-heading h2 { font-size: clamp(3.2rem, 6.4vw, 6.7rem); }
-    .purpose-body { padding-top: 4rem; }
-    .purpose-statement { margin: 0 0 2rem; font-family: var(--display); font-weight: 700; letter-spacing: -0.02em; font-size: clamp(1.7rem, 2.6vw, 2.65rem); line-height: 1.25; }
-    .purpose-body > p:last-child { max-width: 40rem; color: var(--muted); }
-    
-    .principles { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 7rem; border-top: 1px solid var(--line); }
-    .principle { padding: 2rem 2rem 0 0; border-right: 1px solid var(--line); }
-    .principle + .principle { padding-left: 2rem; }
-    .principle:last-child { border: 0; }
-    .principle span { font-family: var(--display); font-size: 2.1rem; }
-    .principle p { max-width: 16rem; margin-bottom: 0; color: var(--muted); font-size: 0.88rem; }
-
-    /* PROGRAMAS */
-    .programs { color: var(--paper); background: var(--navy); }
-    .programs .eyebrow, .programs .card-kicker { color: var(--sky); }
-    .section-heading { display: grid; grid-template-columns: 1.25fr 0.75fr; align-items: end; gap: 4rem; margin-bottom: 5rem; }
-    .section-heading > p { max-width: 31rem; margin: 0 0 0.8rem; color: rgba(255, 253, 248, 0.68); }
-    .program-list { display: grid; gap: 1.1rem; }
-    
-    /* TARJETAS DE PROGRAMAS AJUSTADAS PARA NOTEBOOKS */
-    .program-card {
-      position: relative; display: grid; grid-template-columns: 5rem minmax(12rem, 1fr) minmax(15rem, 1.2fr);
-      align-items: stretch; min-height: 20rem; border: 1px solid rgba(255, 253, 248, 0.22);
-      border-radius: var(--radius); overflow: hidden; transition: transform 220ms ease, border-color 220ms ease;
-    }
-    .program-card:hover { border-color: var(--sky); transform: translateX(0.4rem); }
-    .program-index { display: grid; place-items: center; border-right: 1px solid rgba(255, 253, 248, 0.22); color: var(--sky); font-size: 0.7rem; letter-spacing: 0.15em; writing-mode: vertical-rl; }
-    .program-art { position: relative; display: grid; place-items: center; min-height: 20rem; overflow: hidden; }
-    .art-caption { position: absolute; left: 1.3rem; bottom: 1rem; color: var(--navy); font-size: 0.56rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
-    .traffic-art { background: var(--sky); } .family-art { background: #e2d5bc; } .mind-art { background: #dce9e7; }
-    
-    .traffic-light { display: grid; gap: 0.65rem; padding: 1.2rem; background: var(--navy); border-radius: 999px; box-shadow: 1rem 1rem 0 rgba(255, 253, 248, 0.45); transform: rotate(-8deg); }
-    .traffic-light i { width: 3.7rem; aspect-ratio: 1; border: 2px solid var(--paper); border-radius: 50%; }
-    .traffic-light i:nth-child(1) { background: #e17c6b; } .traffic-light i:nth-child(2) { background: #e8c46e; } .traffic-light i:nth-child(3) { background: #78aa85; }
-    .family-art svg { width: min(75%, 18rem); fill: none; stroke: var(--navy); stroke-linecap: round; stroke-linejoin: round; stroke-width: 5; }
-    
-    .brain { position: relative; width: 11rem; height: 9rem; border: 3px solid var(--navy); border-radius: 48% 52% 45% 55%; }
-    .brain::before { content: ""; position: absolute; left: 50%; top: 0; width: 2px; height: 100%; background: var(--navy); }
-    .brain span { position: absolute; width: 3.4rem; height: 2.3rem; border: 2px solid var(--navy); border-radius: 50%; }
-    .brain span:nth-child(1) { left: 1rem; top: 1rem; } .brain span:nth-child(2) { right: 0.8rem; top: 1.5rem; }
-    .brain span:nth-child(3) { left: 1.5rem; bottom: 1rem; } .brain span:nth-child(4) { right: 1rem; bottom: 0.8rem; } .brain span:nth-child(5) { left: 3.8rem; top: 3.4rem; }
-    .pulse-line { position: absolute; width: 130%; height: 2px; background: var(--sky-dark); transform: rotate(-12deg); }
-    .pulse-line::after { content: ""; position: absolute; left: 51%; top: -1.7rem; width: 3rem; height: 3rem; border-left: 2px solid var(--sky-dark); border-bottom: 2px solid var(--sky-dark); transform: rotate(-45deg); }
-    
-    .program-copy { display: flex; flex-direction: column; justify-content: center; padding: clamp(2rem, 5vw, 5rem); }
-    .card-kicker { margin: 0 0 1rem; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.17em; text-transform: uppercase; }
-    .program-copy h3 { margin: 0; font-family: var(--display); font-size: clamp(2.4rem, 4vw, 4.7rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.05; }
-    .program-copy > p:last-child { max-width: 36rem; margin: 1.5rem 0 0; color: rgba(255, 253, 248, 0.68); }
-
-    /* NUEVAS SECCIONES UGI */
-    .tarjetas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 2rem; margin-top: 3rem; }
-    .tarjeta {
-      background: var(--paper); padding: 2.5rem; border-radius: var(--radius);
-      border: 1px solid var(--line); box-shadow: 0 4px 12px rgba(8, 43, 73, 0.05); color: var(--ink);
-      box-sizing: border-box; max-width: 100%; display: flex; flex-direction: column; justify-content: space-between;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    }
-    .tarjeta:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 28px rgba(8, 43, 73, 0.09);
-      border-color: var(--sky-dark);
-    }
-    .tarjeta a, .tarjeta a:hover, .tarjeta a:focus, .tarjeta a:visited {
-      text-decoration: none !important;
-      text-decoration-line: none !important;
-      border-bottom: none !important;
-    }
-    .tarjeta h3 { color: var(--navy); font-family: var(--display); font-weight: 700; letter-spacing: -0.02em; font-size: 1.8rem; margin: 0 0 1rem; overflow-wrap: break-word; word-break: break-word; }
-    
-    .proximamente-badge {
-      display: inline-block; margin-top: 1.5rem; padding: 0.4rem 1rem;
-      font-size: 0.7rem; font-weight: 800; color: var(--sky-dark);
-      background: rgba(89, 189, 233, 0.1); border: 1px solid var(--sky-dark);
-      border-radius: 999px; text-transform: uppercase; letter-spacing: 0.12em;
-    }
-
-    /* ENFOQUE */
-    .approach { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(22rem, 0.9fr); gap: clamp(4rem, 10vw, 10rem); padding: clamp(6rem, 12vw, 12rem) clamp(1.2rem, 7vw, 8rem); color: var(--navy); background: var(--sky); }
-    .approach h2 { max-width: 11ch; font-size: clamp(3.6rem, 7vw, 7.6rem); }
-    .approach-copy > p:not(.eyebrow) { max-width: 37rem; margin: 2rem 0; }
-    .button-light { color: var(--navy); background: var(--paper); }
-    .button-light:hover { color: white; background: var(--navy); }
-    .roles { display: grid; align-content: center; }
-    .role { display: grid; grid-template-columns: 4rem 1fr; align-items: center; padding: 1.3rem 0; border-bottom: 1px solid rgba(8, 43, 73, 0.25); }
-    .role span { font-size: 0.62rem; letter-spacing: 0.16em; }
-    .role strong { font-family: var(--display); font-size: clamp(2rem, 3.5vw, 3.8rem); font-weight: 800; letter-spacing: -0.02em; }
-
-    /* FOOTER */
-    .site-footer { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 2rem; padding: 2.2rem clamp(1.2rem, 4vw, 4.5rem); color: var(--paper); background: var(--navy); font-size: 0.72rem; }
-    .footer-mark { display: flex; align-items: center; gap: 0.5rem; }
-    .footer-mark img { max-height: 40px; width: auto; }
-    .site-footer p { margin: 0; }
-    .site-footer a { text-underline-offset: 0.3rem; color: inherit; }
-    .copyright { color: rgba(255, 253, 248, 0.5); }
-
-    /* ANIMACIONES REVEAL */
-    .reveal { opacity: 0; transform: translateY(2rem); transition: opacity 700ms ease, transform 700ms cubic-bezier(0.2, 0.75, 0.25, 1); }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* RESPONSIVE AJUSTADO PARA NOTEBOOKS (1150px) */
-    @media (max-width: 1150px) {
-      /* MENÚ MOBILE ------------------------------------------------------- */
-      /* El botón (hamburguesa / X) queda siempre por encima del menú abierto */
-      .menu-toggle {
-        position: relative; z-index: 10000;
-        display: grid; gap: 0.4rem; width: 3rem; height: 3rem; place-content: center;
-        padding: 0; color: var(--navy); background: transparent; border: 1px solid currentColor; border-radius: 50%;
-        cursor: pointer;
-      }
-      .menu-toggle span:not(.sr-only) { display: block; width: 1.2rem; height: 1px; background: currentColor; transition: transform 180ms ease; }
-      .menu-toggle[aria-expanded="true"] span:nth-last-child(2) { transform: translateY(0.22rem) rotate(45deg); }
-      .menu-toggle[aria-expanded="true"] span:last-child { transform: translateY(-0.22rem) rotate(-45deg); }
-      .menu-toggle[aria-expanded="true"] { color: var(--paper); }
-      
-      /* Con el header "scrolled", el backdrop-filter convertía al header en el
-         contenedor del menú fixed: el menú quedaba del alto del header y los
-         links se encimaban. Mientras el menú está abierto lo desactivamos. */
-      .site-header.menu-open { background: transparent; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
-      
-      .main-nav {
-        position: fixed; inset: 0; width: 100%;
-        height: 100vh; height: 100dvh; /* dvh evita saltos con la barra del navegador */
-        z-index: 9999;
-        display: flex; flex-direction: column; align-items: center;
-        justify-content: flex-start; /* el centrado lo hacen los margin:auto de abajo */
-        gap: 1.25rem; /* separación fija: los links nunca se superponen */
-        padding: 6rem 1.5rem 2rem; /* arriba deja lugar para el logo y la X */
-        overflow-y: auto; overscroll-behavior: contain; /* en celus chicos scrollea en vez de encimar */
-        color: var(--paper); background-color: var(--navy); /* sólido, sin transparencias */
-        opacity: 0; visibility: hidden;
-        transform: translateY(-1rem); transition: opacity 220ms ease, transform 220ms ease, visibility 220ms;
-      }
-      /* Centrado vertical que no corta el primer link si no entra todo en pantalla */
-      .main-nav > :first-child { margin-top: auto; }
-      .main-nav > :last-child { margin-bottom: auto; }
-      .main-nav.open { opacity: 1; visibility: visible; transform: translateY(0); }
-      .main-nav a {
-        font-family: var(--display); font-size: clamp(1.35rem, 6vw, 1.75rem); font-weight: 700;
-        letter-spacing: -0.02em; line-height: 1.2; text-align: center;
-        color: var(--paper) !important; /* pisa colores inline (ej. navy) que quedaban invisibles */
-        padding: 0.5rem 1rem; /* área de toque más amplia */
-      }
-      .main-nav a:not(.nav-cta)::after { display: none; }
-      .main-nav .nav-cta { margin-top: 0.75rem; font-family: var(--sans); font-size: 0.9rem; padding: 0.8rem 1.8rem; box-shadow: none; }
-      .hero { grid-template-columns: 1fr; gap: 5rem; padding-top: 9rem; }
-      .hero-copy { padding-right: 0; }
-      .hero-visual { height: 38rem; }
-      .scroll-cue { display: none; }
-      .purpose, .section-heading, .approach { grid-template-columns: 1fr; }
-      .purpose-body { padding-top: 1rem; }
-      .program-card { grid-template-columns: 3.5rem minmax(15rem, 0.8fr) 1.2fr; }
-    }
-    
-    /* ACÁ ESTÁ EL CAMBIO PARA CELULARES */
-    @media (max-width: 720px) {
-      .brand-copy small { display: none; }
-
-      /* En el celular el alto de la ventana cambia cuando aparece y desaparece la
-         barra del navegador: con min-height:100vh la portada quedaba más alta que
-         la pantalla y el contenido de abajo se cortaba. */
-      .hero { min-height: auto; padding-top: 7.5rem; padding-bottom: 4rem; }
-
-      /* Los títulos tenían un mínimo pensado para escritorio (51px): en 390px de
-         ancho entraban tres palabras por renglón y costaba leer. */
-      .purpose h2, .section-heading h2, .approach h2 { font-size: clamp(2rem, 9vw, 2.9rem); line-height: 1.08; }
-      .section, .approach { padding-left: 1.2rem; padding-right: 1.2rem; }
-      .section { padding-top: 3.5rem; padding-bottom: 3.5rem; }
-      .approach { padding-top: 4rem; padding-bottom: 4rem; }
-      .purpose-body p, .section-heading > p { font-size: 1rem; }
-
-      /* Decoración que en pantalla chica solo aparecía cortada contra el borde */
-      .section-number, .hero-orbit, .pulse-line { display: none; }
-      .hero h1 { font-size: clamp(2.5rem, 11vw, 3.5rem); line-height: 1.1; overflow-wrap: break-word; hyphens: auto; }
-      .hero-actions { align-items: flex-start; flex-direction: column; gap: 1.2rem; }
-      .hero-visual { height: auto; min-height: 26rem; margin-top: 2rem; }
-      .court-card { width: 65%; max-width: 250px; box-shadow: 0.5rem 0.5rem 0 rgba(255, 253, 248, 0.34); margin: 0 auto; }
-      .pillar { min-width: 5.5rem; padding: 0.4rem 0.6rem; }
-      .pillar strong { font-size: 1rem; }
-      .pillar-one { left: -1.5rem; top: 15%; }
-      .pillar-two { right: -1.5rem; top: 45%; }
-      .pillar-three { left: 1rem; bottom: 5%; }
-      .hand-note { display: none; }
-      .principles { grid-template-columns: 1fr; margin-top: 4rem; }
-      .principle, .principle + .principle { padding: 1.4rem 0; border-right: 0; border-bottom: 1px solid var(--line); }
-      .section-heading { gap: 1.5rem; margin-bottom: 3rem; }
-      .program-card { grid-template-columns: 2.2rem 1fr; max-width: 100%; overflow: hidden; }
-      .program-index { grid-row: 1 / 3; font-size: 0.65rem; }
-      .program-art { min-height: 14rem; }
-      /* En pantalla chica el dibujo tapaba la bajada: la ponemos sobre una pastilla */
-      .art-caption { left: .9rem; bottom: .9rem; padding: .3rem .7rem; border-radius: 99px;
-                     background: rgba(255, 253, 248, .92); }
-      .program-copy { padding: 1.5rem 1.2rem 2rem; }
-      .program-copy h3 { font-size: 2rem; overflow-wrap: break-word; line-height: 1.1; }
-      .approach { grid-template-columns: 1fr; }
-      .roles { margin-top: 1rem; }
-      .tarjetas-grid { grid-template-columns: 1fr; gap: 1.2rem; margin-top: 2rem; }
-      .tarjeta { padding: 1.6rem 1.2rem; border-radius: 1.1rem; }
-      .tarjeta h3 { font-size: 1.45rem; line-height: 1.15; overflow-wrap: break-word; word-break: break-word; }
-      .tarjeta p { font-size: 0.92rem; overflow-wrap: break-word; word-break: break-word; }
-      .tarjeta .nav-cta { width: 100%; box-sizing: border-box; text-align: center; }
-      .role-selector div a { font-size: 0.75rem; padding: 0.45rem 0.8rem; }
-      .site-footer { grid-template-columns: 1fr; text-align: center; gap: 1.5rem; justify-items: center; }
-      .site-footer a, .copyright { grid-column: 1 / -1; }
-    }
-    
-    @media (max-width: 720px) {
-      .reveal { transition-duration: 420ms; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
-      .reveal { opacity: 1; transform: none; }
-    }
-  </style>
-  <!-- TIPOGRAFÍAS MODERNAS Y HUMANAS (OUTFIT + PLUS JAKARTA SANS) -->
+  <!-- GOOGLE FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #111726;
+      --surface-card: #161f33;
+      --surface-border: #222f4c;
+      --accent: #00e599;
+      --accent-glow: rgba(0, 229, 153, 0.25);
+      --accent-blue: #38bdf8;
+      --accent-amber: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --container-max: 1200px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* CONTAINER & UTILS */
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .badge-accent {
+      background: rgba(0, 229, 153, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(0, 229, 153, 0.3);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.75rem;
+      border-radius: var(--radius-full);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #042417;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      background: #00ffaa;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0, 229, 153, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--surface-card);
+      color: var(--text-main);
+      border-color: var(--surface-border);
+    }
+
+    .btn-secondary:hover {
+      background: #1b263e;
+      border-color: var(--text-muted);
+      transform: translateY(-2px);
+    }
+
+    .btn-whatsapp {
+      background: #25d366;
+      color: #032b13;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.25);
+    }
+
+    .btn-whatsapp:hover {
+      background: #2df578;
+      transform: translateY(-2px);
+    }
+
+    /* NAVBAR */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 4.5rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-blue) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #042417;
+      font-weight: 900;
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 5rem 0 4rem;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.18) 0%, rgba(56, 189, 248, 0.08) 50%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 840px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin: 1.25rem 0 1.5rem;
+    }
+
+    .hero p {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      color: var(--text-muted);
+      margin-bottom: 2.25rem;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+    }
+
+    /* STATS STRIP */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    /* SECTIONS COMMON */
+    section {
+      padding: 5rem 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin: 0.8rem 0 1rem;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* MODULES GRID */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.75rem;
+    }
+
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 229, 153, 0.4);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .module-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      background: rgba(0, 229, 153, 0.1);
+      border: 1px solid rgba(0, 229, 153, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 1.25rem;
+      color: var(--accent);
+    }
+
+    .module-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .module-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .module-features {
+      list-style: none;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .module-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .module-features li span {
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* INTERACTIVE APP PREVIEW */
+    .preview-section {
+      background: linear-gradient(180deg, var(--bg) 0%, #0d1322 100%);
+      border-top: 1px solid var(--surface-border);
+      border-bottom: 1px solid var(--surface-border);
+    }
+
+    .app-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .showcase-text h3 {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+    }
+
+    .showcase-text p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .showcase-points {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .point-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .point-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(0, 229, 153, 0.15);
+      border: 1px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    /* SPORT SELECTOR IN MOCKUP */
+    .sport-selector {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+
+    .sport-btn {
+      background: var(--surface-card);
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .sport-btn.active, .sport-btn:hover {
+      background: rgba(0, 229, 153, 0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .mockup-frame {
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .mockup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--surface-border);
+      padding-bottom: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .mockup-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mockup-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #334155;
+    }
+
+    .mockup-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-full);
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+    }
+
+    .mockup-player-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .mockup-player {
+      background: var(--surface-card);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.2s;
+    }
+
+    .mockup-player-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .mockup-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #23314f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+    }
+
+    .mockup-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .mockup-cat {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    .mockup-actions {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .tag-btn {
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tag-p { background: #064e3b; color: #34d399; border-color: #059669; }
+    .tag-a { background: #7f1d1d; color: #f87171; border-color: #dc2626; }
+    .tag-j { background: #78350f; color: #fbbf24; border-color: #d97706; }
+    .tag-neutral { background: #1e293b; color: #64748b; }
+
+    /* PRICING PLANS */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, rgba(0, 229, 153, 0.06) 0%, var(--surface) 100%);
+      box-shadow: 0 0 35px rgba(0, 229, 153, 0.15);
+      transform: scale(1.02);
+    }
+
+    .popular-tag {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: #042417;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.3rem 1rem;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .pricing-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+
+    .pricing-header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .pricing-price {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .currency {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .amount {
+      font-family: var(--font-display);
+      font-size: 2.75rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--text-main);
+    }
+
+    .period {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+
+    .pricing-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 2rem;
+      flex-grow: 1;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.92rem;
+      color: var(--text-main);
+    }
+
+    .pricing-features li svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* FAQ */
+    .faq-list {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .faq-question {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .faq-icon {
+      font-size: 1.3rem;
+      transition: transform 0.25s;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      margin-top: 0.85rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    /* CTA BANNER */
+    .cta-banner {
+      background: linear-gradient(135deg, #101c36 0%, #0c2b23 100%);
+      border: 1px solid rgba(0, 229, 153, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 3.5rem 2rem;
+      text-align: center;
+      margin: 4rem auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .cta-banner p {
+      max-width: 650px;
+      margin: 0 auto 2rem;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* LEAD MODAL */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 520px;
+      padding: 2.2rem;
+      position: relative;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: var(--text-main);
+    }
+
+    .modal-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--surface-card);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    /* FLOATING WHATSAPP BUTTON */
+    .floating-wa {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 99;
+      background: #25d366;
+      color: #032b13;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .floating-wa:hover {
+      transform: scale(1.08);
+      box-shadow: 0 10px 35px rgba(37, 211, 102, 0.6);
+    }
+
+    .floating-wa svg {
+      width: 34px;
+      height: 34px;
+      fill: #ffffff;
+    }
+
+    .floating-wa::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: rgba(37, 211, 102, 0.35);
+      animation: pulse 2s infinite;
+      z-index: -1;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 0; }
+      100% { transform: scale(0.95); opacity: 0; }
+    }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid var(--surface-border);
+      padding: 3.5rem 0 2rem;
+      background: #060910;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-display);
+      color: var(--text-main);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .footer-col a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: var(--accent);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .app-showcase { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .pricing-card.featured { transform: none; }
+      .floating-wa { bottom: 1.25rem; right: 1.25rem; width: 54px; height: 54px; }
+      .floating-wa svg { width: 28px; height: 28px; }
+    }
+  </style>
 </head>
 <body>
-  <a class="skip-link" href="#contenido">Saltar al contenido</a>
-  
-  <header class="site-header" data-header>
-    <a class="brand" href="#inicio" aria-label="UGI, volver al inicio">
-      <img src="assets/images/logo-header.png" alt="Logo CCBA y UGI">
-      <span class="brand-copy">
-        <strong>UGI</strong>
-        <small>Club Ciudad de Buenos Aires</small>
-      </span>
-    </a>
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">
-      <span class="sr-only">Abrir menú</span>
-      <span></span><span></span>
-    </button>
-    
-    <nav class="main-nav" id="main-nav" aria-label="Navegación principal">
-      <a href="#inicio">Inicio</a>
-      <a href="#proposito">Qué hacemos</a>
-      <a href="#programas">Programas</a>
-      <a href="pages/jugadores.html">Jugadores</a>
-      <a href="pages/familias.html">Familias</a>
-      <a class="nav-cta" href="mailto:ugiccba@gmail.com">Contacto</a>
-    </nav>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container navbar">
+      <a href="#" class="brand">
+        <div class="brand-icon">⚡</div>
+        <span>Deportes 360</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#soluciones">Soluciones</a></li>
+        <li><a href="#demo">Cómo Funciona</a></li>
+        <li><a href="#cognitivo">Gimnasio Mental</a></li>
+        <li><a href="#planes">Planes</a></li>
+        <li><a href="#faq">Preguntas</a></li>
+      </ul>
+
+      <button onclick="openLeadModal('Demo General')" class="btn btn-whatsapp" style="padding: 0.6rem 1.25rem; font-size: 0.9rem;">
+        <span>Solicitar Demo</span>
+      </button>
+    </div>
   </header>
-  
-  <main id="contenido">
-    <!-- SECCIÓN INICIO -->
-    <section class="hero" id="inicio">
-      <div class="hero-grid" aria-hidden="true"></div>
-      <div class="hero-orbit orbit-one" aria-hidden="true"></div>
-      <div class="hero-orbit orbit-two" aria-hidden="true"></div>
-      <div class="hero-copy reveal">
-        <p class="eyebrow">Unidad de Gestión Integral C.C.B.A.</p>
-        <h1>El entrenamiento que <em>no se ve</em> también se entrena.</h1>
-        <p class="hero-lead">Acompañamos a deportistas, familias y entrenadores para que cada práctica y cada partido sea un espacio de crecimiento y disfrute.</p>
+
+  <!-- HERO -->
+  <main>
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="container hero-content">
+        <div class="badge badge-accent">
+          <span>⚡ Software de Cancha para Clubes & Academias</span>
+        </div>
+        
+        <h1>
+          El entrenamiento que no se ve <br>
+          <span class="gradient-text">ahora se gestiona en 360°</span>
+        </h1>
+
+        <p>
+          Asistencia en 1 toque desde el celular del entrenador, evaluaciones técnicas por disciplina, padrón centralizado y neuroentrenamiento. Tus datos 100% seguros y privados en tu propio entorno.
+        </p>
+
         <div class="hero-actions">
-          <a class="button button-dark" href="#programas">Conocé los programas</a>
-          <a class="text-link" href="#proposito">Nuestra misión <span aria-hidden="true">&rarr;</span></a>
-        </div>
-
-        <!-- SELECTOR RÁPIDO DE COMUNIDAD -->
-        <div class="role-selector" style="margin-top: 2rem; padding-top: 1.4rem; border-top: 1px solid rgba(8,43,73,0.14);">
-          <p style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 800; color: var(--navy); margin: 0 0 0.7rem;">
-            Ingreso rápido por comunidad:
-          </p>
-          <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
-            <a href="pages/jugadores.html" style="display: inline-flex; align-items: center; gap: 0.4rem; background: white; color: var(--navy); padding: 0.5rem 1rem; border-radius: 999px; text-decoration: none; font-size: 0.8rem; font-weight: 700; box-shadow: 0 4px 12px rgba(8,43,73,0.08); transition: 0.2s;">
-              Soy Deportista
-            </a>
-            <a href="pages/familias.html" style="display: inline-flex; align-items: center; gap: 0.4rem; background: white; color: var(--navy); padding: 0.5rem 1rem; border-radius: 999px; text-decoration: none; font-size: 0.8rem; font-weight: 700; box-shadow: 0 4px 12px rgba(8,43,73,0.08); transition: 0.2s;">
-              Soy Familia
-            </a>
-            <a href="muni360/index.html" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(8,43,73,0.08); color: var(--navy); border: 1px solid rgba(8,43,73,0.2); padding: 0.5rem 1rem; border-radius: 999px; text-decoration: none; font-size: 0.8rem; font-weight: 700; transition: 0.2s;">
-              Soy Entrenador
-            </a>
-          </div>
+          <a href="#planes" class="btn btn-primary">
+            <span>Ver Planes y Precios</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <button onclick="openLeadModal('Hero Demo')" class="btn btn-secondary">
+            <span>Pedir Acceso Demo</span>
+          </button>
         </div>
       </div>
-      <div class="hero-visual reveal" aria-label="Técnica, mente y valores como pilares de la formación">
-        <div class="court-card">
-          <span class="court-label">Formación integral</span>
-          <svg class="court-lines" viewBox="0 0 520 600" aria-hidden="true">
-            <rect x="24" y="24" width="472" height="552" rx="28" />
-            <path d="M24 300h472M260 24v552" />
-            <circle cx="260" cy="300" r="86" />
-            <path d="M166 24v116h188V24M166 576V460h188v116" />
-            <circle cx="260" cy="300" r="7" class="court-dot" />
-          </svg>
-          <div class="pillar pillar-one"><span>01</span><strong>Técnica</strong></div>
-          <div class="pillar pillar-two"><span>02</span><strong>Mente</strong></div>
-          <div class="pillar pillar-three"><span>03</span><strong>Valores</strong></div>
+
+      <div class="container">
+        <div class="stats-strip">
+          <div class="stat-item">
+            <div class="stat-number">1 Toque</div>
+            <div class="stat-label">Toma de lista en cancha</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Privacidad de tus datos</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">0 Apps</div>
+            <div class="stat-label">Sin descargas pesadas (Web/PWA)</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">24 hs</div>
+            <div class="stat-label">Puesta en marcha con tu logo</div>
+          </div>
         </div>
       </div>
-      <a class="scroll-cue" href="#proposito" aria-label="Continuar hacia nuestra misión"><span>Deslizá</span><i aria-hidden="true"></i></a>
     </section>
 
-    <!-- PROPÓSITO -->
-    <section class="purpose section" id="proposito">
-      <div class="section-number" aria-hidden="true">01</div>
-      <div class="purpose-intro reveal">
-        <p class="eyebrow eyebrow-blue">Nuestro propósito</p>
-        <h2>Formar deportistas integrales.</h2>
-      </div>
-      <div class="purpose-body reveal">
-        <p class="purpose-statement">La UGI es un órgano técnico transversal que une <strong>educación, conducta y deporte inclusivo</strong> en la base formativa del Club Ciudad.</p>
-        <p>Acompañamos a deportistas, familias y entrenadores con criterios claros de convivencia, respeto mutuo y disfrute en cada entrenamiento y competencia.</p>
-      </div>
-      <div class="principles" aria-label="Principios de la UGI">
-        <article class="principle reveal"><span>Escuchar</span><p>Entender el contexto antes de actuar.</p></article>
-        <article class="principle reveal"><span>Acompañar</span><p>Dar herramientas para crecer con autonomía.</p></article>
-        <article class="principle reveal"><span>Integrar</span><p>Construir un club en el que todos tengan lugar.</p></article>
-      </div>
-    </section>
-
-    <!-- PROGRAMAS -->
-    <section class="programs section" id="programas">
-      <div class="section-heading reveal">
-        <div><p class="eyebrow">Herramientas en cancha</p><h2>Nuestros programas</h2></div>
-        <p>Recursos simples, visuales y concretos para transformar hábitos dentro y fuera del juego.</p>
-      </div>
-      <div class="program-list">
-        <article class="program-card program-traffic reveal">
-          <div class="program-index">01</div>
-          <div class="program-art traffic-art" aria-hidden="true">
-            <div class="traffic-light"><i></i><i></i><i></i></div><span class="art-caption">Observar Regular Actuar</span>
-          </div>
-          <div class="program-copy">
-            <p class="card-kicker">Convivencia</p><h3>Semáforo de la UGI</h3>
-            <p>Una guía visual de convivencia y autorregulación para sostener el estándar Ciudad en cada entrenamiento y partido.</p>
-            
-            <a href="pages/semaforo-ugi.html" style="display: inline-block; margin-top: 1rem; color: var(--sky-dark); font-weight: 700; text-decoration: none;">Ver más info &rarr;</a>
-            
-          </div>
-        </article>
-        
-        <article class="program-card program-family reveal">
-          <div class="program-index">02</div>
-          <div class="program-art family-art" aria-hidden="true">
-            <svg viewBox="0 0 300 220"><circle cx="76" cy="74" r="28" /><circle cx="205" cy="58" r="35" /><path d="M28 184c3-54 20-80 49-80s47 26 49 80M138 184c4-65 26-96 68-96s64 31 68 96" /><path d="m111 98 30 25 31-34" /></svg>
-            <span class="art-caption">Alentar sin dirigir</span>
-          </div>
-          <div class="program-copy">
-            <p class="card-kicker">Familias</p><h3>El deporte de mis hijos</h3>
-            <p>Claves para ofrecer sostén emocional, disfrutar el proceso y respetar el espacio del entrenador durante la competencia.</p>
-            
-            <a href="pages/deportehijos.html" style="display: inline-block; margin-top: 1rem; color: var(--sky-dark); font-weight: 700; text-decoration: none;">Ver más info &rarr;</a>
-            
-          </div>
-        </article>
-        
-       <article class="program-card program-mind reveal">
-          <div class="program-index">03</div>
-          <div class="program-art mind-art" aria-hidden="true">
-            <div class="brain"><span></span><span></span><span></span><span></span><span></span></div><div class="pulse-line"></div>
-            <span class="art-caption">Cuerpo + mente</span>
-          </div>
-          <div class="program-copy">
-            <p class="card-kicker">Rendimiento</p><h3>Entrenamiento mental</h3>
-            <p>Ejercicios prácticos para entrenar la concentración, la toma de decisiones, la calma y el manejo de la presión en el juego.</p>
-            
-            <a href="pages/entrenamiento-mental.html" style="display: inline-block; margin-top: 1rem; color: var(--sky-dark); font-weight: 700; text-decoration: none;">Ver más info &rarr;</a>
-            
-          </div>
-        </article> 
-
-        <article class="program-card program-family reveal">
-          <div class="program-index">04</div>
-          <div class="program-art family-art" aria-hidden="true" style="background: #d4e8d2;">
-            <svg viewBox="0 0 300 220">
-              <circle cx="150" cy="110" r="45" fill="none" stroke="var(--navy)" stroke-width="5"/>
-              <circle cx="95" cy="110" r="30" fill="none" stroke="var(--navy)" stroke-width="5"/>
-              <circle cx="205" cy="110" r="30" fill="none" stroke="var(--navy)" stroke-width="5"/>
-            </svg>
-            <span class="art-caption">Pertenencia</span>
-          </div>
-          <div class="program-copy">
-            <p class="card-kicker">Inclusión</p><h3>Ciudad Integrado</h3>
-            <p>Espacio para chicos y chicas con discapacidad, fomentando el sentido de pertenencia y el desarrollo a través del deporte.</p>
-            
-            <a href="pages/ciudad-integrado.html" style="display: inline-block; margin-top: 1rem; color: var(--sky-dark); font-weight: 700; text-decoration: none;">Ver más info &rarr;</a>
-            
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- SECCIÓN COMUNIDAD Y PORTALES -->
-    <section class="section" id="comunidad" style="background: var(--paper); border-top: 1px solid var(--line);">
-      <div class="section-heading reveal">
-        <div>
-          <p class="eyebrow eyebrow-blue">Comunidad UGI</p>
-          <h2>Portales Formativos</h2>
+    <!-- SOLUCIONES / MODULOS -->
+    <section id="soluciones">
+      <div class="container">
+        <div class="section-header">
+          <div class="badge badge-accent">Módulos del Ecosistema</div>
+          <h2>Todo lo que tu cuerpo técnico necesita</h2>
+          <p>Diseñado para que los coordinadores tengan visibilidad total y los entrenadores ahorren horas de planillas y papeles.</p>
         </div>
-        <p>Espacios pensados para acompañar y potenciar a cada protagonista del club.</p>
-      </div>
-      <div class="tarjetas-grid">
-        <article class="tarjeta reveal">
-          <div>
-            <span style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sky-dark); display: block; margin-bottom: 0.6rem;">Deportistas</span>
-            <h3>Jugadores y Jugadoras</h3>
-            <p style="color: var(--muted); line-height: 1.55; margin-bottom: 1.5rem;">Concentración, toma de decisiones en cancha, check-in emocional con el Semáforo UGI y guías de desarrollo integral.</p>
+
+        <div class="modules-grid">
+          <!-- CARD 1 -->
+          <div class="module-card">
+            <div class="module-icon">📋</div>
+            <h3>Asistencia en Cancha</h3>
+            <p>El profe toma lista desde su celular en segundos. Opciones de Presente, Ausente, Justificado o Lesionado con alertas automáticas.</p>
+            <ul class="module-features">
+              <li><span>✓</span> Funciona sin demoras ni caídas</li>
+              <li><span>✓</span> Auditoría semanal de inasistencias</li>
+              <li><span>✓</span> Histórico por categoría y temporada</li>
+            </ul>
           </div>
-          <a href="pages/jugadores.html" class="nav-cta" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--navy); color: white; border: 1px solid var(--navy); text-decoration: none !important; align-self: flex-start; font-weight: 700;">Ingresar al Portal &rarr;</a>
-        </article>
-        <article class="tarjeta reveal">
-          <div>
-            <span style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sky-dark); display: block; margin-bottom: 0.6rem;">Familias y Socios</span>
-            <h3>Familias</h3>
-            <p style="color: var(--muted); line-height: 1.55; margin-bottom: 1.5rem;">Pautas para acompañar el crecimiento de los chicos, convivencia en los partidos, talleres y la guía práctica "El Otro Equipo".</p>
+
+          <!-- CARD 2 -->
+          <div class="module-card">
+            <div class="module-icon">🎯</div>
+            <h3>Evaluaciones Técnicas</h3>
+            <p>Rúbricas personalizadas con gestos técnicos específicos de tu disciplina (Fútbol, Hockey, Básquet, Vóley, Natación y más).</p>
+            <ul class="module-features">
+              <li><span>✓</span> Calificaciones 1 a 5 con semáforo pedagógico</li>
+              <li><span>✓</span> Observaciones individuales confidenciales</li>
+              <li><span>✓</span> Comparativas evolutivas del deportista</li>
+            </ul>
           </div>
-          <a href="pages/familias.html" class="nav-cta" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--navy); color: white; border: 1px solid var(--navy); text-decoration: none !important; align-self: flex-start; font-weight: 700;">Ingresar al Portal &rarr;</a>
-        </article>
-        <article class="tarjeta reveal">
-          <div>
-            <span style="font-size: 0.7rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sky-dark); display: block; margin-bottom: 0.6rem;">Cuerpo Técnico</span>
-            <h3>Profesores y Entrenadores</h3>
-            <p style="color: var(--muted); line-height: 1.55; margin-bottom: 1.5rem;">Plataforma Muni 360 para asistencia en cancha, seguimiento pedagógico, evaluaciones formativas y planillas oficiales.</p>
+
+          <!-- CARD 3 -->
+          <div class="module-card">
+            <div class="module-icon">🧠</div>
+            <h3>Gimnasio Mental & Cognitivo</h3>
+            <p>Tests de agilidad cognitiva para medir y entrenar la toma de decisiones, tiempo de reacción motriz y atención selectiva.</p>
+            <ul class="module-features">
+              <li><span>✓</span> Test Stroop (agilidad bajo presión)</li>
+              <li><span>✓</span> Test de Reacción e Inhibición</li>
+              <li><span>✓</span> Test de Visión Periférica</li>
+            </ul>
           </div>
-          <a href="muni360/index.html" class="nav-cta" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; background: var(--navy); color: white; border: 1px solid var(--navy); text-decoration: none !important; align-self: flex-start; font-weight: 700;">Ingresar a Muni 360 &rarr;</a>
-        </article>
+
+          <!-- CARD 4 -->
+          <div class="module-card">
+            <div class="module-icon">👥</div>
+            <h3>Padrón Unificado</h3>
+            <p>Ficha de deportistas con fecha de nacimiento, categoría, obra social, contacto de emergencia y apto médico al día.</p>
+            <ul class="module-features">
+              <li><span>✓</span> Cero duplicación de datos</li>
+              <li><span>✓</span> Filtros por camada, rama o división</li>
+              <li><span>✓</span> Exportación rápida a Excel o PDF</li>
+            </ul>
+          </div>
+
+          <!-- CARD 5 -->
+          <div class="module-card">
+            <div class="module-icon">📚</div>
+            <h3>Banco Metodológico</h3>
+            <p>Más de 50 variantes y ejercicios estructurados para estandarizar el modelo de juego y formación de todos los entrenadores.</p>
+            <ul class="module-features">
+              <li><span>✓</span> Calentamientos y activación cognitiva</li>
+              <li><span>✓</span> Ruedas de pases y superioridades</li>
+              <li><span>✓</span> Tareas de autorregulación emocional</li>
+            </ul>
+          </div>
+
+          <!-- CARD 6 -->
+          <div class="module-card">
+            <div class="module-icon">🛡️</div>
+            <h3>Seguridad & Privacidad B2B</h3>
+            <p>Toda la base de datos se almacena en el Google Drive de tu club. Ni nosotros ni terceros tenemos acceso a la información.</p>
+            <ul class="module-features">
+              <li><span>✓</span> Propiedad exclusiva de tus datos</li>
+              <li><span>✓</span> Copias de seguridad automáticas</li>
+              <li><span>✓</span> Sin gastos mensuales de servidores</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
+    <!-- APP SHOWCASE / INTERACTIVE SIMULATOR -->
+    <section id="demo" class="preview-section">
+      <div class="container">
+        <div class="app-showcase">
+          <div class="showcase-text">
+            <div class="badge badge-accent">Simulador Interactivo</div>
+            <h3>Fácil para el profe.<br>Poderoso para el coordinador.</h3>
+            <p>Seleccioná tu disciplina y probá cómo los entrenadores toman lista en 1 toque en plena cancha:</p>
+            
+            <!-- SPORT SELECTOR -->
+            <div class="sport-selector">
+              <button class="sport-btn active" onclick="switchSport('futbol')">⚽ Fútbol</button>
+              <button class="sport-btn" onclick="switchSport('hockey')">🏑 Hockey</button>
+              <button class="sport-btn" onclick="switchSport('basquet')">🏀 Básquet</button>
+              <button class="sport-btn" onclick="switchSport('voley')">🏐 Vóley</button>
+              <button class="sport-btn" onclick="switchSport('rugby')">🏉 Rugby</button>
+            </div>
 
-    <section class="approach" id="enfoque">
-      <div class="approach-copy reveal">
-        <p class="eyebrow">Una cultura compartida</p>
-        <h2>El resultado importa.<br /><em>La forma también.</em></h2>
-        <p>Trabajamos con todos los actores del club para que cada gesto, decisión y conversación sea parte de una misma formación.</p>
-        <a class="button button-light" href="mailto:ugiccba@gmail.com">Conversemos</a>
-      </div>
-      <div class="roles" aria-label="Personas que integran la comunidad UGI">
-        <div class="role reveal"><span>01</span><strong>Deportistas</strong></div>
-        <div class="role reveal"><span>02</span><strong>Familias</strong></div>
-        <div class="role reveal"><span>03</span><strong>Formadores</strong></div>
-        <div class="role reveal"><span>04</span><strong>Club</strong></div>
+            <div class="showcase-points">
+              <div class="point-item">
+                <div class="point-dot">1</div>
+                <div>
+                  <strong>Abren el link en el celular:</strong> No requiere descargas ni crear cuentas engorrosas.
+                </div>
+              </div>
+              <div class="point-item">
+                <div class="point-dot">2</div>
+                <div>
+                  <strong>Toman lista o evalúan en segundos:</strong> Botones táctiles pensados para el sol y el movimiento.
+                </div>
+              </div>
+              <div class="point-item">
+                <div class="point-dot">3</div>
+                <div>
+                  <strong>El coordinador lo ve en vivo:</strong> Reportes consolidados en tiempo real en su propia planilla.
+                </div>
+              </div>
+            </div>
+
+            <button onclick="openLeadModal('Demo Personalizada')" class="btn btn-primary">
+              <span>Agendar Demo de mi Deporte</span>
+            </button>
+          </div>
+
+          <!-- MOCKUP VISUAL -->
+          <div class="mockup-frame">
+            <div class="mockup-header">
+              <div class="mockup-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="mockup-badge" id="mockupCategory">Fútbol Juvenil · Sub 16</div>
+            </div>
+
+            <div class="mockup-player-list" id="mockupPlayers">
+              <!-- Dynamically populated via JS -->
+            </div>
+            
+            <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--surface-border); display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.85rem; color: var(--text-muted);" id="mockupAttendance">Asistencia: <strong>75% (3/4)</strong></span>
+              <span style="font-size: 0.85rem; color: var(--accent); font-weight: 700;">● Guardado en Drive</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
+
+    <!-- COGNITIVO / NEUROENTRENAMIENTO -->
+    <section id="cognitivo">
+      <div class="container">
+        <div class="section-header">
+          <div class="badge badge-accent">Entrenamiento Invisible</div>
+          <h2>Neuroentrenamiento Cognitivo Interactivo</h2>
+          <p>Herramientas interactivas listas para usar en el celular de los chicos o en las salas de video del club.</p>
+        </div>
+
+        <div class="modules-grid">
+          <div class="module-card">
+            <div class="module-icon">⚡</div>
+            <h3>Tiempo de Reacción</h3>
+            <p>Mide la velocidad de respuesta motriz e inhibición visual frente a estímulos repentinos. Ideal para arqueros y toma de decisiones.</p>
+            <a href="apps/training/reaccion.html" class="btn btn-secondary" style="margin-top:auto;" target="_blank">Probar Test</a>
+          </div>
+
+          <div class="module-card">
+            <div class="module-icon">🧩</div>
+            <h3>Test Stroop de Foco</h3>
+            <p>Desafía la atención selectiva y la concentración bajo fatiga mental. Estimula el control inhibitorio durante el juego.</p>
+            <a href="apps/training/stroop.html" class="btn btn-secondary" style="margin-top:auto;" target="_blank">Probar Test</a>
+          </div>
+
+          <div class="module-card">
+            <div class="module-icon">👁️</div>
+            <h3>Visión Periférica</h3>
+            <p>Entrena la amplitud del campo visual y la detección de compañeros y rivales en el espacio circundante.</p>
+            <a href="apps/training/vision.html" class="btn btn-secondary" style="margin-top:auto;" target="_blank">Probar Test</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLANES Y PRECIOS -->
+    <section id="planes">
+      <div class="container">
+        <div class="section-header">
+          <div class="badge badge-accent">Inversión & Planes</div>
+          <h2>Elegí la solución para tu institución</h2>
+          <p>Sin costos ocultos ni servidores caros. Puesta en marcha en 24 horas.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- PLAN 1 -->
+          <div class="pricing-card">
+            <div class="pricing-header">
+              <h3>Plan Escuela / Disciplina</h3>
+              <p>Para profesores independientes o escuelas monodeporte.</p>
+            </div>
+            <div class="pricing-price">
+              <span class="currency">$</span>
+              <span class="amount">Consultar</span>
+              <span class="period">/ mes</span>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                1 Disciplina deportiva
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Hasta 120 deportistas
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Módulo de Asistencia en Cancha
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Padrón básico de alumnos
+              </li>
+            </ul>
+            <button onclick="openLeadModal('Plan Escuela / Disciplina')" class="btn btn-secondary">Cotizar Plan</button>
+          </div>
+
+          <!-- PLAN 2 (DESTACADO) -->
+          <div class="pricing-card featured">
+            <div class="popular-tag">Más Elegido por Clubes</div>
+            <div class="pricing-header">
+              <h3>Plan Club 360 Multideporte</h3>
+              <p>Para clubes medianos y academias con múltiples categorías.</p>
+            </div>
+            <div class="pricing-price">
+              <span class="currency">$</span>
+              <span class="amount">Consultar</span>
+              <span class="period">/ mes</span>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Hasta 8 Disciplinas o Ramas
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Deportistas y entrenadores ilimitados
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Asistencias + Evaluaciones Técnicas
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Panel central para Coordinadores
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Batería de Tests Cognitivos
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Soporte prioritario por WhatsApp
+              </li>
+            </ul>
+            <button onclick="openLeadModal('Plan Club 360 Multideporte')" class="btn btn-primary">Pedir Demo & Cotización</button>
+          </div>
+
+          <!-- PLAN 3 -->
+          <div class="pricing-card">
+            <div class="pricing-header">
+              <h3>Plan Institucional / Pro</h3>
+              <p>Grandes instituciones, federaciones y colegios.</p>
+            </div>
+            <div class="pricing-price">
+              <span class="currency">$</span>
+              <span class="amount">A Medida</span>
+              <span class="period"></span>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Disciplinas y sedes ilimitadas
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Marca blanca total (Logo, colores y dominio propio)
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Capacitación en vivo para el cuerpo técnico
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Backups automáticos semanales
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Desarrollo de módulos especiales a demanda
+              </li>
+            </ul>
+            <button onclick="openLeadModal('Plan Institucional / Pro')" class="btn btn-secondary">Contactar Especialista</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="container">
+        <div class="section-header">
+          <div class="badge badge-accent">Preguntas Frecuentes</div>
+          <h2>Respuestas claras antes de empezar</h2>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item open" onclick="toggleFaq(this)">
+            <div class="faq-question">
+              <span>¿Quién es el dueño de la información de los deportistas?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+              El club es el dueño absoluto de su información. Toda la base de datos se aloja en el Google Drive privado de tu institución. Nosotros nunca comercializamos ni tenemos acceso a los datos personales de tus chicos o socios.
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">
+              <span>¿Los entrenadores tienen que descargar una aplicación pesada?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+              No. Deportes 360 funciona como una Web App ligera (PWA). Los profesores simplemente abren el enlace en Chrome o Safari desde cualquier celular (Android o iPhone) y pueden agregarlo como acceso directo a su pantalla de inicio en 2 clics.
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">
+              <span>¿Qué pasa si en alguna cancha hay mala señal de celular?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+              La plataforma está optimizada para consumir el mínimo ancho de banda posible (menos de 50 KB de transferencia), asegurando que funcione de forma ágil incluso con señal básica 3G o 4G en predios abiertos.
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">
+              <span>¿Cuánto demora la puesta en marcha?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+              En menos de 24 a 48 horas hábiles te entregamos tu entorno configurado con el escudo y los colores de tu club, la lista de disciplinas habilitadas y las planillas maestras listas para recibir a tus deportistas.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <div class="container">
+      <div class="cta-banner">
+        <h2>Llevá la gestión deportiva de tu club al próximo nivel</h2>
+        <p>Pedí tu demostración personalizada hoy mismo y conocé cómo Club 360 transforma la rutina de tus entrenadores y coordinadores.</p>
+        <button onclick="openLeadModal('Banner Final')" class="btn btn-whatsapp" style="font-size: 1.1rem; padding: 1rem 2.2rem;">
+          <span>Agendar Demostración por WhatsApp</span>
+        </button>
+      </div>
+    </div>
   </main>
 
-<footer class="site-footer">
-    <div class="footer-mark">
-      <img src="assets/images/logo-header.png" alt="Logo UGI" style="max-height: 50px;">
-      <span class="brand-copy" style="color: var(--paper); margin-left: 0.5rem; text-align: left;">
-        <strong style="display: block;">UGI</strong>
-      </span>
+  <!-- LEAD CAPTURE MODAL -->
+  <div class="modal-backdrop" id="leadModal" onclick="closeLeadModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeLeadModal()">&times;</button>
+      <div class="badge badge-accent" style="margin-bottom:0.75rem;">Contacto Directo</div>
+      <h3>Pedí tu Demo de Deportes 360</h3>
+      <p>Completá estos datos y te conectamos directamente al WhatsApp de ventas con tu solicitud lista:</p>
+      
+      <form onsubmit="sendLeadWhatsApp(event)">
+        <div class="form-group">
+          <label class="form-label">Tu Nombre y Apellido</label>
+          <input type="text" id="leadName" class="form-input" placeholder="Ej: Juan Pérez" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nombre del Club, Colegio o Academia</label>
+          <input type="text" id="leadClub" class="form-input" placeholder="Ej: Club Social Belgrano" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deporte(s) o Disciplina(s)</label>
+          <input type="text" id="leadSport" class="form-input" placeholder="Ej: Fútbol, Hockey, Básquet" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cantidad aproximada de deportistas</label>
+          <input type="text" id="leadCount" class="form-input" placeholder="Ej: 150 chicos">
+        </div>
+        
+        <input type="hidden" id="leadPlan" value="Demo General">
+
+        <button type="submit" class="btn btn-whatsapp" style="width:100%; margin-top:0.75rem; font-size:1rem;">
+          <span>Continuar a WhatsApp</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.173.086.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/></svg>
+        </button>
+      </form>
     </div>
-    <div>
-      <p>Unidad de Gestión Integral</p>
-      <p>Club Ciudad de Buenos Aires</p>
+  </div>
+
+  <!-- FLOATING WHATSAPP BUTTON -->
+  <a href="https://wa.me/5491100000000?text=Hola!%20Quiero%20conocer%20mas%20sobre%20Deportes%20360" target="_blank" class="floating-wa" title="Chatear con Ventas por WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.173.086.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/></svg>
+  </a>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand" style="margin-bottom: 0.8rem;">
+            <div class="brand-icon">⚡</div>
+            <span>Deportes 360</span>
+          </div>
+          <p style="color: var(--text-dim); max-width: 380px; line-height: 1.6;">
+            Plataforma integral de gestión deportiva de cancha, rúbricas técnicas y neuroentrenamiento para instituciones formativas y de competencia.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Plataforma</h4>
+          <ul>
+            <li><a href="#soluciones">Asistencia en Cancha</a></li>
+            <li><a href="#soluciones">Evaluaciones Técnicas</a></li>
+            <li><a href="#cognitivo">Gimnasio Cognitivo</a></li>
+            <li><a href="muni360/index.html">Acceso Entrenadores</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contacto & Ventas</h4>
+          <ul>
+            <li><a href="javascript:void(0)" onclick="openLeadModal('Footer Contacto')">Atención Comercial</a></li>
+            <li><a href="#planes">Planes y Precios</a></li>
+            <li><a href="https://deportes360.store">deportes360.store</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 Deportes 360 · Todos los derechos reservados.
+        </div>
+        <div style="color: var(--text-dim);">
+          Arquitectura B2B · Propiedad Intelectual Protegida
+        </div>
+      </div>
     </div>
-    <a href="https://www.instagram.com/ugiccba/" target="_blank" rel="noopener noreferrer">Seguinos en Instagram @ugiccba</a>
-    <p class="copyright">&copy; <span data-year></span> C.C.B.A.</p>
   </footer>
 
+  <!-- SCRIPT INTERACTIVO -->
   <script>
-    const header = document.querySelector("[data-header]");
-    const menuButton = document.querySelector(".menu-toggle");
-    const navigation = document.querySelector(".main-nav");
-    const menuLabel = menuButton?.querySelector(".sr-only");
-    
-    const updateHeader = () => {
-      header?.classList.toggle("scrolled", window.scrollY > 24);
+    // CONFIGURACIÓN COMERCIAL
+    const CONFIG = {
+      // Número de WhatsApp al que llegan las consultas (formato internacional sin signos ni espacios)
+      whatsappNumber: '5491100000000'
     };
 
-    if (menuButton && navigation && header) {
-      const setMenu = (open) => {
-        menuButton.setAttribute("aria-expanded", String(open));
-        if (menuLabel) menuLabel.textContent = open ? "Cerrar menú" : "Abrir menú";
-        navigation.classList.toggle("open", open);
-        header.classList.toggle("menu-open", open);
-        document.body.style.overflow = open ? "hidden" : "";
-      };
-      menuButton.addEventListener("click", () => {
-        setMenu(menuButton.getAttribute("aria-expanded") !== "true");
-      });
-      navigation.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setMenu(false)));
-      document.addEventListener("keydown", (e) => { if (e.key === "Escape") setMenu(false); });
-    }
-    window.addEventListener("scroll", updateHeader, { passive: true });
-    updateHeader();
-
-    /* El texto arranca invisible y aparece al entrar en pantalla. Si el navegador
-       no soporta IntersectionObserver, sin esta salida la página quedaría en
-       blanco: mejor mostrar todo de una que no mostrar nada. */
-    if (!("IntersectionObserver" in window)) {
-      document.querySelectorAll(".reveal").forEach((el) => el.classList.add("visible"));
-    }
-
-    const revealObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add("visible");
-          revealObserver.unobserve(entry.target);
-        });
+    // DATOS DE MUESTRA POR DEPORTE PARA EL SIMULADOR
+    const SPORTS_DATA = {
+      futbol: {
+        category: 'Fútbol Juvenil · Sub 16',
+        players: [
+          { name: 'Benjamín Morales', role: 'Delantero · Camada 2010', initials: 'BM', status: 'p' },
+          { name: 'Santino Gómez', role: 'Mediocampista · Camada 2010', initials: 'SG', status: 'a' },
+          { name: 'Tomás Fernández', role: 'Defensor Central · Camada 2010', initials: 'TF', status: 'p' },
+          { name: 'Lucas Rodríguez', role: 'Arquero · Camada 2010', initials: 'LR', status: 'j' }
+        ]
       },
-      // Se dispara apenas asoma: en el celular, con 14% y textos altos, el título
-      // aparecía cuando ya lo estabas leyendo.
-      { threshold: 0.02, rootMargin: "0px 0px -4% 0px" }
-    );
+      hockey: {
+        category: 'Hockey Tira A · 6ta División',
+        players: [
+          { name: 'Valentina Rossi', role: 'Volante Ofensiva · 2010', initials: 'VR', status: 'p' },
+          { name: 'Camila Benítez', role: 'Defensora · 2010', initials: 'CB', status: 'p' },
+          { name: 'Micaela Paz', role: 'Delantera · 2010', initials: 'MP', status: 'a' },
+          { name: 'Sofía Álvarez', role: 'Arquera · 2010', initials: 'SA', status: 'p' }
+        ]
+      },
+      basquet: {
+        category: 'Básquet Formativo · U15',
+        players: [
+          { name: 'Joaquín Silva', role: 'Base · U15', initials: 'JS', status: 'p' },
+          { name: 'Mateo Carrizo', role: 'Escolta · U15', initials: 'MC', status: 'p' },
+          { name: 'Felipe Herrera', role: 'Ala Pívot · U15', initials: 'FH', status: 'j' },
+          { name: 'Ignacio Ortiz', role: 'Pívot · U15', initials: 'IO', status: 'p' }
+        ]
+      },
+      voley: {
+        category: 'Vóley Federado · Sub 18',
+        players: [
+          { name: 'Lucía Giménez', role: 'Armadora · Sub 18', initials: 'LG', status: 'p' },
+          { name: 'Martina Castro', role: 'Punta Receptora · Sub 18', initials: 'MC', status: 'a' },
+          { name: 'Julieta Vega', role: 'Central · Sub 18', initials: 'JV', status: 'p' },
+          { name: 'Renata Domínguez', role: 'Líbero · Sub 18', initials: 'RD', status: 'p' }
+        ]
+      },
+      rugby: {
+        category: 'Rugby Juvenil · M16',
+        players: [
+          { name: 'Bautista Núñez', role: 'Apertura · M16', initials: 'BN', status: 'p' },
+          { name: 'Facundo López', role: 'Medio Scrum · M16', initials: 'FL', status: 'p' },
+          { name: 'Marcos Roldán', role: 'Pilar Izquierdo · M16', initials: 'MR', status: 'p' },
+          { name: 'Gonzalo Méndez', role: 'Fullback · M16', initials: 'GM', status: 'a' }
+        ]
+      }
+    };
 
-    document.querySelectorAll(".reveal").forEach((element, index) => {
-      element.style.transitionDelay = `${Math.min(index % 3, 2) * 90}ms`;
-      revealObserver.observe(element);
-    });
+    let currentSport = 'futbol';
 
-    const year = document.querySelector("[data-year]");
-    if (year) year.textContent = String(new Date().getFullYear());
+    function renderMockup() {
+      const data = SPORTS_DATA[currentSport];
+      document.getElementById('mockupCategory').textContent = data.category;
+      
+      const container = document.getElementById('mockupPlayers');
+      container.innerHTML = '';
+
+      let presentCount = 0;
+      data.players.forEach((p, idx) => {
+        if (p.status === 'p') presentCount++;
+
+        const row = document.createElement('div');
+        row.className = 'mockup-player';
+        row.innerHTML = `
+          <div class="mockup-player-info">
+            <div class="mockup-avatar">${p.initials}</div>
+            <div>
+              <div class="mockup-name">${p.name}</div>
+              <div class="mockup-cat">${p.role}</div>
+            </div>
+          </div>
+          <div class="mockup-actions">
+            <button class="tag-btn ${p.status === 'p' ? 'tag-p' : 'tag-neutral'}" onclick="setPlayerStatus(${idx}, 'p')">P</button>
+            <button class="tag-btn ${p.status === 'a' ? 'tag-a' : 'tag-neutral'}" onclick="setPlayerStatus(${idx}, 'a')">A</button>
+            <button class="tag-btn ${p.status === 'j' ? 'tag-j' : 'tag-neutral'}" onclick="setPlayerStatus(${idx}, 'j')">J</button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+
+      const pct = Math.round((presentCount / data.players.length) * 100);
+      document.getElementById('mockupAttendance').innerHTML = `Asistencia: <strong>${pct}% (${presentCount}/${data.players.length})</strong>`;
+    }
+
+    function switchSport(sportKey) {
+      currentSport = sportKey;
+      document.querySelectorAll('.sport-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      renderMockup();
+    }
+
+    function setPlayerStatus(idx, newStatus) {
+      SPORTS_DATA[currentSport].players[idx].status = newStatus;
+      renderMockup();
+    }
+
+    // FAQ ACCORDION
+    function toggleFaq(item) {
+      item.classList.toggle('open');
+    }
+
+    // LEAD MODAL LOGIC
+    function openLeadModal(planName) {
+      document.getElementById('leadPlan').value = planName || 'Demo General';
+      document.getElementById('leadModal').classList.add('active');
+    }
+
+    function closeLeadModal(e) {
+      document.getElementById('leadModal').classList.remove('active');
+    }
+
+    function sendLeadWhatsApp(e) {
+      e.preventDefault();
+      const name = document.getElementById('leadName').value.trim();
+      const club = document.getElementById('leadClub').value.trim();
+      const sport = document.getElementById('leadSport').value.trim();
+      const count = document.getElementById('leadCount').value.trim();
+      const plan = document.getElementById('leadPlan').value;
+
+      const message = `Hola! Quiero solicitar una demo de Deportes 360:%0A%0A` +
+        `👤 *Nombre:* ${encodeURIComponent(name)}%0A` +
+        `🏟️ *Club / Institución:* ${encodeURIComponent(club)}%0A` +
+        `⚽ *Deporte(s):* ${encodeURIComponent(sport)}%0A` +
+        (count ? `👥 *Deportistas:* ${encodeURIComponent(count)}%0A` : '') +
+        `📌 *Interés:* ${encodeURIComponent(plan)}%0A%0A` +
+        `Me gustaría coordinar una llamada o demostración para ver el sistema.`;
+
+      window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${message}`, '_blank');
+      closeLeadModal();
+    }
+
+    // Render inicial
+    renderMockup();
   </script>
 </body>
 </html>

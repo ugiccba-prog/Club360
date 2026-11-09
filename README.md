@@ -1,60 +1,43 @@
-# 🏆 UGI - Unidad de Gestión Integral 
-### Club Ciudad de Buenos Aires
+# ⚡ Deportes 360 · Store & Plataforma B2B
+### [deportes360.store](https://deportes360.store)
 
-Repositorio oficial del sitio web de la **UGI (Unidad de Gestión Integral)** del **Club Ciudad de Buenos Aires**, plataforma transversal dedicada a la formación integral, la convivencia deportiva y el desarrollo de deportistas, familias y entrenadores.
-
-> *"El entrenamiento que no se ve también se entrena."*
+Plataforma comercial y de distribución del ecosistema **Club 360 / Deportes 360**: software de gestión deportiva integral, herramientas de cancha en tiempo real y módulos pedagógicos/cognitivos para clubes, colegios, academias y coordinadores deportivos.
 
 ---
 
-## 🎯 Objetivo de la Plataforma
-Centralizar los recursos pedagógicos, las herramientas de convivencia y el sistema unificado de gestión de cancha del Club Ciudad de Buenos Aires, garantizando un marco formativo compartido entre deportistas, familias y cuerpo técnico.
+## 🎯 Propuesta de Valor
+
+**Deportes 360** resuelve la gestión diaria de las instituciones deportivas combinando simplicidad en cancha con control centralizado:
+* **Asistencia en 1 Toque:** Registro ágil desde el celular del entrenador en la cancha, sin papeles ni demoras.
+* **Evaluaciones Técnicas y Pedagógicas:** Rúbricas personalizadas por disciplina con seguimiento evolutivo de cada deportista.
+* **Padrón Inteligente:** Ficha unificada de deportistas, categorías y contactos de emergencia.
+* **Gimnasio Cognitivo & Mental:** Batería interactiva de tests (tiempo de reacción, agilidad visual, atención selectiva) para potenciar la toma de decisiones.
+* **Banco Metodológico:** Variantes y recursos de entrenamiento para elevar el estándar formativo del cuerpo técnico.
 
 ---
 
-## 🏛️ Ecosistema y Estructura del Sitio
+## 🛡️ Arquitectura Técnica y Privacidad
 
-### 1. Portada y Portales Públicos
-* **`index.html`**: Portada principal institucional, con presentación del propósito, programas y acceso a los portales formativos.
-* **`pages/jugadores.html`**: Portal de Jugadores con Gimnasio Mental, toma de decisiones, check-in emocional con el Semáforo UGI y guías de desarrollo formativo.
-* **`pages/familias.html`**: Portal de Familias con pautas de convivencia deportiva, recomendaciones para acompañar sin presionar y descarga de la guía *"El Otro Equipo"*.
-* **`pages/`**:
-  * `semaforo-ugi.html`: Guía visual de autorregulación y convivencia en cancha.
-  * `deportehijos.html`: El rol de los adultos en el proceso deportivo formativo.
-  * `entrenamiento-mental.html`: Manejo de emociones, calma bajo presión y liderazgo (Escuela de Capitanes).
-  * `ciudad-integrado.html`: Programa de inclusión, deporte adaptado y pertenencia institucional.
-
-### 2. Gestión Deportiva: Muni 360
-* **`muni360/index.html`**: Plataforma unificada de gestión deportiva para el cuerpo técnico (25 disciplinas activas: Colonia, COYFD y las 23 ramas y deportes del club).
-  * Registro de Asistencia en vivo (con opción de comedor en Colonia).
-  * Evaluaciones técnicas y pedagógicas con gestos específicos por disciplina.
-  * Carga y administración del Padrón de deportistas.
-  * Banco de 50 variantes metodológicas UGI para entrenamientos.
-  * Herramientas de Dirección UGI: Cierre de temporada y vaciado de planillas por rol.
-
-### 3. Aplicaciones Interactivas
-* **`apps/training/`**: Módulos interactivos de entrenamiento cognitivo para deportistas:
-  * `reaccion.html`: Test de tiempo de reacción e inhibición motriz.
-  * `stroop.html`: Test de atención selectiva y agilidad mental.
-  * `vision.html`: Test de visión periférica y atención dividida.
-* **`ansiedad/index.html`**: Zona de respiración guiada, foco y autorregulación emocional.
-* **`hockeysc/index.html`**: Plataforma de Selectividad de Menores para Hockey CCBA.
+Diseñado bajo el modelo **"Librería Blindada + Planilla Cascarón"**:
+1. **Control de Datos del Cliente:** Los datos de deportistas, notas y asistencias viven 100% en el Google Drive privado del club o coordinador.
+2. **Propiedad Intelectual:** La lógica central, algoritmos y componentes se ejecutan desde el núcleo de Deportes 360.
+3. **Gestión Remota de Licencias:** Activación y administración de suscripciones centralizada con kill-switch por club.
 
 ---
 
-## ⚙️ Backend (Google Apps Script)
+## 📂 Estructura del Repositorio
 
-Ubicado en la carpeta **`apps-script/`**:
-* **`DeportesUGI.gs`**: Backend maestro de **Muni 360**. Conecta con las 25 planillas Google Sheets oficiales en Drive, valida roles con tokens temporales (`CacheService`), gestiona asistencias/evaluaciones y ejecuta de forma autónoma:
-  * Copia de seguridad semanal automática en la carpeta `_BACKUP_SEMANAL_UGI` de Google Drive.
-  * Auditoría de asistencias cada viernes a las 9 AM con alertas por correo a los coordinadores.
-* **`Codigo.gs`**: Backend de persistencia y tabla de posiciones de los juegos cognitivos (`apps/training/`).
-* **`HockeySelectividad.gs`**: Backend de gestión para la selectividad de hockey.
+* **`index.html`**: Tienda oficial y landing comercial de venta en [deportes360.store](https://deportes360.store).
+* **`muni360/`**: Interfaz de aplicación para cuerpo técnico y coordinadores.
+* **`apps/training/`**: Módulos interactivos de neuroentrenamiento deportivo (reacción, visión, stroop).
+* **`ansiedad/`**: Espacio de autorregulación y foco para deportistas.
+* **`apps-script/`**: Código del backend y conectores Google Apps Script.
+* **`MANUAL_ARQUITECTURA_B2B.md`**: Guía técnica completa sobre el despliegue del modelo B2B y licenciamiento.
+* **`GUIA_BIENVENIDA_COORDINADOR.md`**: Manual de inducción para nuevos coordinadores y clientes.
 
 ---
 
-## 🎨 Identidad Visual y Tecnologías
-* **Paleta Oficial:** Azul Marino (`#082b49`), Celeste Institucional (`#59bde9`) y Fondo Papel (`#fffdf8`).
-* **Tipografías:** *Outfit* (títulos de gran impacto) y *Plus Jakarta Sans* (lectura nítida y moderna).
-* **Tecnología:** HTML5 semántico, CSS3 nativo y JavaScript Vanilla sin dependencias pesadas.
-* **Hosting:** GitHub Pages con dominio propio configurado en `CNAME` (`www.ugiccba.com.ar`).
+## 🌐 Despliegue y Dominio
+
+* **Dominio Principal:** `deportes360.store`
+* **Configuración DNS:** GitHub Pages apuntado mediante `CNAME`.

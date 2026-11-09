@@ -1,8 +1,8 @@
 {
-  "name": "ugiccba-site",
+  "name": "deportes360-store",
   "version": "1.0.0",
   "private": true,
-  "description": "Sitio oficial de la Unidad de Gestión Integral (UGI) - Club Ciudad de Buenos Aires",
+  "description": "Plataforma comercial y tienda oficial de Deportes 360 / Club 360 - Software integral de gestión deportiva B2B",
   "scripts": {
     "lint:css": "stylelint \"**/*.css\"",
     "lint:js": "jshint assets/scripts apps/training"
@@ -14,4 +14,3 @@
     "jshint": "^2.13.6"
   }
 }
-
