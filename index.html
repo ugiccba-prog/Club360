@@ -470,7 +470,7 @@
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
-      <p>© 2026 <strong>Deportes 360</strong> · <a href="https://deportes360.store">deportes360.store</a> · Contacto: <strong>contacto@deportes360.store</strong></p>
+      <p>© 2026 <strong>Deportes 360</strong> · <a href="https://deportes360.store">deportes360.store</a> · Contacto: <strong>ventas@deportes360.store</strong></p>
     </div>
   </footer>
 
@@ -483,7 +483,7 @@
       const club = document.getElementById('club').value.trim();
       const mensaje = document.getElementById('mensaje').value.trim();
 
-      // Generar mailto precompletado hacia contacto@deportes360.store
+      // Generar mailto precompletado hacia ventas@deportes360.store
       const subject = encodeURIComponent(`Consulta Acceso Anticipado - ${club}`);
       const body = encodeURIComponent(
         `Nombre: ${nombre}\n` +
@@ -497,7 +497,7 @@
       document.getElementById('formSuccess').style.display = 'block';
 
       // Disparar cliente de correo opcionalmente
-      window.location.href = `mailto:contacto@deportes360.store?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:ventas@deportes360.store?subject=${subject}&body=${body}`;
     }
   </script>
 </body>
