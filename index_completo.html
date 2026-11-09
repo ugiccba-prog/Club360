@@ -1,0 +1,1634 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deportes 360 · El Sistema Integral de Gestión de Cancha para Clubes y Academias</title>
+  <meta name="description" content="Plataforma de gestión deportiva para clubes, colegios y academias. Asistencia en 1 toque, evaluaciones técnicas, banco pedagógico y neuroentrenamiento." />
+  
+  <!-- OPEN GRAPH / SOCIAL -->
+  <meta property="og:title" content="Deportes 360 · Gestión Deportiva Inteligente" />
+  <meta property="og:description" content="Controlá asistencias, evaluaciones de rendimiento y padrón de deportistas desde el celular en la cancha. Tus datos 100% seguros y privados." />
+  <meta property="og:url" content="https://deportes360.store" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/png" href="assets/images/favicon.png" />
+
+  <!-- GOOGLE FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #111726;
+      --surface-card: #161f33;
+      --surface-border: #222f4c;
+      --accent: #00e599;
+      --accent-glow: rgba(0, 229, 153, 0.25);
+      --accent-blue: #38bdf8;
+      --accent-amber: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --container-max: 1200px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* CONTAINER & UTILS */
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .badge-accent {
+      background: rgba(0, 229, 153, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(0, 229, 153, 0.3);
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.75rem;
+      border-radius: var(--radius-full);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #042417;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      background: #00ffaa;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0, 229, 153, 0.4);
+    }
+
+    .btn-secondary {
+      background: var(--surface-card);
+      color: var(--text-main);
+      border-color: var(--surface-border);
+    }
+
+    .btn-secondary:hover {
+      background: #1b263e;
+      border-color: var(--text-muted);
+      transform: translateY(-2px);
+    }
+
+    .btn-whatsapp {
+      background: #25d366;
+      color: #032b13;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.25);
+    }
+
+    .btn-whatsapp:hover {
+      background: #2df578;
+      transform: translateY(-2px);
+    }
+
+    /* NAVBAR */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 4.5rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-blue) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #042417;
+      font-weight: 900;
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-main);
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 5rem 0 4rem;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 450px;
+      background: radial-gradient(circle, rgba(0, 229, 153, 0.18) 0%, rgba(56, 189, 248, 0.08) 50%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 840px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin: 1.25rem 0 1.5rem;
+    }
+
+    .hero p {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      color: var(--text-muted);
+      margin-bottom: 2.25rem;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+    }
+
+    /* STATS STRIP */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    /* SECTIONS COMMON */
+    section {
+      padding: 5rem 0;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin: 0.8rem 0 1rem;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* MODULES GRID */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.75rem;
+    }
+
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 229, 153, 0.4);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .module-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      background: rgba(0, 229, 153, 0.1);
+      border: 1px solid rgba(0, 229, 153, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 1.25rem;
+      color: var(--accent);
+    }
+
+    .module-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .module-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .module-features {
+      list-style: none;
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .module-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+
+    .module-features li span {
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* INTERACTIVE APP PREVIEW */
+    .preview-section {
+      background: linear-gradient(180deg, var(--bg) 0%, #0d1322 100%);
+      border-top: 1px solid var(--surface-border);
+      border-bottom: 1px solid var(--surface-border);
+    }
+
+    .app-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .showcase-text h3 {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 1.2rem;
+    }
+
+    .showcase-text p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .showcase-points {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .point-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+
+    .point-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(0, 229, 153, 0.15);
+      border: 1px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    /* SPORT SELECTOR IN MOCKUP */
+    .sport-selector {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+
+    .sport-btn {
+      background: var(--surface-card);
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .sport-btn.active, .sport-btn:hover {
+      background: rgba(0, 229, 153, 0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .mockup-frame {
+      background: var(--surface);
+      border: 2px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .mockup-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--surface-border);
+      padding-bottom: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .mockup-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mockup-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #334155;
+    }
+
+    .mockup-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-full);
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+    }
+
+    .mockup-player-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .mockup-player {
+      background: var(--surface-card);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.2s;
+    }
+
+    .mockup-player-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .mockup-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #23314f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--accent-blue);
+    }
+
+    .mockup-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .mockup-cat {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    .mockup-actions {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .tag-btn {
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tag-p { background: #064e3b; color: #34d399; border-color: #059669; }
+    .tag-a { background: #7f1d1d; color: #f87171; border-color: #dc2626; }
+    .tag-j { background: #78350f; color: #fbbf24; border-color: #d97706; }
+    .tag-neutral { background: #1e293b; color: #64748b; }
+
+    /* PRICING PLANS */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .pricing-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, rgba(0, 229, 153, 0.06) 0%, var(--surface) 100%);
+      box-shadow: 0 0 35px rgba(0, 229, 153, 0.15);
+      transform: scale(1.02);
+    }
+
+    .popular-tag {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: #042417;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.3rem 1rem;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .pricing-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+
+    .pricing-header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .pricing-price {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .currency {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .amount {
+      font-family: var(--font-display);
+      font-size: 2.75rem;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--text-main);
+    }
+
+    .period {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+
+    .pricing-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 2rem;
+      flex-grow: 1;
+    }
+
+    .pricing-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.92rem;
+      color: var(--text-main);
+    }
+
+    .pricing-features li svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* FAQ */
+    .faq-list {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .faq-item:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .faq-question {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .faq-icon {
+      font-size: 1.3rem;
+      transition: transform 0.25s;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      margin-top: 0.85rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    /* CTA BANNER */
+    .cta-banner {
+      background: linear-gradient(135deg, #101c36 0%, #0c2b23 100%);
+      border: 1px solid rgba(0, 229, 153, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 3.5rem 2rem;
+      text-align: center;
+      margin: 4rem auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .cta-banner p {
+      max-width: 650px;
+      margin: 0 auto 2rem;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    /* LEAD MODAL */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 520px;
+      padding: 2.2rem;
+      position: relative;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: var(--text-main);
+    }
+
+    .modal-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--surface-card);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    /* FLOATING WHATSAPP BUTTON */
+    .floating-wa {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 99;
+      background: #25d366;
+      color: #032b13;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .floating-wa:hover {
+      transform: scale(1.08);
+      box-shadow: 0 10px 35px rgba(37, 211, 102, 0.6);
+    }
+
+    .floating-wa svg {
+      width: 34px;
+      height: 34px;
+      fill: #ffffff;
+    }
+
+    .floating-wa::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: rgba(37, 211, 102, 0.35);
+      animation: pulse 2s infinite;
+      z-index: -1;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 0; }
+      100% { transform: scale(0.95); opacity: 0; }
+    }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid var(--surface-border);
+      padding: 3.5rem 0 2rem;
+      background: #060910;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-display);
+      color: var(--text-main);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .footer-col a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: var(--accent);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .app-showcase { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .pricing-card.featured { transform: none; }
+      .floating-wa { bottom: 1.25rem; right: 1.25rem; width: 54px; height: 54px; }
+      .floating-wa svg { width: 28px; height: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container navbar">
+      <a href="#" class="brand">
+        <div class="brand-icon">⚡</div>
+        <span>Deportes 360</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#soluciones">Soluciones</a></li>
+        <li><a href="#demo">Cómo Funciona</a></li>
+        <li><a href="#cognitivo">Gimnasio Mental</a></li>
+        <li><a href="#planes">Planes</a></li>
+        <li><a href="#faq">Preguntas</a></li>
+      </ul>
+
+      <button onclick="openLeadModal('Demo General')" class="btn btn-whatsapp" style="padding: 0.6rem 1.25rem; font-size: 0.9rem;">
+        <span>Solicitar Demo</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main>
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <div class="container hero-content">
+        <div class="badge badge-accent">
+          <span>⚡ Software de Cancha para Clubes & Academias</span>
+        </div>
+        
+        <h1>
+          El entrenamiento que no se ve <br>
+          <span class="gradient-text">ahora se gestiona en 360°</span>
+        </h1>
+
+        <p>
+          Asistencia en 1 toque desde el celular del entrenador, evaluaciones técnicas por disciplina, padrón centralizado y neuroentrenamiento. Tus datos 100% seguros y privados en tu propio entorno.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#planes" class="btn btn-primary">
+            <span>Ver Planes y Precios</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <button onclick="openLeadModal('Hero Demo')" class="btn btn-secondary">
+            <span>Pedir Acceso Demo</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="stats-strip">
+          <div class="stat-item">
+            <div class="stat-number">1 Toque</div>
+            <div class="stat-label">Toma de lista en cancha</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Privacidad de tus datos</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">0 Apps</div>
+            <div class="stat-label">Sin descargas pesadas (Web/PWA)</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">24 hs</div>
+            <div class="stat-label">Puesta en marcha con tu logo</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUCIONES / MODULOS -->
+    <section id="soluciones">
+      <div class="container">
+        <div class="section-header">
+          <div class="badge badge-accent">Módulos del Ecosistema</div>
+          <h2>Todo lo que tu cuerpo técnico necesita</h2>
+          <p>Diseñado para que los coordinadores tengan visibilidad total y los entrenadores ahorren horas de planillas y papeles.</p>
+        </div>
+
+        <div class="modules-grid">
+          <!-- CARD 1 -->
+          <div class="module-card">
+            <div class="module-icon">📋</div>
+            <h3>Asistencia en Cancha</h3>
+            <p>El profe toma lista desde su celular en segundos. Opciones de Presente, Ausente, Justificado o Lesionado con alertas automáticas.</p>
+            <ul class="module-features">
+              <li><span>✓</span> Funciona sin demoras ni caídas</li>
+              <li><span>✓</span> Auditoría semanal de inasistencias</li>
+              <li><span>✓</span> Histórico por categoría y temporada</li>
+            </ul>
+          </div>
+
+          <!-- CARD 2 -->
+          <div class="module-card">
+            <div class="module-icon">🎯</div>
+            <h3>Evaluaciones Técnicas</h3>
+            <p>Rúbricas personalizadas con gestos técnicos específicos de tu disciplina (Fútbol, Hockey, Básquet, Vóley, Natación y más).</p>
+            <ul class="module-features">
+              <li><span>✓</span> Calificaciones 1 a 5 con semáforo pedagógico</li>
+              <li><span>✓</span> Observaciones individuales confidenciales</li>
+              <li><span>✓</span> Comparativas evolutivas del deportista</li>
+            </ul>
+          </div>
+
+          <!-- CARD 3 -->
+          <div class="module-card">
+            <div class="module-icon">🧠</div>
+            <h3>Gimnasio Mental & Cognitivo</h3>
+            <p>Tests de agilidad cognitiva para medir y entrenar la toma de decisiones, tiempo de reacción motriz y atención selectiva.</p>
+            <ul class="module-features">
+              <li><span>✓</span> Test Stroop (agilidad bajo presión)</li>
+              <li><span>✓</span> Test de Reacción e Inhibición</li>
+              <li><span>✓</span> Test de Visión Periférica</li>
+            </ul>
+          </div>
+
+          <!-- CARD 4 -->
+          <div class="module-card">
+            <div class="module-icon">👥</div>
+            <h3>Padrón Unificado</h3>
+            <p>Ficha de deportistas con fecha de nacimiento, categoría, obra social, contacto de emergencia y apto médico al día.</p>
+            <ul class="module-features">
+              <li><span>✓</span> Cero duplicación de datos</li>
+              <li><span>✓</span> Filtros por camada, rama o división</li>
+              <li><span>✓</span> Exportación rápida a Excel o PDF</li>
+            </ul>
+          </div>
+
+          <!-- CARD 5 -->
+          <div class="module-card">
+            <div class="module-icon">📚</div>
+            <h3>Banco Metodológico</h3>
+            <p>Más de 50 variantes y ejercicios estructurados para estandarizar el modelo de juego y formación de todos los entrenadores.</p>
+            <ul class="module-features">
+              <li><span>✓</span> Calentamientos y activación cognitiva</li>
+              <li><span>✓</span> Ruedas de pases y superioridades</li>
+              <li><span>✓</span> Tareas de autorregulación emocional</li>
+            </ul>
+          </div>
+
+          <!-- CARD 6 -->
+          <div class="module-card">
+            <div class="module-icon">🛡️</div>
+            <h3>Seguridad & Privacidad B2B</h3>
+            <p>Toda la base de datos se almacena en el Google Drive de tu club. Ni nosotros ni terceros tenemos acceso a la información.</p>
+            <ul class="module-features">
+              <li><span>✓</span> Propiedad exclusiva de tus datos</li>
+              <li><span>✓</span> Copias de seguridad automáticas</li>
+              <li><span>✓</span> Sin gastos mensuales de servidores</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APP SHOWCASE / INTERACTIVE SIMULATOR -->
+    <section id="demo" class="preview-section">
+      <div class="container">
+        <div class="app-showcase">
+          <div class="showcase-text">
+            <div class="badge badge-accent">Simulador Interactivo</div>
+            <h3>Fácil para el profe.<br>Poderoso para el coordinador.</h3>
+            <p>Seleccioná tu disciplina y probá cómo los entrenadores toman lista en 1 toque en plena cancha:</p>
+            
+            <!-- SPORT SELECTOR -->
+            <div class="sport-selector">
+              <button class="sport-btn active" onclick="switchSport('futbol')">⚽ Fútbol</button>
+              <button class="sport-btn" onclick="switchSport('hockey')">🏑 Hockey</button>
+              <button class="sport-btn" onclick="switchSport('basquet')">🏀 Básquet</button>
+              <button class="sport-btn" onclick="switchSport('voley')">🏐 Vóley</button>
+              <button class="sport-btn" onclick="switchSport('rugby')">🏉 Rugby</button>
+            </div>
+
+            <div class="showcase-points">
+              <div class="point-item">
+                <div class="point-dot">1</div>
+                <div>
+                  <strong>Abren el link en el celular:</strong> No requiere descargas ni crear cuentas engorrosas.
+                </div>
+              </div>
+              <div class="point-item">
+                <div class="point-dot">2</div>
+                <div>
+                  <strong>Toman lista o evalúan en segundos:</strong> Botones táctiles pensados para el sol y el movimiento.
+                </div>
+              </div>
+              <div class="point-item">
+                <div class="point-dot">3</div>
+                <div>
+                  <strong>El coordinador lo ve en vivo:</strong> Reportes consolidados en tiempo real en su propia planilla.
+                </div>
+              </div>
+            </div>
+
+            <button onclick="openLeadModal('Demo Personalizada')" class="btn btn-primary">
+              <span>Agendar Demo de mi Deporte</span>
+            </button>
+          </div>
+
+          <!-- MOCKUP VISUAL -->
+          <div class="mockup-frame">
+            <div class="mockup-header">
+              <div class="mockup-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="mockup-badge" id="mockupCategory">Fútbol Juvenil · Sub 16</div>
+            </div>
+
+            <div class="mockup-player-list" id="mockupPlayers">
+              <!-- Dynamically populated via JS -->
+            </div>
+            
+            <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--surface-border); display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.85rem; color: var(--text-muted);" id="mockupAttendance">Asistencia: <strong>75% (3/4)</strong></span>
+              <span style="font-size: 0.85rem; color: var(--accent); font-weight: 700;">● Guardado en Drive</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COGNITIVO / NEUROENTRENAMIENTO -->
+    <section id="cognitivo">
+      <div class="container">
+        <div class="section-header">
+          <div class="badge badge-accent">Entrenamiento Invisible</div>
+          <h2>Neuroentrenamiento Cognitivo Interactivo</h2>
+          <p>Herramientas interactivas listas para usar en el celular de los chicos o en las salas de video del club.</p>
+        </div>
+
+        <div class="modules-grid">
+          <div class="module-card">
+            <div class="module-icon">⚡</div>
+            <h3>Tiempo de Reacción</h3>
+            <p>Mide la velocidad de respuesta motriz e inhibición visual frente a estímulos repentinos. Ideal para arqueros y toma de decisiones.</p>
+            <a href="apps/training/reaccion.html" class="btn btn-secondary" style="margin-top:auto;" target="_blank">Probar Test</a>
+          </div>
+
+          <div class="module-card">
+            <div class="module-icon">🧩</div>
+            <h3>Test Stroop de Foco</h3>
+            <p>Desafía la atención selectiva y la concentración bajo fatiga mental. Estimula el control inhibitorio durante el juego.</p>
+            <a href="apps/training/stroop.html" class="btn btn-secondary" style="margin-top:auto;" target="_blank">Probar Test</a>
+          </div>
+
+          <div class="module-card">
+            <div class="module-icon">👁️</div>
+            <h3>Visión Periférica</h3>
+            <p>Entrena la amplitud del campo visual y la detección de compañeros y rivales en el espacio circundante.</p>
+            <a href="apps/training/vision.html" class="btn btn-secondary" style="margin-top:auto;" target="_blank">Probar Test</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLANES Y PRECIOS -->
+    <section id="planes">
+      <div class="container">
+        <div class="section-header">
+          <div class="badge badge-accent">Inversión & Planes</div>
+          <h2>Elegí la solución para tu institución</h2>
+          <p>Sin costos ocultos ni servidores caros. Puesta en marcha en 24 horas.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- PLAN 1 -->
+          <div class="pricing-card">
+            <div class="pricing-header">
+              <h3>Plan Escuela / Disciplina</h3>
+              <p>Para profesores independientes o escuelas monodeporte.</p>
+            </div>
+            <div class="pricing-price">
+              <span class="currency">$</span>
+              <span class="amount">Consultar</span>
+              <span class="period">/ mes</span>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                1 Disciplina deportiva
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Hasta 120 deportistas
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Módulo de Asistencia en Cancha
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Padrón básico de alumnos
+              </li>
+            </ul>
+            <button onclick="openLeadModal('Plan Escuela / Disciplina')" class="btn btn-secondary">Cotizar Plan</button>
+          </div>
+
+          <!-- PLAN 2 (DESTACADO) -->
+          <div class="pricing-card featured">
+            <div class="popular-tag">Más Elegido por Clubes</div>
+            <div class="pricing-header">
+              <h3>Plan Club 360 Multideporte</h3>
+              <p>Para clubes medianos y academias con múltiples categorías.</p>
+            </div>
+            <div class="pricing-price">
+              <span class="currency">$</span>
+              <span class="amount">Consultar</span>
+              <span class="period">/ mes</span>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Hasta 8 Disciplinas o Ramas
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Deportistas y entrenadores ilimitados
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Asistencias + Evaluaciones Técnicas
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Panel central para Coordinadores
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Batería de Tests Cognitivos
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Soporte prioritario por WhatsApp
+              </li>
+            </ul>
+            <button onclick="openLeadModal('Plan Club 360 Multideporte')" class="btn btn-primary">Pedir Demo & Cotización</button>
+          </div>
+
+          <!-- PLAN 3 -->
+          <div class="pricing-card">
+            <div class="pricing-header">
+              <h3>Plan Institucional / Pro</h3>
+              <p>Grandes instituciones, federaciones y colegios.</p>
+            </div>
+            <div class="pricing-price">
+              <span class="currency">$</span>
+              <span class="amount">A Medida</span>
+              <span class="period"></span>
+            </div>
+            <ul class="pricing-features">
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Disciplinas y sedes ilimitadas
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Marca blanca total (Logo, colores y dominio propio)
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Capacitación en vivo para el cuerpo técnico
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Backups automáticos semanales
+              </li>
+              <li>
+                <svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                Desarrollo de módulos especiales a demanda
+              </li>
+            </ul>
+            <button onclick="openLeadModal('Plan Institucional / Pro')" class="btn btn-secondary">Contactar Especialista</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="container">
+        <div class="section-header">
+          <div class="badge badge-accent">Preguntas Frecuentes</div>
+          <h2>Respuestas claras antes de empezar</h2>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item open" onclick="toggleFaq(this)">
+            <div class="faq-question">
+              <span>¿Quién es el dueño de la información de los deportistas?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+              El club es el dueño absoluto de su información. Toda la base de datos se aloja en el Google Drive privado de tu institución. Nosotros nunca comercializamos ni tenemos acceso a los datos personales de tus chicos o socios.
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">
+              <span>¿Los entrenadores tienen que descargar una aplicación pesada?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+              No. Deportes 360 funciona como una Web App ligera (PWA). Los profesores simplemente abren el enlace en Chrome o Safari desde cualquier celular (Android o iPhone) y pueden agregarlo como acceso directo a su pantalla de inicio en 2 clics.
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">
+              <span>¿Qué pasa si en alguna cancha hay mala señal de celular?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+              La plataforma está optimizada para consumir el mínimo ancho de banda posible (menos de 50 KB de transferencia), asegurando que funcione de forma ágil incluso con señal básica 3G o 4G en predios abiertos.
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">
+              <span>¿Cuánto demora la puesta en marcha?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+              En menos de 24 a 48 horas hábiles te entregamos tu entorno configurado con el escudo y los colores de tu club, la lista de disciplinas habilitadas y las planillas maestras listas para recibir a tus deportistas.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <div class="container">
+      <div class="cta-banner">
+        <h2>Llevá la gestión deportiva de tu club al próximo nivel</h2>
+        <p>Pedí tu demostración personalizada hoy mismo y conocé cómo Club 360 transforma la rutina de tus entrenadores y coordinadores.</p>
+        <button onclick="openLeadModal('Banner Final')" class="btn btn-whatsapp" style="font-size: 1.1rem; padding: 1rem 2.2rem;">
+          <span>Agendar Demostración por WhatsApp</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- LEAD CAPTURE MODAL -->
+  <div class="modal-backdrop" id="leadModal" onclick="closeLeadModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeLeadModal()">&times;</button>
+      <div class="badge badge-accent" style="margin-bottom:0.75rem;">Contacto Directo</div>
+      <h3>Pedí tu Demo de Deportes 360</h3>
+      <p>Completá estos datos y te conectamos directamente al WhatsApp de ventas con tu solicitud lista:</p>
+      
+      <form onsubmit="sendLeadWhatsApp(event)">
+        <div class="form-group">
+          <label class="form-label">Tu Nombre y Apellido</label>
+          <input type="text" id="leadName" class="form-input" placeholder="Ej: Juan Pérez" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nombre del Club, Colegio o Academia</label>
+          <input type="text" id="leadClub" class="form-input" placeholder="Ej: Club Social Belgrano" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deporte(s) o Disciplina(s)</label>
+          <input type="text" id="leadSport" class="form-input" placeholder="Ej: Fútbol, Hockey, Básquet" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cantidad aproximada de deportistas</label>
+          <input type="text" id="leadCount" class="form-input" placeholder="Ej: 150 chicos">
+        </div>
+        
+        <input type="hidden" id="leadPlan" value="Demo General">
+
+        <button type="submit" class="btn btn-whatsapp" style="width:100%; margin-top:0.75rem; font-size:1rem;">
+          <span>Continuar a WhatsApp</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.173.086.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- FLOATING WHATSAPP BUTTON -->
+  <a href="https://wa.me/5491100000000?text=Hola!%20Quiero%20conocer%20mas%20sobre%20Deportes%20360" target="_blank" class="floating-wa" title="Chatear con Ventas por WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86.173.086.275.072.376-.043.101-.116.433-.506.549-.68.116-.173.231-.145.39-.086s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/></svg>
+  </a>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand" style="margin-bottom: 0.8rem;">
+            <div class="brand-icon">⚡</div>
+            <span>Deportes 360</span>
+          </div>
+          <p style="color: var(--text-dim); max-width: 380px; line-height: 1.6;">
+            Plataforma integral de gestión deportiva de cancha, rúbricas técnicas y neuroentrenamiento para instituciones formativas y de competencia.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Plataforma</h4>
+          <ul>
+            <li><a href="#soluciones">Asistencia en Cancha</a></li>
+            <li><a href="#soluciones">Evaluaciones Técnicas</a></li>
+            <li><a href="#cognitivo">Gimnasio Cognitivo</a></li>
+            <li><a href="muni360/index.html">Acceso Entrenadores</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contacto & Ventas</h4>
+          <ul>
+            <li><a href="javascript:void(0)" onclick="openLeadModal('Footer Contacto')">Atención Comercial</a></li>
+            <li><a href="#planes">Planes y Precios</a></li>
+            <li><a href="https://deportes360.store">deportes360.store</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 Deportes 360 · Todos los derechos reservados.
+        </div>
+        <div style="color: var(--text-dim);">
+          Arquitectura B2B · Propiedad Intelectual Protegida
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT INTERACTIVO -->
+  <script>
+    // CONFIGURACIÓN COMERCIAL
+    const CONFIG = {
+      // Número de WhatsApp al que llegan las consultas (formato internacional sin signos ni espacios)
+      whatsappNumber: '5491100000000'
+    };
+
+    // DATOS DE MUESTRA POR DEPORTE PARA EL SIMULADOR
+    const SPORTS_DATA = {
+      futbol: {
+        category: 'Fútbol Juvenil · Sub 16',
+        players: [
+          { name: 'Benjamín Morales', role: 'Delantero · Camada 2010', initials: 'BM', status: 'p' },
+          { name: 'Santino Gómez', role: 'Mediocampista · Camada 2010', initials: 'SG', status: 'a' },
+          { name: 'Tomás Fernández', role: 'Defensor Central · Camada 2010', initials: 'TF', status: 'p' },
+          { name: 'Lucas Rodríguez', role: 'Arquero · Camada 2010', initials: 'LR', status: 'j' }
+        ]
+      },
+      hockey: {
+        category: 'Hockey Tira A · 6ta División',
+        players: [
+          { name: 'Valentina Rossi', role: 'Volante Ofensiva · 2010', initials: 'VR', status: 'p' },
+          { name: 'Camila Benítez', role: 'Defensora · 2010', initials: 'CB', status: 'p' },
+          { name: 'Micaela Paz', role: 'Delantera · 2010', initials: 'MP', status: 'a' },
+          { name: 'Sofía Álvarez', role: 'Arquera · 2010', initials: 'SA', status: 'p' }
+        ]
+      },
+      basquet: {
+        category: 'Básquet Formativo · U15',
+        players: [
+          { name: 'Joaquín Silva', role: 'Base · U15', initials: 'JS', status: 'p' },
+          { name: 'Mateo Carrizo', role: 'Escolta · U15', initials: 'MC', status: 'p' },
+          { name: 'Felipe Herrera', role: 'Ala Pívot · U15', initials: 'FH', status: 'j' },
+          { name: 'Ignacio Ortiz', role: 'Pívot · U15', initials: 'IO', status: 'p' }
+        ]
+      },
+      voley: {
+        category: 'Vóley Federado · Sub 18',
+        players: [
+          { name: 'Lucía Giménez', role: 'Armadora · Sub 18', initials: 'LG', status: 'p' },
+          { name: 'Martina Castro', role: 'Punta Receptora · Sub 18', initials: 'MC', status: 'a' },
+          { name: 'Julieta Vega', role: 'Central · Sub 18', initials: 'JV', status: 'p' },
+          { name: 'Renata Domínguez', role: 'Líbero · Sub 18', initials: 'RD', status: 'p' }
+        ]
+      },
+      rugby: {
+        category: 'Rugby Juvenil · M16',
+        players: [
+          { name: 'Bautista Núñez', role: 'Apertura · M16', initials: 'BN', status: 'p' },
+          { name: 'Facundo López', role: 'Medio Scrum · M16', initials: 'FL', status: 'p' },
+          { name: 'Marcos Roldán', role: 'Pilar Izquierdo · M16', initials: 'MR', status: 'p' },
+          { name: 'Gonzalo Méndez', role: 'Fullback · M16', initials: 'GM', status: 'a' }
+        ]
+      }
+    };
+
+    let currentSport = 'futbol';
+
+    function renderMockup() {
+      const data = SPORTS_DATA[currentSport];
+      document.getElementById('mockupCategory').textContent = data.category;
+      
+      const container = document.getElementById('mockupPlayers');
+      container.innerHTML = '';
+
+      let presentCount = 0;
+      data.players.forEach((p, idx) => {
+        if (p.status === 'p') presentCount++;
+
+        const row = document.createElement('div');
+        row.className = 'mockup-player';
+        row.innerHTML = `
+          <div class="mockup-player-info">
+            <div class="mockup-avatar">${p.initials}</div>
+            <div>
+              <div class="mockup-name">${p.name}</div>
+              <div class="mockup-cat">${p.role}</div>
+            </div>
+          </div>
+          <div class="mockup-actions">
+            <button class="tag-btn ${p.status === 'p' ? 'tag-p' : 'tag-neutral'}" onclick="setPlayerStatus(${idx}, 'p')">P</button>
+            <button class="tag-btn ${p.status === 'a' ? 'tag-a' : 'tag-neutral'}" onclick="setPlayerStatus(${idx}, 'a')">A</button>
+            <button class="tag-btn ${p.status === 'j' ? 'tag-j' : 'tag-neutral'}" onclick="setPlayerStatus(${idx}, 'j')">J</button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+
+      const pct = Math.round((presentCount / data.players.length) * 100);
+      document.getElementById('mockupAttendance').innerHTML = `Asistencia: <strong>${pct}% (${presentCount}/${data.players.length})</strong>`;
+    }
+
+    function switchSport(sportKey) {
+      currentSport = sportKey;
+      document.querySelectorAll('.sport-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      renderMockup();
+    }
+
+    function setPlayerStatus(idx, newStatus) {
+      SPORTS_DATA[currentSport].players[idx].status = newStatus;
+      renderMockup();
+    }
+
+    // FAQ ACCORDION
+    function toggleFaq(item) {
+      item.classList.toggle('open');
+    }
+
+    // LEAD MODAL LOGIC
+    function openLeadModal(planName) {
+      document.getElementById('leadPlan').value = planName || 'Demo General';
+      document.getElementById('leadModal').classList.add('active');
+    }
+
+    function closeLeadModal(e) {
+      document.getElementById('leadModal').classList.remove('active');
+    }
+
+    function sendLeadWhatsApp(e) {
+      e.preventDefault();
+      const name = document.getElementById('leadName').value.trim();
+      const club = document.getElementById('leadClub').value.trim();
+      const sport = document.getElementById('leadSport').value.trim();
+      const count = document.getElementById('leadCount').value.trim();
+      const plan = document.getElementById('leadPlan').value;
+
+      const message = `Hola! Quiero solicitar una demo de Deportes 360:%0A%0A` +
+        `👤 *Nombre:* ${encodeURIComponent(name)}%0A` +
+        `🏟️ *Club / Institución:* ${encodeURIComponent(club)}%0A` +
+        `⚽ *Deporte(s):* ${encodeURIComponent(sport)}%0A` +
+        (count ? `👥 *Deportistas:* ${encodeURIComponent(count)}%0A` : '') +
+        `📌 *Interés:* ${encodeURIComponent(plan)}%0A%0A` +
+        `Me gustaría coordinar una llamada o demostración para ver el sistema.`;
+
+      window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${message}`, '_blank');
+      closeLeadModal();
+    }
+
+    // Render inicial
+    renderMockup();
+  </script>
+</body>
+</html>
