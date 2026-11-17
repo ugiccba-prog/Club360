@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#0b2545">
-  <title>MUNI 360 · Unidad de Gestión Integral | C.C.B.A.</title>
-  <link rel="icon" type="image/png" href="../escudo-ccba.png">
+  <title>DEPORTES 360 · Sistema de Gestión Deportiva</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -47,7 +47,7 @@
     :focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
     .hidden { display: none !important; }
 
-    /* ================= PANTALLA DE LOGIN MUNI 360 ================= */
+    /* ================= PANTALLA DE LOGIN DEPORTES 360 ================= */
     #login-screen {
       min-height: 100dvh;
       display: flex;
@@ -638,7 +638,7 @@
     }
     .stepper.con-valor { border-color: var(--ok); background: #f0fdf4; }
 
-    /* ================= BANCO UGI (PROFES) + PLANIFICADOR EXPRESS DUA ================= */
+    /* ================= BANCO METODOLÓGICO 360 (PROFES) + PLANIFICADOR EXPRESS DUA ================= */
     .grid-situaciones {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -810,13 +810,13 @@
 <body>
 
   <!-- =====================================================================
-       1. PANTALLA INICIAL UNIFICADA (MUNI 360)
+       1. PANTALLA INICIAL UNIFICADA (DEPORTES 360)
        ===================================================================== -->
   <div id="login-screen">
     <form id="login-form" class="login-card" novalidate>
-      <img src="../escudo-ccba.png" onerror="this.src='escudo-ccba.png'" alt="Escudo C.C.B.A." class="login-shield">
-      <div><span class="login-pill">Club Ciudad de Buenos Aires</span></div>
-      <h1>MUNI 360 · UGI</h1>
+      <img src="../assets/images/favicon.svg" onerror="this.src='../assets/images/favicon.svg'" alt="Deportes 360" class="login-shield">
+      <div><span class="login-pill">Plataforma Integral de Cancha</span></div>
+      <h1>DEPORTES 360</h1>
       <p class="login-sub">Asistencia, evaluaciones y banco metodológico de cancha</p>
 
       <!-- BLOQUE SUPERIOR: SELECTOR DE DEPORTES -->
@@ -852,10 +852,10 @@
         </div>
       </div>
       <p id="login-error" class="error" aria-live="polite"></p>
-      <button type="submit" class="btn">Entrar a Muni 360</button>
+      <button type="submit" class="btn">Entrar a Deportes 360</button>
 
       <div style="text-align:center; margin-top:16px; padding-top:14px; border-top:1px dashed #cbd5e1;">
-        <button type="button" id="btn-entrar-demo" onclick="cargarDemoVideoUGI()" class="btn-sec" style="width:100%; justify-content:center; background:#f0fdf4; color:#15803d; border-color:#86efac; padding:10px 14px; font-size:0.88rem; min-height:44px; border-radius:10px;">
+        <button type="button" id="btn-entrar-demo" onclick="cargarDemoVideo('demo1234')" class="btn-sec" style="width:100%; justify-content:center; background:#f0fdf4; color:#15803d; border-color:#86efac; padding:10px 14px; font-size:0.88rem; min-height:44px; border-radius:10px;">
           🎭 Entrar con Modelo de Prueba (Reunión / Video)
         </button>
         <div style="font-size:0.72rem; color:var(--muted); margin-top:5px;">
@@ -870,9 +870,9 @@
        ===================================================================== -->
   <header id="app-header" class="hidden">
     <div class="brand">
-      <img src="../escudo-ccba.png" onerror="this.src='escudo-ccba.png'" alt="C.C.B.A.">
+      <img src="../assets/images/favicon.svg" onerror="this.src='../assets/images/favicon.svg'" alt="Deportes 360">
       <div>
-        <h2>MUNI 360 · Gestión Deportiva y Formativa</h2>
+        <h2>DEPORTES 360 · Gestión Deportiva</h2>
         <small id="header-sub"></small>
       </div>
     </div>
@@ -897,8 +897,8 @@
       <button type="button" class="tab" role="tab" data-tab="evaluacion" aria-selected="false" id="tab-btn-evaluacion">
         <span>📈 Evaluar</span>
       </button>
-      <button type="button" class="tab" role="tab" data-tab="ugi" aria-selected="false">
-        <span>🛠️ Banco UGI</span>
+      <button type="button" class="tab" role="tab" data-tab="banco" aria-selected="false">
+        <span>🛠️ Banco 360</span>
       </button>
       <button type="button" class="tab" role="tab" data-tab="analisis" aria-selected="false">
         <span>📊 Análisis</span>
@@ -922,7 +922,7 @@
       </div>
 
       <div class="field hidden" id="wrap-deporte-admin">
-        <label for="sel-deporte">Actividad / Deporte Activo (Vista Dirección UGI)</label>
+        <label for="sel-deporte">Actividad / Deporte Activo (Vista Dirección Deportiva)</label>
         <select id="sel-deporte"></select>
       </div>
 
@@ -946,7 +946,7 @@
     </div>
 
     <!-- ===================================================================
-         PESTAÑA 1: ASISTENCIA + COMIDA (COLONIA) + SEMÁFORO + PUNTOS CIUDAD
+         PESTAÑA 1: ASISTENCIA + COMIDA (COLONIA) + SEMÁFORO + PUNTOS FORMATIVOS
          =================================================================== -->
     <section id="tab-asistencia">
       <div class="kpis" id="kpis-asist-dia">
@@ -959,7 +959,7 @@
         <div class="spread">
           <div>
             <h3 id="titulo-lista-asist">Lista de asistencia</h3>
-            <p class="hint" style="margin:0;" id="sub-lista-asist">P = Presente · A = Ausente · T = Tarde · 🟢🟡🔴 = Semáforo UGI · 🧩 = Apoyo DUA</p>
+            <p class="hint" style="margin:0;" id="sub-lista-asist">P = Presente · A = Ausente · T = Tarde · 🟢🟡🔴 = Semáforo Formativo · 🧩 = Apoyo DUA</p>
           </div>
           <div style="display:flex; gap:6px; flex-wrap:wrap;">
             <button type="button" class="btn-sec" id="btn-todos-p">Todos Presentes (P)</button>
@@ -971,15 +971,15 @@
 
         <div id="lista-asist"></div>
 
-        <!-- CIERRE DE CLASE UGI COLAPSABLE: PUNTOS CIUDAD + TERMOSTATO GRUPAL -->
+        <!-- CIERRE DE CLASE 360 COLAPSABLE: PUNTOS FORMATIVOS + TERMOSTATO GRUPAL -->
         <details class="cierre-acordeon" id="details-cierre-clase">
-          <summary>🌡️ Cierre rápido de clase: Clima y Puntos Ciudad (opcional)</summary>
+          <summary>🌡️ Cierre rápido de clase: Clima y Puntos Formativos (opcional)</summary>
           <div class="cierre-acordeon-body">
             <div class="grid2">
               <div>
-                <label for="sel-puntos-ciudad">🏆 Termómetro Puntos Ciudad hoy</label>
-                <select id="sel-puntos-ciudad" style="min-height:40px; font-size:0.86rem;">
-                  <option value="+5">⭐ Cumplieron meta grupal (+5 Puntos Ciudad)</option>
+                <label for="sel-puntos-formativos">🏆 Termómetro Puntos Formativos hoy</label>
+                <select id="sel-puntos-formativos" style="min-height:40px; font-size:0.86rem;">
+                  <option value="+5">⭐ Cumplieron meta grupal (+5 Puntos Formativos)</option>
                   <option value="+10">🟢 Meta + Tarjeta Verde grupal (+10 Puntos)</option>
                   <option value="0">➖ Sin puntos extra hoy (0)</option>
                 </select>
@@ -1001,7 +1001,7 @@
     </section>
 
     <!-- ===================================================================
-         PESTAÑA 2: EVALUAR (TÉCNICA + ARQUERO + LAS 4C UGI + TARJETA VERDE)
+         PESTAÑA 2: EVALUAR (TÉCNICA + ARQUERO + LAS 4C Formativas + TARJETA VERDE)
          =================================================================== -->
     <section id="tab-evaluacion" class="hidden">
       <div class="card">
@@ -1031,15 +1031,15 @@
     </section>
 
     <!-- ===================================================================
-         PESTAÑA 3: BANCO UGI (50 VARIANTES + PLANIFICADOR EXPRESS DUA)
+         PESTAÑA 3: BANCO METODOLÓGICO 360 (50 VARIANTES + PLANIFICADOR EXPRESS DUA)
          =================================================================== -->
-    <section id="tab-ugi" class="hidden">
+    <section id="tab-banco" class="hidden">
       <div class="card">
         <h3>🛠️ Asistente rápido de cancha · Enseñar a enseñar</h3>
         <p class="hint">Elegí qué trabajar o destrabar hoy en tu grupo, rotá entre las 10 variantes de cada eje y registrá tu sesión.</p>
 
         <label>1. ¿Qué foco querés trabajar hoy?</label>
-        <div class="grid-situaciones" id="botonera-ugi">
+        <div class="grid-situaciones" id="botonera-360">
           <button type="button" class="btn-situacion active" data-guia="Grupo disperso"><span>🎯</span><span>Grupo disperso</span></button>
           <button type="button" class="btn-situacion" data-guia="Frustración por error"><span>😤</span><span>Frustración</span></button>
           <button type="button" class="btn-situacion" data-guia="Roce o discusión"><span>🤝</span><span>Roce o conflicto</span></button>
@@ -1047,23 +1047,23 @@
           <button type="button" class="btn-situacion" data-guia="Cierre y devolución"><span>⏱️</span><span>Cierre en 2 min</span></button>
         </div>
 
-        <div id="panel-respuesta-ugi" class="respuesta-box"></div>
+        <div id="panel-respuesta-360" class="respuesta-box"></div>
 
         <div style="border-top:1px solid #e2e8f0; padding-top:12px; margin-top:12px;">
           <label>2. Autoevaluación rápida de la sesión</label>
           <div style="display:flex; flex-direction:column; gap:8px; margin:8px 0 12px; font-size:0.86rem; font-weight:600;">
             <label style="text-transform:none; font-size:0.86rem; display:flex; align-items:center; gap:8px;">
-              <input type="checkbox" id="chk-ugi-1" style="width:18px; height:18px; min-height:auto;"> Consigna clara en menos de 2 minutos
+              <input type="checkbox" id="chk-banco-1" style="width:18px; height:18px; min-height:auto;"> Consigna clara en menos de 2 minutos
             </label>
             <label style="text-transform:none; font-size:0.86rem; display:flex; align-items:center; gap:8px;">
-              <input type="checkbox" id="chk-ugi-2" style="width:18px; height:18px; min-height:auto;"> Apliqué la variante pedagógica o cognitiva sugerida
+              <input type="checkbox" id="chk-banco-2" style="width:18px; height:18px; min-height:auto;"> Apliqué la variante pedagógica o cognitiva sugerida
             </label>
             <label style="text-transform:none; font-size:0.86rem; display:flex; align-items:center; gap:8px;">
-              <input type="checkbox" id="chk-ugi-3" style="width:18px; height:18px; min-height:auto;"> Reforcé conductas positivas (Semáforo o Tarjeta Verde)
+              <input type="checkbox" id="chk-banco-3" style="width:18px; height:18px; min-height:auto;"> Reforcé conductas positivas (Semáforo o Tarjeta Verde)
             </label>
           </div>
-          <input type="text" id="nota-ugi-profe" placeholder="Observación breve de la práctica (opcional)..." style="margin-bottom:10px;">
-          <button type="button" class="btn ok" id="btn-registrar-ugi">Registrar sesión en bitácora UGI</button>
+          <input type="text" id="nota-banco-profe" placeholder="Observación breve de la práctica (opcional)..." style="margin-bottom:10px;">
+          <button type="button" class="btn ok" id="btn-registrar-360">Registrar sesión en bitácora deportiva</button>
         </div>
       </div>
 
@@ -1095,7 +1095,7 @@
 
       <div class="card">
         <h3>Últimas sesiones registradas en este dispositivo</h3>
-        <div id="historial-ugi-local"></div>
+        <div id="historial-banco-local"></div>
       </div>
     </section>
 
@@ -1124,7 +1124,7 @@
       </div>
 
       <div class="card" id="card-grafico-gestos">
-        <h3>Rendimiento por variable técnica y UGI</h3>
+        <h3>Rendimiento por variable técnica y formativa</h3>
         <p class="hint">La variable más baja se marca en rojo para reforzar en la semana.</p>
         <div id="grafico-gestos"></div>
       </div>
@@ -1184,13 +1184,13 @@
 
       <div class="card">
         <h3>3. Plantel actual, Legajo Privado (DNI) y Pasaportes DUA (<span id="count-plantel">0</span>)</h3>
-        <p class="hint">El DNI y el Legajo Privado solo son visibles acá para Coordinación y Dirección UGI (nunca en la vista de cancha).</p>
+        <p class="hint">El DNI y el Legajo Privado solo son visibles acá para Coordinación y Dirección Deportiva (nunca en la vista de cancha).</p>
         <div id="lista-padron"></div>
       </div>
 
       <div class="card" id="card-variables-deporte">
         <h3>4. Variables a evaluar en <span id="gestos-dep"></span></h3>
-        <p class="hint">Las marcadas como "4C UGI" son transversales a todo el club.</p>
+        <p class="hint">Las marcadas como "4C Formativas" son transversales a todo el club.</p>
         <div id="lista-gestos-config"></div>
         <div style="display:flex; gap:8px; margin-top:10px;">
           <input type="text" id="input-nuevo-gesto" placeholder="Sumar nueva variable técnica...">
@@ -1206,7 +1206,7 @@
               <span>⚠️</span> Zona de Peligro y Cierre de Temporada
             </h3>
             <p class="hint" style="margin:0; color:#991b1b;">
-              Operaciones de mantenimiento para Coordinación y Dirección UGI.
+              Operaciones de mantenimiento para Coordinación y Dirección Deportiva.
             </p>
           </div>
         </div>
@@ -1234,7 +1234,7 @@
 
           <div id="wrap-reset-general" class="hidden" style="padding:12px; background:#eff6ff; border:2px dashed #93c5fd; border-radius:8px;">
             <div style="font-weight:800; font-size:0.94rem; color:var(--blue); margin-bottom:4px;">
-              🛡️ Operaciones Globales (Dirección UGI · Todo el Club)
+              🛡️ Operaciones Globales (Dirección Deportiva · Todo el Club)
             </div>
             <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
               Aplica a las 25 actividades del club de manera simultánea.
@@ -1264,13 +1264,13 @@
 
   <script>
     // =========================================================================
-    // 1. CONFIGURACIÓN MAESTRA MUNI 360 (100% GOOGLE SHEETS · SIN SUPABASE NI CLAVES EXPUESTAS)
+    // 1. CONFIGURACIÓN MAESTRA DEPORTES 360 (100% GOOGLE SHEETS · SIN SUPABASE NI CLAVES EXPUESTAS)
     // =========================================================================
     const URL_SCRIPT_DEPORTES   = "https://script.google.com/macros/s/AKfycbz0VhNzdHKgFfrbHvuCJtLqrLRz9BWKxYxKjQ5CdCNQDiMd38edOmTDnGyTm8OBDeZ6/exec";
-    const URL_SCRIPT_PROFES_UGI = "https://script.google.com/macros/s/AKfycbxH7kZSoKxiHTReWUfhBCN9KOT8Vf7ElFXAiXsxvPwKohi76NciLJzL5diyEMS3oesWYA/exec";
+    const URL_SCRIPT_PROFES = "https://script.google.com/macros/s/AKfycbxH7kZSoKxiHTReWUfhBCN9KOT8Vf7ElFXAiXsxvPwKohi76NciLJzL5diyEMS3oesWYA/exec";
 
-    // Variables transversales UGI (Las 4C + Convivencia)
-    const GESTOS_COMUNES_UGI = [
+    // Variables transversales 360 (Las 4C + Convivencia)
+    const GESTOS_COMUNES_360 = [
       "Actitud y compromiso (Carácter)",
       "Respeto y convivencia (Conexión)",
       "Tolerancia al error y frustración (Confianza)"
@@ -1319,9 +1319,9 @@
     ];
 
     // =========================================================================
-    // 2. BANCO DE 50 VARIANTES METODOLÓGICAS UGI
+    // 2. BANCO DE 50 VARIANTES METODOLÓGICAS 360
     // =========================================================================
-    const GUIAS_UGI = {
+    const GUIAS_360 = {
       "Grupo disperso": [
         { subtitulo: "Estímulo visual cambiante", queHacer: "Cortá la fila larga. Pasá a una tarea continua donde tengan que mirar tu mano antes de actuar.", ajuste: "Antes de pasar o definir, el deportista tiene que cantar el color del cono o el número de dedos que mostrás.", frase: "«Chicos, 30 segundos: cambio de regla. Ahora suma punto el que lee la señal visual antes de ejecutar.»" },
         { subtitulo: "Inhibición motriz (regla inversa)", queHacer: "Despertá la atención cambiando el patrón automático del ejercicio por 4 minutos.", ajuste: "Código inverso: si digo 'adelante' van atrás, si digo 'derecha' salen por izquierda, o queda prohibido devolverle el pase al que me la dio.", frase: "«Apagamos el piloto automático: el que se equivoca de señal hace 3 saltos en el lugar y vuelve rápido.»" },
@@ -1377,7 +1377,7 @@
         { subtitulo: "Titular en una palabra", queHacer: "Cierre ágil cuando queda poco tiempo para consolidar la huella del entrenamiento.", ajuste: "Cada subgrupo tiene 10 segundos para elegir una sola palabra que resuma qué trabajaron hoy.", frase: "«En una sola palabra: ¿qué entrenamos hoy acá adentro además de lo físico?»" },
         { subtitulo: "Conexión entrenamiento-partido", queHacer: "Ayudá a que entiendan para qué sirve lo que acaban de practicar.", ajuste: "Preguntale a dos jugadores en qué momento real de la competencia van a usar el ejercicio de hoy.", frase: "«¿En qué situación real del fin de semana nos va a servir esto que entrenamos hoy?»" },
         { subtitulo: "Misión para el próximo entrenamiento", queHacer: "Dejá instalado el foco de continuidad para la sesión siguiente.", ajuste: "Definí junto con el grupo un único objetivo corto para los primeros 10 minutos de la próxima práctica.", frase: "«El próximo entrenamiento arranca exactamente donde terminamos hoy.»" },
-        { subtitulo: "Entrega simbólica de Tarjeta Verde", queHacer: "Cerrá reforzando públicamente los valores formativos del Club y de la UGI.", ajuste: "Otorgá la mención de Tarjeta Verde del día al jugador o subgrupo que mejor manejó la frustración o ayudó al resto.", frase: "«La Tarjeta Verde de hoy se la lleva quien demostró que se puede entrenar al 100% cuidando al equipo.»" },
+        { subtitulo: "Entrega simbólica de Tarjeta Verde", queHacer: "Cerrá reforzando públicamente los valores formativos formativos del Club.", ajuste: "Otorgá la mención de Tarjeta Verde del día al jugador o subgrupo que mejor manejó la frustración o ayudó al resto.", frase: "«La Tarjeta Verde de hoy se la lleva quien demostró que se puede entrenar al 100% cuidando al equipo.»" },
         { subtitulo: "Lo que me llevo y lo que dejo", queHacer: "Enseñá a limpiar la cabeza antes de volver a casa.", ajuste: "Dos voluntarios dicen algo positivo que se llevan en el bolso y una bronca o error que dejan tirado en la cancha.", frase: "«Los errores de hoy quedan acá para aprender; a casa nos llevamos solo lo que sumó.»" },
         { subtitulo: "Balance en 3 pasos del grupo", queHacer: "Entrená la autocrítica constructiva guiada por los propios deportistas.", ajuste: "El grupo nombra: 1 fortaleza del día, 1 punto flojo a corregir y 1 compromiso de actitud.", frase: "«Armemos el balance nosotros mismos: qué hicimos fuerte y qué hay que ajustar.»" },
         { subtitulo: "Respiración 4-2-6 de vuelta a la calma", queHacer: "Bajá la activación nerviosa antes de que se reencuentren con las familias.", ajuste: "Sentados o elongando, hacen 4 ciclos lentos de inhalar en 4, retener 2 y exhalar en 6 mientras repasás el logro del día.", frase: "«Bajamos pulsaciones un minuto en silencio: gran trabajo hoy, nos vamos en verde.»" }
@@ -1419,22 +1419,22 @@
     let puestoEval = 'campo';
     let notasTemp = {};
 
-    let situacionUgi = "Grupo disperso";
-    let indiceUgi = 0;
+    let situacion360 = "Grupo disperso";
+    let indice360 = 0;
 
     // =========================================================================
-    // 4. INICIALIZACIÓN DE PANTALLA LOGIN MUNI 360 (VALIDACIÓN EN SERVIDOR)
+    // 4. INICIALIZACIÓN DE PANTALLA LOGIN DEPORTES 360 (VALIDACIÓN EN SERVIDOR)
     // =========================================================================
     const deportesSolo = CATALOGO_MUNI360.filter(x => !x.esBase);
     $('login-deporte').innerHTML =
       `<option value="">— Seleccionar Deporte —</option>` +
       deportesSolo.map(d => `<option value="${esc(d.nombre)}">${esc(d.nombre)}</option>`).join('') +
-      `<option value="TODOS">🛡️ Dirección UGI (Todos los Deportes + Colonia + COYFD)</option>`;
+      `<option value="TODOS">🛡️ Dirección Deportiva (Todos los Deportes + Colonia + COYFD)</option>`;
 
     $('sel-deporte').innerHTML = CATALOGO_MUNI360.map(d => `<option value="${esc(d.nombre)}">${esc(d.nombre)}</option>`).join('');
 
-    let areaElegidaLogin = localStorage.getItem('muni360_area') || "Básquet Caballeros";
-    $('login-profe').value = localStorage.getItem('muni360_profe') || "";
+    let areaElegidaLogin = localStorage.getItem('deportes360_area') || "Básquet Caballeros";
+    $('login-profe').value = localStorage.getItem('deportes360_profe') || "";
 
     function marcarSeleccionLogin(nombreArea) {
       areaElegidaLogin = nombreArea;
@@ -1465,7 +1465,7 @@
 
       // Atajo instantáneo para modo demo
       if (clave.toLowerCase() === 'demo1234' || clave.toLowerCase() === 'demo') {
-        cargarDemoVideoUGI('demo1234');
+        cargarDemoVideo('demo1234');
         return;
       }
 
@@ -1500,7 +1500,7 @@
         });
         const data = await res.json();
         if (data && data.ok) {
-          localStorage.removeItem('muni360_modo_demo');
+          localStorage.removeItem('deportes360_modo_demo');
           iniciarSesion({
             area: targetArea,
             esAdminTotal: Boolean(data.esAdminTotal),
@@ -1509,29 +1509,29 @@
             token: data.token || ""
           });
         } else {
-          $('login-error').textContent = (data && data.error) ? data.error : "Contraseña incorrecta. Usá 'muni360' (Dirección UGI), 'coordugi' (Coordinación) o 'profeugi' (Profes).";
+          $('login-error').textContent = (data && data.error) ? data.error : "Contraseña incorrecta. Usá 'deportes360' (Dirección Deportiva), 'coord360' (Coordinación) o 'profe360' (Profes).";
         }
       } catch (err) {
         // Soporte offline con claves estándar de respaldo si no hay internet o el servidor aún no se actualizó
         console.warn('Servidor offline o bloqueado, validando clave localmente:', err);
         const c = clave.toLowerCase();
-        if (c === 'muni360' || c === 'ugi2026' || c === 'argon2026') {
-          localStorage.removeItem('muni360_modo_demo');
-          iniciarSesion({ area: targetArea, esAdminTotal: true, rol: "Dirección UGI", profeNombre: profe });
-          toast("✓ Ingreso concedido (Dirección UGI · Modo seguro)");
+        if (c === 'deportes360' || c === 'admin360' || c === 'club360' || c === 'argon2026') {
+          localStorage.removeItem('deportes360_modo_demo');
+          iniciarSesion({ area: targetArea, esAdminTotal: true, rol: "Dirección Deportiva", profeNombre: profe });
+          toast("✓ Ingreso concedido (Dirección Deportiva · Modo seguro)");
           return;
-        } else if (c === 'coordugi' || c.endsWith('coord')) {
-          localStorage.removeItem('muni360_modo_demo');
+        } else if (c === 'coord360' || c.endsWith('coord') || c === 'coord360') {
+          localStorage.removeItem('deportes360_modo_demo');
           iniciarSesion({ area: targetArea, esAdminTotal: false, rol: "Coordinación", profeNombre: profe });
           toast("✓ Ingreso concedido (Coordinación · Modo seguro)");
           return;
-        } else if (c === 'profeugi' || c.endsWith('muni')) {
-          localStorage.removeItem('muni360_modo_demo');
+        } else if (c === 'profe360' || c.endsWith('profe')) {
+          localStorage.removeItem('deportes360_modo_demo');
           iniciarSesion({ area: targetArea, esAdminTotal: false, rol: "Profe", profeNombre: profe });
           toast("✓ Ingreso concedido (Profe · Modo seguro)");
           return;
         }
-        $('login-error').textContent = "Contraseña no válida o sin conexión. Claves válidas: 'muni360' (Dirección UGI), 'coordugi' (Coordinación), 'profeugi' (Profes).";
+        $('login-error').textContent = "Contraseña no válida o sin conexión. Claves válidas: 'deportes360' (Dirección Deportiva), 'coord360' (Coordinación), 'profe360' (Profes).";
       } finally {
         btn.disabled = false;
       }
@@ -1543,9 +1543,9 @@
         ? datosSesion.area
         : "Básquet Caballeros";
 
-      localStorage.setItem('muni360_area', datosSesion.esAdminTotal ? "TODOS" : areaActiva);
-      localStorage.setItem('muni360_profe', datosSesion.profeNombre || "Juan Machado");
-      localStorage.setItem('muni360_sesion_activa', JSON.stringify({ ...datosSesion, area: areaActiva }));
+      localStorage.setItem('deportes360_area', datosSesion.esAdminTotal ? "TODOS" : areaActiva);
+      localStorage.setItem('deportes360_profe', datosSesion.profeNombre || "Juan Machado");
+      localStorage.setItem('deportes360_sesion_activa', JSON.stringify({ ...datosSesion, area: areaActiva }));
 
       $('login-screen').classList.add('hidden');
       ['app-header', 'barra-estado', 'app-screen'].forEach(id => $(id).classList.remove('hidden'));
@@ -1557,14 +1557,14 @@
 
       actualizarCabeceraYPestanas();
       cargarAreaActiva();
-      renderGuiaUgi();
+      renderGuia360();
       renderPlanificadorDua();
-      renderHistorialUgiLocal();
+      renderHistorialLocal();
     }
 
     $('btn-salir').addEventListener('click', () => {
-      localStorage.removeItem('muni360_sesion_activa');
-      localStorage.removeItem('muni360_modo_demo');
+      localStorage.removeItem('deportes360_sesion_activa');
+      localStorage.removeItem('deportes360_modo_demo');
       sesion = null;
       $('login-pass').value = "";
       $('estado-acciones').innerHTML = "";
@@ -1577,7 +1577,7 @@
     }
 
     function esCoordOAdmin() {
-      return sesion && sesion.rol !== "Profe" && (sesion.rol === "Coordinación" || sesion.rol === "Dirección UGI");
+      return sesion && sesion.rol !== "Profe" && (sesion.rol === "Coordinación" || sesion.rol === "Dirección Deportiva");
     }
 
     function actualizarCabeceraYPestanas() {
@@ -1644,13 +1644,13 @@
 
     function leerMapaDua() {
       try {
-        const guardado = JSON.parse(localStorage.getItem('muni360_dua_' + areaActiva) || '{}');
+        const guardado = JSON.parse(localStorage.getItem('deportes360_dua_' + areaActiva) || '{}');
         return { ...DUA_DEFAULT, ...guardado };
       } catch (_) { return { ...DUA_DEFAULT }; }
     }
 
     function guardarMapaDua(mapa) {
-      localStorage.setItem('muni360_dua_' + areaActiva, JSON.stringify(mapa));
+      localStorage.setItem('deportes360_dua_' + areaActiva, JSON.stringify(mapa));
     }
 
     function obtenerFichaDua(jugador) {
@@ -1660,9 +1660,9 @@
 
     function leerMapaDni() {
       try {
-        const local = JSON.parse(localStorage.getItem('muni360_dni_' + areaActiva) || '{}');
+        const local = JSON.parse(localStorage.getItem('deportes360_dni_' + areaActiva) || '{}');
         const mapa = { ...local };
-        if (localStorage.getItem('muni360_modo_demo') === '1') {
+        if (localStorage.getItem('deportes360_modo_demo') === '1') {
           Object.entries(DUA_DNI_DEMO).forEach(([k, v]) => { if (!mapa[k]) mapa[k] = v; });
         }
         (datosDeporte.padron || []).forEach(p => {
@@ -1674,15 +1674,15 @@
 
     function guardarDniJugador(jugador, dniLimpio) {
       const k = claveNombreDni(jugador);
-      const local = JSON.parse(localStorage.getItem('muni360_dni_' + areaActiva) || '{}');
+      const local = JSON.parse(localStorage.getItem('deportes360_dni_' + areaActiva) || '{}');
       if (dniLimpio) local[k] = dniLimpio;
       else delete local[k];
-      localStorage.setItem('muni360_dni_' + areaActiva, JSON.stringify(local));
+      localStorage.setItem('deportes360_dni_' + areaActiva, JSON.stringify(local));
 
       (datosDeporte.padron || []).forEach(p => {
         if (claveNombreDni(p.jugador) === k) p.dni = dniLimpio;
       });
-      localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
+      localStorage.setItem('deportes360_cache_' + areaActiva, JSON.stringify(datosDeporte));
     }
 
     function obtenerDni(jugador) {
@@ -1793,11 +1793,11 @@
       };
     };
 
-    function iconoActividadUgi(nombre) {
+    function iconoActividad(nombre) {
       const n = String(nombre || '');
       if (n === 'Colonia') return '☀️ Colonia';
       if (n === 'COYFD') return '🏃‍♂️ COYFD';
-      if (n === 'Ciudad Integrado') return '🧩 Ciudad Integrado';
+      if (n === 'Deporte Adaptado') return '🧩 Deporte Adaptado';
       if (n.startsWith('Básquet')) return '🏀 ' + n;
       if (n.startsWith('Fútbol')) return '⚽ ' + n;
       if (n.startsWith('Hockey')) return '🏑 ' + n;
@@ -1825,7 +1825,7 @@
         if (act.nombre === areaActiva) {
           cache = datosDeporte;
         } else {
-          try { cache = JSON.parse(localStorage.getItem('muni360_cache_' + act.nombre) || 'null'); } catch (_) {}
+          try { cache = JSON.parse(localStorage.getItem('deportes360_cache_' + act.nombre) || 'null'); } catch (_) {}
         }
         if (!cache || !Array.isArray(cache.padron)) return;
         cache.padron.forEach(p => {
@@ -1846,7 +1846,7 @@
 
     function leerMapaLegajosV2() {
       try {
-        return JSON.parse(localStorage.getItem('muni360_legajos_ugi_v2') || '{}');
+        return JSON.parse(localStorage.getItem('deportes360_legajos_360_v2') || '{}');
       } catch (_) { return {}; }
     }
 
@@ -1859,7 +1859,7 @@
       let bitacora = Array.isArray(base.bitacora) ? [...base.bitacora] : [];
       if (!bitacora.length) {
         try {
-          const notasViejas = JSON.parse(localStorage.getItem('muni360_notas_legajo') || '{}');
+          const notasViejas = JSON.parse(localStorage.getItem('deportes360_notas_legajo') || '{}');
           const obsVieja = notasViejas[kDni] || notasViejas[kNom];
           if (obsVieja) {
             bitacora.push({
@@ -1867,7 +1867,7 @@
               fecha: fechaLocal(0),
               tipo: '📝 Nota general de Coordinación',
               detalle: obsVieja,
-              autor: sesion?.profeNombre || 'Coordinación UGI'
+              autor: sesion?.profeNombre || 'Coordinación Deportiva'
             });
           }
         } catch (_) {}
@@ -1896,7 +1896,7 @@
       };
       mapa[kNom] = objGuardar;
       if (kDni) mapa[kDni] = objGuardar;
-      localStorage.setItem('muni360_legajos_ugi_v2', JSON.stringify(mapa));
+      localStorage.setItem('deportes360_legajos_360_v2', JSON.stringify(mapa));
     }
 
     function estiloBadgeEventoLegajo(tipo) {
@@ -1935,7 +1935,7 @@
         "🟡 Plan A Activo (Acompañamiento 90 días)",
         "🟠 Plan B Activo (Participación Condicionada 60 días)",
         "🔴 Evaluación Plan C / Derivación interna",
-        "🧩 Ciudad Integrado / Doble pertenencia"
+        "🧩 Deporte Adaptado / Doble pertenencia"
       ];
 
       const TIPOS_EVENTO = [
@@ -1943,7 +1943,7 @@
         "⚠️ Queja o reclamo familiar",
         "🚦 Situación conductual / Episodio en cancha",
         "🔄 Cambio de deporte / categoría",
-        "🤝 Acuerdo PAI / Seguimiento UGI",
+        "🤝 Acuerdo Pedagógico / Seguimiento Formativo",
         "📝 Nota general de Coordinación"
       ];
 
@@ -1954,7 +1954,7 @@
       $('dua-modal-body').innerHTML = `
         <div class="spread" style="margin-bottom:10px;">
           <div>
-            <span class="login-pill" style="margin:0;">Legajo Único Transversal · UGI</span>
+            <span class="login-pill" style="margin:0;">Legajo Único Deportivo · 360</span>
             <h3 style="font-size:1.1rem; color:var(--navy); margin-top:4px;">🗂️ ${esc(nombreBaseDua(jugador))}</h3>
           </div>
           <button type="button" class="btn-sec" onclick="$('dua-modal').classList.add('hidden')">✕ Cerrar</button>
@@ -1966,7 +1966,7 @@
             <input type="text" id="legajo-input-dni" inputmode="numeric" placeholder="Sin puntos (ej: 48123456)" value="${esc(dniActual || ficha.dni)}" style="min-height:38px; font-weight:800;">
           </div>
           <div class="field" style="margin:0; background:#f8fafc; padding:8px 10px; border-radius:11px; border:1px solid #cbd5e1;">
-            <label for="legajo-estado-plan">🛡️ Estado Institucional UGI</label>
+            <label for="legajo-estado-plan">🛡️ Estado Institucional 360</label>
             <select id="legajo-estado-plan" style="min-height:38px; font-weight:800; font-size:0.82rem;">
               ${ESTADOS_PLAN.map(est => `<option value="${esc(est)}" ${ficha.estadoPlan === est ? 'selected' : ''}>${esc(est)}</option>`).join('')}
             </select>
@@ -1991,7 +1991,7 @@
           <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:8px;" id="legajo-chips-simultaneas">
             <button type="button" class="chip-check" data-act-chip="Colonia">☀️ Colonia</button>
             <button type="button" class="chip-check" data-act-chip="COYFD">🏃‍♂️ COYFD</button>
-            <button type="button" class="chip-check" data-act-chip="Ciudad Integrado">🧩 Ciudad Integrado</button>
+            <button type="button" class="chip-check" data-act-chip="Deporte Adaptado">🧩 Deporte Adaptado</button>
             <select id="legajo-select-otro-dep" style="width:auto; min-height:30px; padding:3px 8px; font-size:0.74rem; border-radius:999px;">
               <option value="">+ Sumar otro deporte...</option>
               ${deportesExtraOpciones.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('')}
@@ -2042,12 +2042,12 @@
         const nombresAuto = new Set(autoDetectadas.map(x => x.actividad));
 
         const pillsAutoHtml = autoDetectadas.map(x =>
-          `<span class="act-pill auto" title="Inscripto en padrón">${esc(iconoActividadUgi(x.actividad))}${x.categoria ? ' · ' + esc(x.categoria) : ''}</span>`
+          `<span class="act-pill auto" title="Inscripto en padrón">${esc(iconoActividad(x.actividad))}${x.categoria ? ' · ' + esc(x.categoria) : ''}</span>`
         ).join('');
 
         const pillsManualHtml = Array.from(actManuales)
           .filter(a => !nombresAuto.has(a))
-          .map(a => `<span class="act-pill">${esc(iconoActividadUgi(a))} <button type="button" data-quitar-act="${esc(a)}" style="border:none;background:none;color:#0369a1;font-weight:900;cursor:pointer;padding:0 2px;">×</button></span>`)
+          .map(a => `<span class="act-pill">${esc(iconoActividad(a))} <button type="button" data-quitar-act="${esc(a)}" style="border:none;background:none;color:#0369a1;font-weight:900;cursor:pointer;padding:0 2px;">×</button></span>`)
           .join('');
 
         $('legajo-pills-actividades').innerHTML = (pillsAutoHtml + pillsManualHtml) || `<span class="hint">Sin actividades adicionales registradas.</span>`;
@@ -2069,7 +2069,7 @@
                     <span class="pill" style="${estiloBadgeEventoLegajo(ev.tipo)}">${esc(ev.tipo)}</span>
                   </div>
                   <div style="display:flex; align-items:center; gap:6px;">
-                    <small style="color:var(--muted); font-weight:700;">${esc(ev.autor || 'Coordinación UGI')}</small>
+                    <small style="color:var(--muted); font-weight:700;">${esc(ev.autor || 'Coordinación Deportiva')}</small>
                     <button type="button" class="bitacora-del" data-del-ev="${esc(ev.id)}" title="Eliminar entrada">✕</button>
                   </div>
                 </div>
@@ -2174,7 +2174,7 @@
         renderVistaActiva();
         toast(`✓ Legajo unificado de ${nombreBaseDua(jugador)} guardado`);
 
-        if (nuevoDni && localStorage.getItem('muni360_modo_demo') !== '1') {
+        if (nuevoDni && localStorage.getItem('deportes360_modo_demo') !== '1') {
           try {
             await fetch(URL_SCRIPT_DEPORTES, {
               method: 'POST',
@@ -2290,11 +2290,11 @@
     async function cargarAreaActiva() {
       window._asistKeyActual = null;
       const d = areaActiva;
-      datosDeporte = JSON.parse(localStorage.getItem('muni360_cache_' + d) || 'null') || { padron: [], evaluaciones: [], asistencia: [], gestos: null, email: '' };
+      datosDeporte = JSON.parse(localStorage.getItem('deportes360_cache_' + d) || 'null') || { padron: [], evaluaciones: [], asistencia: [], gestos: null, email: '' };
       renderFiltrosDeporte();
       renderVistaActiva();
 
-      if (localStorage.getItem('muni360_modo_demo') === '1') {
+      if (localStorage.getItem('deportes360_modo_demo') === '1') {
         $('estado-txt').innerHTML = `🎬 <strong>MODO DEMO ACTIVO</strong> (Datos de muestra para video/reunión)`;
         $('estado-acciones').innerHTML = `<button type="button" class="btn-sec" style="font-size:0.75rem; padding:3px 10px; background:#fff; color:#c62828; border-color:#e17c6b;" onclick="salirModoDemo()">✕ Salir de Demo</button>`;
         return;
@@ -2313,7 +2313,7 @@
             gestos: (j.gestos && j.gestos.length) ? j.gestos : datosDeporte.gestos,
             email: j.email || ''
           };
-          localStorage.setItem('muni360_cache_' + d, JSON.stringify(datosDeporte));
+          localStorage.setItem('deportes360_cache_' + d, JSON.stringify(datosDeporte));
           $('estado-txt').textContent = `● Conectado en vivo al Sheet de ${d}`;
           window._asistKeyActual = null;
           renderFiltrosDeporte();
@@ -2346,8 +2346,8 @@
     function guardarUltimaSeleccionGrupo() {
       const cat = $('sel-categoria').value;
       const eq  = $('sel-equipo').value || 'General';
-      if (cat) localStorage.setItem('muni360_ult_cat_' + areaActiva, cat);
-      if (eq)  localStorage.setItem('muni360_ult_eq_' + areaActiva, eq);
+      if (cat) localStorage.setItem('deportes360_ult_cat_' + areaActiva, cat);
+      if (eq)  localStorage.setItem('deportes360_ult_eq_' + areaActiva, eq);
     }
 
     function actualizarBarraContexto() {
@@ -2366,18 +2366,18 @@
         ? txtGrupo
         : `${txtGrupo} · ${txtFecha}`;
 
-      const enBancoUgi = tabActual === 'ugi';
-      $('barra-contexto-activo').classList.toggle('hidden', enBancoUgi);
+      const enBanco360 = tabActual === 'banco';
+      $('barra-contexto-activo').classList.toggle('hidden', enBanco360);
 
       const sinCategoria = !cat;
-      const mostrarCard = !enBancoUgi && (filtrosDesplegados || sinCategoria);
+      const mostrarCard = !enBanco360 && (filtrosDesplegados || sinCategoria);
       $('card-filtros').classList.toggle('hidden', !mostrarCard);
       $('btn-toggle-filtros').textContent = mostrarCard ? '▴ Ocultar filtros' : '⚙️ Cambiar grupo / fecha';
     }
 
     function renderFiltrosDeporte() {
       const cats = categoriasDep();
-      const ultCat = localStorage.getItem('muni360_ult_cat_' + areaActiva) || '';
+      const ultCat = localStorage.getItem('deportes360_ult_cat_' + areaActiva) || '';
       const prevCat = $('sel-categoria').value;
 
       $('sel-categoria').innerHTML = cats.length
@@ -2393,7 +2393,7 @@
       }
 
       const eqs = equiposDep($('sel-categoria').value);
-      const ultEq = localStorage.getItem('muni360_ult_eq_' + areaActiva) || '';
+      const ultEq = localStorage.getItem('deportes360_ult_eq_' + areaActiva) || '';
       const prevEq = $('sel-equipo').value;
 
       $('sel-equipo').innerHTML = eqs.length
@@ -2430,7 +2430,7 @@
 
     $('sel-categoria').addEventListener('change', () => {
       const eqs = equiposDep($('sel-categoria').value);
-      const ultEq = localStorage.getItem('muni360_ult_eq_' + areaActiva) || '';
+      const ultEq = localStorage.getItem('deportes360_ult_eq_' + areaActiva) || '';
       $('sel-equipo').innerHTML = eqs.length ? eqs.map(e => `<option value="${esc(e)}">${esc(e)}</option>`).join('') : `<option value="General">General</option>`;
       if (ultEq && eqs.includes(ultEq)) $('sel-equipo').value = ultEq;
       guardarUltimaSeleccionGrupo();
@@ -2464,7 +2464,7 @@
     }
 
     // =========================================================================
-    // 6. PESTAÑA 1: ASISTENCIA + COMIDA (COLONIA) + SEMÁFORO UGI + BOTÓN DUA
+    // 6. PESTAÑA 1: ASISTENCIA + COMIDA (COLONIA) + SEMÁFORO FORMATIVO + BOTÓN DUA
     // =========================================================================
     function renderAsistencia() {
       const cfg = cfgActual();
@@ -2514,7 +2514,7 @@
         $('kpi-dia-val2').textContent = String(alm);
         $('kpi-dia-sub2').textContent = 'almuerzan en Colonia';
       } else {
-        $('kpi-dia-lbl2').textContent = '🚦 Semáforo UGI';
+        $('kpi-dia-lbl2').textContent = '🚦 Semáforo Formativo';
         $('kpi-dia-val2').textContent = alertasSem ? `${alertasSem} ⚠` : '100% 🟢';
         $('kpi-dia-sub2').textContent = alertasSem ? 'amarillas/rojas hoy' : 'grupo en verde';
       }
@@ -2534,7 +2534,7 @@
           <div class="asist-name">${esc(nombreBaseDua(j))} ${btnDuaHtml}</div>
           <div class="asist-controls">
             ${cfg.tieneComida ? `<button type="button" class="comida-btn" data-action="comida" aria-pressed="${comidaTempDep[j] && asistTempDep[j] !== 'A'}">🍴 ${comidaTempDep[j] && asistTempDep[j] !== 'A' ? 'Comida' : 'Sin comida'}</button>` : ''}
-            <div class="sem-group" title="Semáforo Conductual UGI">
+            <div class="sem-group" title="Semáforo Formativo 360">
               <button type="button" class="sem-btn" data-sem="V" aria-pressed="${semTempDep[j] === 'V'}">🟢</button>
               <button type="button" class="sem-btn" data-sem="A" aria-pressed="${semTempDep[j] === 'A'}">🟡</button>
               <button type="button" class="sem-btn" data-sem="R" aria-pressed="${semTempDep[j] === 'R'}">🔴</button>
@@ -2598,7 +2598,7 @@
       const cfg = cfgActual();
       const fecha = $('input-fecha').value;
       const clima = $('sel-clima-clase').value;
-      const puntos = $('sel-puntos-ciudad').value;
+      const puntos = $('sel-puntos-formativos').value;
       const lista = plantelActualNombres();
       if (!lista.length) return;
 
@@ -2617,9 +2617,9 @@
       Object.entries(registro).forEach(([jugador, estado]) => {
         datosDeporte.asistencia.push({ fecha, categoria: cat, equipo: eq, jugador, estado });
       });
-      localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
+      localStorage.setItem('deportes360_cache_' + areaActiva, JSON.stringify(datosDeporte));
 
-      if (localStorage.getItem('muni360_modo_demo') !== '1') {
+      if (localStorage.getItem('deportes360_modo_demo') !== '1') {
         try {
           await fetch(URL_SCRIPT_DEPORTES, {
             method: 'POST',
@@ -2632,7 +2632,7 @@
               fecha,
               categoria: cat,
               equipo: eq,
-              puntosCiudad: puntos,
+              puntosFormativos: puntos,
               clima: clima,
               datos: registro
             })
@@ -2649,21 +2649,21 @@
         setTimeout(() => {
           if (confirm("🔥 Marcaste clase con exceso de Fuego. ¿Querés abrir una dinámica de cancha de 2 minutos para 'Roce o discusión'?")) {
             seleccionarGuiaUgi("Roce o discusión");
-            cambiarTab("ugi");
+            cambiarTab("banco");
           }
         }, 400);
       } else if (clima === "Agua") {
         setTimeout(() => {
           if (confirm("💧 Marcaste clase con exceso de Agua/dispersión. ¿Querés ver una variante rápida para 'Grupo disperso'?")) {
             seleccionarGuiaUgi("Grupo disperso");
-            cambiarTab("ugi");
+            cambiarTab("banco");
           }
         }, 400);
       }
     });
 
     // =========================================================================
-    // 7. PESTAÑA 2: EVALUACIÓN TÉCNICA, ARQUERO, 4C UGI Y TARJETA VERDE DIGITAL
+    // 7. PESTAÑA 2: EVALUACIÓN TÉCNICA, ARQUERO, 4C Formativas Y TARJETA VERDE DIGITAL
     // =========================================================================
     function tieneArqueroActual() {
       return Boolean(cfgActual().arquero);
@@ -2671,10 +2671,10 @@
     function gestosActuales() {
       const cfg = cfgActual();
       if (tieneArqueroActual() && puestoEval === 'arquero') {
-        return [...cfg.arquero, ...GESTOS_COMUNES_UGI];
+        return [...cfg.arquero, ...GESTOS_COMUNES_360];
       }
       const base = (datosDeporte.gestos && datosDeporte.gestos.length) ? datosDeporte.gestos : cfg.gestos;
-      return [...base, ...GESTOS_COMUNES_UGI];
+      return [...base, ...GESTOS_COMUNES_360];
     }
 
     function evalDeJugador(jugador, fecha) {
@@ -2730,9 +2730,9 @@
         const val = notasTemp[g];
         const tiene = val !== undefined && val !== null && val !== '';
         const esArq = g.startsWith('Arquero:');
-        const esUgi = GESTOS_COMUNES_UGI.includes(g);
+        const esUgi = GESTOS_COMUNES_360.includes(g);
         const nombreLimpio = esArq ? g.replace(/^Arquero:\s*/, '') : g;
-        const badge = esUgi ? '<em>4C UGI</em>' : (esArq ? '<em class="arq">ARQUERO</em>' : '');
+        const badge = esUgi ? '<em>4C Formativas</em>' : (esArq ? '<em class="arq">ARQUERO</em>' : '');
         return `
           <div class="gesto">
             <div class="gesto-nombre">${esc(nombreLimpio)}${badge}</div>
@@ -2791,9 +2791,9 @@
 
       datosDeporte.evaluaciones = datosDeporte.evaluaciones.filter(r => !(r.fecha === fecha && r.jugador === jugadorActivo));
       datosDeporte.evaluaciones.push({ fecha, categoria: cat, equipo: eq, jugador: jugadorActivo, notas });
-      localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
+      localStorage.setItem('deportes360_cache_' + areaActiva, JSON.stringify(datosDeporte));
 
-      if (localStorage.getItem('muni360_modo_demo') !== '1') {
+      if (localStorage.getItem('deportes360_modo_demo') !== '1') {
         try {
           await fetch(URL_SCRIPT_DEPORTES, {
             method: 'POST',
@@ -2832,7 +2832,7 @@
       $('dua-modal-body').innerHTML = `
         <div class="spread" style="margin-bottom:10px;">
           <div>
-            <span class="login-pill" style="background:#dcfce7; color:#166534; border-color:#86efac;">Reconocimiento UGI</span>
+            <span class="login-pill" style="background:#dcfce7; color:#166534; border-color:#86efac;">Reconocimiento Formativo</span>
             <h3 style="font-size:1.15rem; color:#166534; margin-top:4px;">🟢 Tarjeta Verde Digital</h3>
           </div>
           <button type="button" class="btn-sec" onclick="$('dua-modal').classList.add('hidden')">✕</button>
@@ -2879,70 +2879,70 @@
     });
 
     // =========================================================================
-    // 8. PESTAÑA 3: BANCO UGI (50 VARIANTES + REGISTRO DE BITÁCORA)
+    // 8. PESTAÑA 3: BANCO METODOLÓGICO 360 (50 VARIANTES + REGISTRO DE BITÁCORA)
     // =========================================================================
     function seleccionarGuiaUgi(clave) {
-      situacionUgi = clave;
-      document.querySelectorAll('#botonera-ugi .btn-situacion').forEach(b => {
+      situacion360 = clave;
+      document.querySelectorAll('#botonera-360 .btn-situacion').forEach(b => {
         b.classList.toggle('active', b.dataset.guia === clave);
       });
-      indiceUgi = Math.floor(Math.random() * GUIAS_UGI[clave].length);
-      renderGuiaUgi();
+      indice360 = Math.floor(Math.random() * GUIAS_360[clave].length);
+      renderGuia360();
     }
 
-    function renderGuiaUgi() {
-      const lista = GUIAS_UGI[situacionUgi];
-      const item = lista[indiceUgi];
-      $('panel-respuesta-ugi').innerHTML = `
+    function renderGuia360() {
+      const lista = GUIAS_360[situacion360];
+      const item = lista[indice360];
+      $('panel-respuesta-360').innerHTML = `
         <div class="spread" style="margin-bottom:8px;">
-          <strong style="color:var(--violeta); font-size:0.96rem;">${esc(situacionUgi)}: ${esc(item.subtitulo)} (${indiceUgi + 1}/${lista.length})</strong>
-          <button type="button" class="btn-sec" id="btn-rotar-ugi">🔄 Otra variante (${indiceUgi + 1}/${lista.length})</button>
+          <strong style="color:var(--violeta); font-size:0.96rem;">${esc(situacion360)}: ${esc(item.subtitulo)} (${indice360 + 1}/${lista.length})</strong>
+          <button type="button" class="btn-sec" id="btn-rotar-360">🔄 Otra variante (${indice360 + 1}/${lista.length})</button>
         </div>
         <div style="font-size:0.88rem; margin-bottom:6px;"><strong>1. Acción inmediata del profe:</strong> ${esc(item.queHacer)}</div>
         <div style="font-size:0.88rem; margin-bottom:6px;"><strong>2. Variante cognitiva o conductual:</strong> ${esc(item.ajuste)}</div>
         <div class="frase-clave">🗣️ Qué decir en cancha: ${esc(item.frase)}</div>
       `;
-      $('btn-rotar-ugi').onclick = () => {
-        indiceUgi = (indiceUgi + 1) % lista.length;
-        renderGuiaUgi();
+      $('btn-rotar-360').onclick = () => {
+        indice360 = (indice360 + 1) % lista.length;
+        renderGuia360();
       };
     }
 
-    $('botonera-ugi').addEventListener('click', e => {
+    $('botonera-360').addEventListener('click', e => {
       const b = e.target.closest('.btn-situacion');
       if (b) seleccionarGuiaUgi(b.dataset.guia);
     });
 
-    $('btn-registrar-ugi').addEventListener('click', async () => {
+    $('btn-registrar-360').addEventListener('click', async () => {
       const checks = [
-        $('chk-ugi-1').checked ? "Consigna <2 min" : null,
-        $('chk-ugi-2').checked ? "Variante aplicada" : null,
-        $('chk-ugi-3').checked ? "Refuerzo positivo" : null
+        $('chk-banco-1').checked ? "Consigna <2 min" : null,
+        $('chk-banco-2').checked ? "Variante aplicada" : null,
+        $('chk-banco-3').checked ? "Refuerzo positivo" : null
       ].filter(Boolean).join(", ") || "Sin tildar";
 
-      const variante = GUIAS_UGI[situacionUgi][indiceUgi].subtitulo;
+      const variante = GUIAS_360[situacion360][indice360].subtitulo;
       const reg = {
         fecha: new Date().toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' }),
         profe: sesion ? sesion.profeNombre : "Profe",
         categoria: `${areaActiva}`,
-        foco: `${situacionUgi} (${variante})`,
+        foco: `${situacion360} (${variante})`,
         checklist: checks,
-        nota: $('nota-ugi-profe').value.trim()
+        nota: $('nota-banco-profe').value.trim()
       };
 
       const hist = JSON.parse(localStorage.getItem('ugi_historial_sesiones') || '[]');
       hist.unshift(reg);
       localStorage.setItem('ugi_historial_sesiones', JSON.stringify(hist));
-      renderHistorialUgiLocal();
+      renderHistorialLocal();
 
-      $('chk-ugi-1').checked = false;
-      $('chk-ugi-2').checked = false;
-      $('chk-ugi-3').checked = false;
-      $('nota-ugi-profe').value = '';
-      toast("✓ Sesión registrada en tu bitácora y enviada a la UGI");
+      $('chk-banco-1').checked = false;
+      $('chk-banco-2').checked = false;
+      $('chk-banco-3').checked = false;
+      $('nota-banco-profe').value = '';
+      toast("✓ Sesión registrada en tu bitácora y enviada a la Coordinación");
 
       try {
-        await fetch(URL_SCRIPT_PROFES_UGI, {
+        await fetch(URL_SCRIPT_PROFES, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -2951,9 +2951,9 @@
       } catch (_) {}
     });
 
-    function renderHistorialUgiLocal() {
+    function renderHistorialLocal() {
       const hist = JSON.parse(localStorage.getItem('ugi_historial_sesiones') || '[]');
-      $('historial-ugi-local').innerHTML = hist.length
+      $('historial-banco-local').innerHTML = hist.length
         ? hist.slice(0, 8).map(x => `
             <div class="item" style="flex-direction:column; align-items:flex-start; gap:3px;">
               <div><strong>${esc(x.fecha)}</strong> · ${esc(x.categoria)} (${esc(x.profe)})</div>
@@ -3060,7 +3060,7 @@
       const ws = XLSX.utils.json_to_sheet(filasLimpias);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Reporte_UGI");
-      XLSX.writeFile(wb, `Muni360_${areaActiva.replace(/\s+/g, '_')}_${fechaLocal()}.xlsx`);
+      XLSX.writeFile(wb, `Deportes360_${areaActiva.replace(/\s+/g, '_')}_${fechaLocal()}.xlsx`);
     });
 
     // =========================================================================
@@ -3103,12 +3103,12 @@
       $('padron-eq').value  = cfgActual().esBase ? 'General' : ($('sel-equipo').value || 'A');
       const gLista = gestosActuales();
       $('lista-gestos-config').innerHTML = gLista.map(g => {
-        const esFijo = GESTOS_COMUNES_UGI.includes(g) || cfgActual().gestos.includes(g);
+        const esFijo = GESTOS_COMUNES_360.includes(g) || cfgActual().gestos.includes(g);
         return `
         <div class="item">
           <span>${esc(g)}</span>
           <div style="display:flex; align-items:center; gap:6px;">
-            ${GESTOS_COMUNES_UGI.includes(g) ? '<span class="pill a">4C UGI</span>' : ''}
+            ${GESTOS_COMUNES_360.includes(g) ? '<span class="pill a">4C Formativas</span>' : ''}
             ${!esFijo ? `<button type="button" class="bitacora-del" data-quitar-gesto="${esc(g)}" title="Quitar variable personalizada">✕</button>` : ''}
           </div>
         </div>`;
@@ -3136,7 +3136,7 @@
         altasPayload.push({ jugador: nombreJ, dni: dniJ });
       });
 
-      localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
+      localStorage.setItem('deportes360_cache_' + areaActiva, JSON.stringify(datosDeporte));
       $('padron-lista').value = '';
       renderFiltrosDeporte();
       $('sel-categoria').value = cat;
@@ -3144,7 +3144,7 @@
       renderVistaActiva();
       toast(`✓ ${altasPayload.length} deportistas cargados en ${cat}`);
 
-      if (localStorage.getItem('muni360_modo_demo') !== '1') {
+      if (localStorage.getItem('deportes360_modo_demo') !== '1') {
         try {
           await fetch(URL_SCRIPT_DEPORTES, {
             method: 'POST',
@@ -3207,13 +3207,13 @@
       const nuevo = $('input-nuevo-gesto').value.trim();
       if (!nuevo) return;
       const base = (datosDeporte.gestos && datosDeporte.gestos.length) ? [...datosDeporte.gestos] : [...cfgActual().gestos];
-      if (base.some(g => igual(g, nuevo)) || GESTOS_COMUNES_UGI.some(g => igual(g, nuevo))) {
+      if (base.some(g => igual(g, nuevo)) || GESTOS_COMUNES_360.some(g => igual(g, nuevo))) {
         toast("Esa variable ya existe en la lista");
         return;
       }
       base.push(nuevo);
       datosDeporte.gestos = base;
-      localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
+      localStorage.setItem('deportes360_cache_' + areaActiva, JSON.stringify(datosDeporte));
       $('input-nuevo-gesto').value = '';
       renderVistaActiva();
       toast(`Variable "${nuevo}" sumada a ${areaActiva}`);
@@ -3225,7 +3225,7 @@
       const gQuitar = btn.dataset.quitarGesto;
       const base = (datosDeporte.gestos && datosDeporte.gestos.length) ? [...datosDeporte.gestos] : [...cfgActual().gestos];
       datosDeporte.gestos = base.filter(g => g !== gQuitar);
-      localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
+      localStorage.setItem('deportes360_cache_' + areaActiva, JSON.stringify(datosDeporte));
       renderVistaActiva();
       toast(`Variable "${gQuitar}" quitada`);
     });
@@ -3250,11 +3250,11 @@
       const eq  = cfgActual().esBase ? 'General' : ($('sel-equipo').value || 'General');
 
       datosDeporte.padron = datosDeporte.padron.filter(p => !(igual(p.categoria, cat) && igual(p.equipo || 'General', eq) && igual(p.jugador, jugador)));
-      localStorage.setItem('muni360_cache_' + areaActiva, JSON.stringify(datosDeporte));
+      localStorage.setItem('deportes360_cache_' + areaActiva, JSON.stringify(datosDeporte));
       renderVistaActiva();
       toast(`✓ ${nombreBaseDua(jugador)} quitado del grupo`);
 
-      if (localStorage.getItem('muni360_modo_demo') !== '1') {
+      if (localStorage.getItem('deportes360_modo_demo') !== '1') {
         try {
           await fetch(URL_SCRIPT_DEPORTES, {
             method: 'POST',
@@ -3281,7 +3281,7 @@
       toast(`⏳ Pasando de temporada en ${dep}...`);
       datosDeporte.asistencia = [];
       datosDeporte.evaluaciones = [];
-      localStorage.setItem('muni360_cache_' + dep, JSON.stringify(datosDeporte));
+      localStorage.setItem('deportes360_cache_' + dep, JSON.stringify(datosDeporte));
       renderVistaActiva();
 
       try {
@@ -3318,7 +3318,7 @@
       datosDeporte.padron = [];
       datosDeporte.asistencia = [];
       datosDeporte.evaluaciones = [];
-      localStorage.setItem('muni360_cache_' + dep, JSON.stringify(datosDeporte));
+      localStorage.setItem('deportes360_cache_' + dep, JSON.stringify(datosDeporte));
       renderFiltrosDeporte();
       renderVistaActiva();
 
@@ -3346,14 +3346,14 @@
 
     $('btn-reset-temporada-general').addEventListener('click', async () => {
       if (!sesion?.esAdminTotal) return;
-      const resp = prompt(`🛡️ ATENCIÓN DIRECCIÓN UGI:\n\nVas a PASAR DE TEMPORADA EN TODO EL CLUB (25 actividades).\n\n• Se reiniciarán asistencias y evaluaciones en todas las planillas.\n• Los PADRONES de todos los deportes se mantendrán intactos.\n\nPara confirmar, escribí TEMPORADA en mayúsculas:`);
+      const resp = prompt(`🛡️ ATENCIÓN DIRECCIÓN DEPORTIVA:\n\nVas a PASAR DE TEMPORADA EN TODO EL CLUB (25 actividades).\n\n• Se reiniciarán asistencias y evaluaciones en todas las planillas.\n• Los PADRONES de todos los deportes se mantendrán intactos.\n\nPara confirmar, escribí TEMPORADA en mayúsculas:`);
       if (resp !== 'TEMPORADA') {
         if (resp !== null) alert('Operación cancelada: el texto no coincidió.');
         return;
       }
 
       toast('⏳ Pasando de temporada en todo el club...');
-      Object.keys(localStorage).filter(k => k.startsWith('muni360_cache_')).forEach(k => {
+      Object.keys(localStorage).filter(k => k.startsWith('deportes360_cache_')).forEach(k => {
         try {
           const d = JSON.parse(localStorage.getItem(k));
           if (d) {
@@ -3391,14 +3391,14 @@
 
     $('btn-reset-todo-general').addEventListener('click', async () => {
       if (!sesion?.esAdminTotal) return;
-      const resp = prompt(`🚨 PELIGRO MÁXIMO (DIRECCIÓN UGI):\n\nVas a BORRAR TODAS LAS PLANILLAS DE TODO EL CLUB (Padrón, Asistencias y Evaluaciones de las 25 actividades).\n\nPara confirmar esta acción IRREVERSIBLE, escribí BORRAR TODO en mayúsculas:`);
+      const resp = prompt(`🚨 PELIGRO MÁXIMO (DIRECCIÓN DEPORTIVA):\n\nVas a BORRAR TODAS LAS PLANILLAS DE TODO EL CLUB (Padrón, Asistencias y Evaluaciones de las 25 actividades).\n\nPara confirmar esta acción IRREVERSIBLE, escribí BORRAR TODO en mayúsculas:`);
       if (resp !== 'BORRAR TODO') {
         if (resp !== null) alert('Operación cancelada: el texto no coincidió.');
         return;
       }
 
       toast('⏳ Vaciando todas las planillas del club...');
-      Object.keys(localStorage).filter(k => k.startsWith('muni360_cache_')).forEach(k => localStorage.removeItem(k));
+      Object.keys(localStorage).filter(k => k.startsWith('deportes360_cache_')).forEach(k => localStorage.removeItem(k));
       datosDeporte = { padron: [], evaluaciones: [], asistencia: [], gestos: null, email: '' };
       renderFiltrosDeporte();
       renderVistaActiva();
@@ -3439,7 +3439,7 @@
     function cambiarTab(id) {
       if (id === 'padron' && !esCoordOAdmin()) return;
       tabActual = id;
-      ['asistencia', 'evaluacion', 'ugi', 'analisis', 'padron'].forEach(t => {
+      ['asistencia', 'evaluacion', 'banco', 'analisis', 'padron'].forEach(t => {
         $('tab-' + t).classList.toggle('hidden', t !== id);
       });
       document.querySelectorAll('#nav-tabs .tab').forEach(b => {
@@ -3457,7 +3457,7 @@
     // =========================================================================
     // 12. MODO DEMO / PRESENTACIÓN PARA VIDEOS Y REUNIONES
     // =========================================================================
-    window.cargarDemoVideoUGI = function(passIngresada) {
+    window.cargarDemoVideo = function(passIngresada) {
       let pass = passIngresada || $('login-pass').value.trim();
       const esValida = p => p && (p.toLowerCase() === "demo1234" || p.toLowerCase() === "demo");
       if (!esValida(pass)) {
@@ -3515,27 +3515,27 @@
           }
         ],
         gestos: null,
-        email: "ugi@ccba.com.ar"
+        email: "ventas@deportes360.store"
       };
 
-      localStorage.setItem('muni360_modo_demo', '1');
-      localStorage.setItem('muni360_cache_' + dep, JSON.stringify(demoData));
-      localStorage.setItem('muni360_cache_Colonia', JSON.stringify({
+      localStorage.setItem('deportes360_modo_demo', '1');
+      localStorage.setItem('deportes360_cache_' + dep, JSON.stringify(demoData));
+      localStorage.setItem('deportes360_cache_Colonia', JSON.stringify({
         padron: [
           { categoria: "Grupo 8 años", equipo: "General", jugador: "Acosta, Mateo (🧩 DUA)", dni: "48512390" }
         ],
-        asistencia: [], evaluaciones: [], gestos: null, email: "ugi@ccba.com.ar"
+        asistencia: [], evaluaciones: [], gestos: null, email: "ventas@deportes360.store"
       }));
-      localStorage.setItem('muni360_cache_COYFD', JSON.stringify({
+      localStorage.setItem('deportes360_cache_COYFD', JSON.stringify({
         padron: [
           { categoria: "Grupo 9-10 años", equipo: "General", jugador: "Benítez, Tomás", dni: "48901234" }
         ],
-        asistencia: [], evaluaciones: [], gestos: null, email: "ugi@ccba.com.ar"
+        asistencia: [], evaluaciones: [], gestos: null, email: "ventas@deportes360.store"
       }));
 
       const legajoMateo = {
         estadoPlan: "🟡 Plan A Activo (Acompañamiento 90 días)",
-        actividadesSimultaneas: ["Colonia", "Ciudad Integrado", "Básquet Caballeros"],
+        actividadesSimultaneas: ["Colonia", "Deporte Adaptado", "Básquet Caballeros"],
         paseInterno: "Pasó de COYFD a Básquet Caballeros en Marzo (adaptación positiva con apoyos visuales).",
         bitacora: [
           {
@@ -3550,7 +3550,7 @@
             fecha: fechaLocal(-14),
             tipo: "🔄 Cambio de deporte / categoría",
             detalle: "Pase articulado desde COYFD hacia Básquet Caballeros Sub-12 luego de completar etapa de iniciación polideportiva.",
-            autor: "Coordinación UGI"
+            autor: "Coordinación Deportiva"
           }
         ],
         actualizadoPor: "Juan Machado",
@@ -3573,7 +3573,7 @@
             fecha: fechaLocal(-20),
             tipo: "📝 Nota general de Coordinación",
             detalle: "Articulación con profes de COYFD: muy buena integración con sus compañeros de categoría.",
-            autor: "Coordinación UGI"
+            autor: "Coordinación Deportiva"
           }
         ],
         actualizadoPor: "Juan Machado",
@@ -3584,22 +3584,22 @@
       mapaLegajosDemo[claveNombreDni("Acosta, Mateo")] = legajoMateo;
       mapaLegajosDemo["48901234"] = legajoTomas;
       mapaLegajosDemo[claveNombreDni("Benítez, Tomás")] = legajoTomas;
-      localStorage.setItem('muni360_legajos_ugi_v2', JSON.stringify(mapaLegajosDemo));
+      localStorage.setItem('deportes360_legajos_360_v2', JSON.stringify(mapaLegajosDemo));
 
       const sesionDemo = {
-        area: dep, esAdminTotal: true, rol: "Dirección UGI", profeNombre: "Juan Machado"
+        area: dep, esAdminTotal: true, rol: "Dirección Deportiva", profeNombre: "Juan Machado"
       };
-      localStorage.setItem('muni360_sesion_activa', JSON.stringify(sesionDemo));
+      localStorage.setItem('deportes360_sesion_activa', JSON.stringify(sesionDemo));
       iniciarSesion(sesionDemo);
       toast("🎭 Modo Demo activado con éxito");
     };
 
     window.salirModoDemo = function() {
-      localStorage.removeItem('muni360_modo_demo');
-      localStorage.removeItem('muni360_cache_Básquet Caballeros');
-      localStorage.removeItem('muni360_cache_Colonia');
-      localStorage.removeItem('muni360_cache_COYFD');
-      localStorage.removeItem('muni360_sesion_activa');
+      localStorage.removeItem('deportes360_modo_demo');
+      localStorage.removeItem('deportes360_cache_Básquet Caballeros');
+      localStorage.removeItem('deportes360_cache_Colonia');
+      localStorage.removeItem('deportes360_cache_COYFD');
+      localStorage.removeItem('deportes360_sesion_activa');
       sesion = null;
       $('login-pass').value = "";
       ['app-header', 'barra-estado', 'app-screen'].forEach(id => $(id).classList.add('hidden'));
@@ -3609,15 +3609,15 @@
 
     const demoParam = new URLSearchParams(location.search).get('demo') || (location.hash === '#demo1234' ? 'demo1234' : null);
     if (demoParam === '1' || demoParam === 'demo1234') {
-      window.cargarDemoVideoUGI('demo1234');
+      window.cargarDemoVideo('demo1234');
     } else {
-      const guardada = localStorage.getItem('muni360_sesion_activa');
+      const guardada = localStorage.getItem('deportes360_sesion_activa');
       if (guardada) {
         try {
           iniciarSesion(JSON.parse(guardada));
         } catch (e) {
           console.error("Error restaurando sesión:", e);
-          localStorage.removeItem('muni360_sesion_activa');
+          localStorage.removeItem('deportes360_sesion_activa');
         }
       }
     }
